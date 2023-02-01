@@ -1,6 +1,6 @@
 package com.example.shelve.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.io.Serializable;
 import java.sql.Date;
@@ -39,6 +39,6 @@ public class Retailer implements Serializable {
     @Column(name = "status")
     private boolean status;
 
-    @OneToMany(mappedBy = "contract")
+    @OneToMany(mappedBy = "retailer")
     private Set<Contract> contracts;
 }

@@ -3,7 +3,8 @@ package com.example.shelve.entities;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 

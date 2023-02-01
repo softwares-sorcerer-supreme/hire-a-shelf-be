@@ -9,4 +9,6 @@ public interface CampaignService {
     List<CampaignResponse> getAllCampaign();
 
     CampaignResponse getCampaign();
+
+    CampaignResponse createNewCampaign();
 }

@@ -2,7 +2,7 @@ package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.Brand;
 import com.example.shelve.entities.Contract;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.sql.Date;
 import java.util.Set;

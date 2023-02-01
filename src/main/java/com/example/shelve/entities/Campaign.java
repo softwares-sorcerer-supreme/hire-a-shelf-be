@@ -1,6 +1,6 @@
 package com.example.shelve.entities;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.io.Serializable;
 import java.sql.Date;

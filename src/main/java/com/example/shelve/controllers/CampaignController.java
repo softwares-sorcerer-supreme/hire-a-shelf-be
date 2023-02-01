@@ -5,10 +5,7 @@ import com.example.shelve.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,6 +24,11 @@ public class CampaignController {
     @GetMapping("/{id}")
     public ResponseEntity<CampaignResponse> getCampaign(@PathVariable Long id) {
         return new ResponseEntity<>(campaignService.getCampaign(), HttpStatus.FOUND);
+    }
+
+    @PostMapping
+    public ResponseEntity<CampaignResponse> createNewCampaign(@RequestBody CampaignRequest campaign) {
+        return new ResponseEntity<>(campaignService.createNewCampaign(), HttpStatus.OK);
     }
 
 }

@@ -23,4 +23,9 @@ public class CampaignServiceImpl implements CampaignService {
         return null;
     }
 
+    @Override
+    public CampaignResponse createNewCampaign() {
+        return null;
+    }
+
 }
