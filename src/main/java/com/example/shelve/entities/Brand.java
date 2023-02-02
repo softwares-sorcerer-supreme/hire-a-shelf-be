@@ -41,4 +41,9 @@ public class Brand implements Serializable {
     @OneToMany(mappedBy = "brand")
     private Set<Campaign> campaigns;
 
+    @OneToMany(mappedBy = "brand")
+    private Set<Products> products;
+
+    @OneToOne(mappedBy = "brand")
+    private Account account;
 }

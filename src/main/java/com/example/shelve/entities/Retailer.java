@@ -41,4 +41,13 @@ public class Retailer implements Serializable {
 
     @OneToMany(mappedBy = "retailer")
     private Set<Contract> contracts;
+
+    @OneToMany(mappedBy = "retailer")
+    private Set<Shelves> shelves;
+
+    @OneToMany(mappedBy = "retailer")
+    private Set<Order> orders;
+
+    @OneToOne(mappedBy = "retailer")
+    private Account account;
 }
