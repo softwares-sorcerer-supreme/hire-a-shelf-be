@@ -1,5 +1,6 @@
 package com.example.shelve.controllers;
 
+import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;

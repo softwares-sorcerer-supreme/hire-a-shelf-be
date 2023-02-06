@@ -1,4 +1,4 @@
 package com.example.shelve.controllers;
 
-public class CategoryRequest {
+public class AdminController {
 }

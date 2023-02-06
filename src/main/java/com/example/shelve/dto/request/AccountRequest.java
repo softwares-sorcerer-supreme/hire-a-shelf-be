@@ -1,4 +1,4 @@
-package com.example.shelve.controllers;
+package com.example.shelve.dto.request;
 
 import com.example.shelve.entities.Admin;
 import com.example.shelve.entities.Brand;
