@@ -2,6 +2,8 @@ package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.Brand;
 import com.example.shelve.entities.Contract;
+import com.example.shelve.entities.Drawers;
+
 import javax.persistence.*;
 
 import java.sql.Date;
@@ -24,5 +26,7 @@ public class CampaignResponse {
     private Brand brand;
 
     private Set<Contract> contracts;
+
+    private Drawers drawers;
 
 }
