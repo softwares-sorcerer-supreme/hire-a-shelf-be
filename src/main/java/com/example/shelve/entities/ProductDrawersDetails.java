@@ -3,7 +3,7 @@ package com.example.shelve.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "droductdrawersdetails")
+@Table(name = "product_drawers_details")
 public class ProductDrawersDetails {
 
     @Id
