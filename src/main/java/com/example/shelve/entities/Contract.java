@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.Set;
 
 @Entity
 @Table(name = "contract")
@@ -32,6 +31,6 @@ public class Contract implements Serializable {
     private Campaign campaign;
 
     @ManyToOne
-    @JoinColumn(name = "retailer_id")
-    private Retailer retailer;
+    @JoinColumn(name = "store_id")
+    private Store store;
 }

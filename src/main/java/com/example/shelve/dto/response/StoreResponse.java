@@ -5,13 +5,11 @@ import com.example.shelve.entities.*;
 import java.sql.Date;
 import java.util.Set;
 
-public class RetailerResponse {
+public class StoreResponse {
 
     private Long id;
 
     private String name;
-
-    private String address;
 
     private String phone;
 
@@ -25,5 +23,17 @@ public class RetailerResponse {
 
     private boolean status;
 
-    private Set<Store> store;
+    private Set<Contract> contracts;
+
+    private Set<Shelves> shelves;
+
+    private Set<Order> orders;
+
+    private Account account;
+
+    private Location location;
+
+    private Retailer retailer;
+
+    private Set<Category>  categories;
 }

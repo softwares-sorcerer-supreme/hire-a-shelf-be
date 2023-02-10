@@ -1,9 +1,6 @@
 package com.example.shelve.dto.response;
 
-import com.example.shelve.entities.Drawers;
-import com.example.shelve.entities.Image;
-import com.example.shelve.entities.Retailer;
-import com.example.shelve.entities.ShelvesType;
+import com.example.shelve.entities.*;
 
 import java.util.Set;
 
@@ -17,11 +14,13 @@ public class ShelvesResponse {
 
     private boolean status;
 
-    private Retailer retailer;
+    private Store store;
 
     private ShelvesType shelvesType;
 
-    private Set<Drawers> drawers;
-
     private Set<Image> images;
+
+    private Set<Campaign>  campaigns;
+
+    private Set<Products> products;
 }

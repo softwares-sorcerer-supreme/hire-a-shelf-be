@@ -2,6 +2,7 @@ package com.example.shelve.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
@@ -24,4 +25,7 @@ public class Category implements Serializable {
     @ManyToOne
     @JoinColumn(name = "products_id")
     private Products products;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<Store> store;
 }

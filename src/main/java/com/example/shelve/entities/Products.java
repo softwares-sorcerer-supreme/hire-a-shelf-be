@@ -29,9 +29,6 @@ public class Products implements Serializable {
     private String price;
 
     @OneToMany(mappedBy = "products")
-    private Set<ProductDrawersDetails> productDrawersDetails;
-
-    @OneToMany(mappedBy = "products")
     private Set<Category> categories;
 
     @OneToMany(mappedBy = "products")
@@ -43,4 +40,10 @@ public class Products implements Serializable {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @ManyToMany(mappedBy = "products")
+    private Set<Shelves> shelves;
+
+    @ManyToMany(mappedBy = "products")
+    private Set<Campaign> campaigns;
 }

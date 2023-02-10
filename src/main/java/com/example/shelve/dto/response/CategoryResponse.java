@@ -1,6 +1,9 @@
 package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.Products;
+import com.example.shelve.entities.Store;
+
+import java.util.Set;
 
 public class CategoryResponse {
 
@@ -13,4 +16,6 @@ public class CategoryResponse {
     private String description;
 
     private Products products;
+
+    private Set<Store> store;
 }

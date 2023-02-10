@@ -1,4 +1,4 @@
 package com.example.shelve.controllers;
 
-public class DrawersController {
+public class StoreController {
 }

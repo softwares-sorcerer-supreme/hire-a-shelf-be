@@ -1,7 +1,7 @@
 package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.Campaign;
-import com.example.shelve.entities.Retailer;
+import com.example.shelve.entities.Store;
 
 import java.sql.Date;
 
@@ -19,5 +19,5 @@ public class ContractResponse {
 
     private Campaign campaign;
 
-    private Retailer retailer;
+    private Store store;
 }

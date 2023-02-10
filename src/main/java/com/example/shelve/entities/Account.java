@@ -30,8 +30,8 @@ public class Account {
     private Admin admin;
 
     @OneToOne
-    @JoinColumn(name = "retailer_id")
-    private Retailer retailer;
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @OneToOne
     @JoinColumn(name = "brand_id")

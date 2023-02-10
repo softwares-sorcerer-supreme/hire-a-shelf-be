@@ -22,17 +22,21 @@ public class Shelves implements Serializable {
     private boolean status;
 
     @ManyToOne
-    @JoinColumn(name = "retailer_id")
-    private Retailer retailer;
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @ManyToOne
     @JoinColumn(name = "shelvesType_id")
     private ShelvesType shelvesType;
 
-    @OneToMany(mappedBy = "shelves")
-    private Set<Drawers> drawers;
+    @ManyToMany
+    @JoinTable(name = "shelves_products", joinColumns = @JoinColumn(name = "shelves_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private Set<Products> products;
 
     @OneToMany(mappedBy = "shelves")
     private Set<Image> images;
+
+    @OneToMany(mappedBy = "shelves")
+    private Set<Campaign>  campaigns;
 
 }

@@ -1,7 +1,8 @@
 package com.example.shelve.dto.response;
 
+import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.OrderDetail;
-import com.example.shelve.entities.Retailer;
+import com.example.shelve.entities.Store;
 
 import java.sql.Date;
 import java.util.Set;
@@ -14,6 +15,8 @@ public class OrderResponse {
 
     private Set<OrderDetail> orderDetails;
 
-    private Retailer retailer;
+    private Store store;
+
+    private Campaign campaign;
 
 }

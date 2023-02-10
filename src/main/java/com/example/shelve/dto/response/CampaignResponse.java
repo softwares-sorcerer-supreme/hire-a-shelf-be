@@ -1,10 +1,6 @@
 package com.example.shelve.dto.response;
 
-import com.example.shelve.entities.Brand;
-import com.example.shelve.entities.Contract;
-import com.example.shelve.entities.Drawers;
-
-import javax.persistence.*;
+import com.example.shelve.entities.*;
 
 import java.sql.Date;
 import java.util.Set;
@@ -27,6 +23,11 @@ public class CampaignResponse {
 
     private Set<Contract> contracts;
 
-    private Drawers drawers;
+    private Shelves shelves;
+
+    private Set<Order> orders;
+
+    private Set<Products> products;
+
 
 }

@@ -18,8 +18,6 @@ public class ProductResponse {
 
     private String price;
 
-    private Set<ProductDrawersDetails> productDrawersDetails;
-
     private Set<Category> categories;
 
     private Set<OrderDetail> orderDetails;
@@ -27,4 +25,8 @@ public class ProductResponse {
     private Set<Image> images;
 
     private Brand brand;
+
+    private Set<Shelves> shelves;
+
+    private Set<Campaign> campaigns;
 }

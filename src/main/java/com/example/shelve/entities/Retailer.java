@@ -1,14 +1,13 @@
 package com.example.shelve.entities;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
 
 @Entity
 @Table(name = "retailer")
-public class Retailer implements Serializable {
+public class Retailer  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,14 +39,7 @@ public class Retailer implements Serializable {
     private boolean status;
 
     @OneToMany(mappedBy = "retailer")
-    private Set<Contract> contracts;
+    private Set<Store> store;
 
-    @OneToMany(mappedBy = "retailer")
-    private Set<Shelves> shelves;
 
-    @OneToMany(mappedBy = "retailer")
-    private Set<Order> orders;
-
-    @OneToOne(mappedBy = "retailer")
-    private Account account;
 }

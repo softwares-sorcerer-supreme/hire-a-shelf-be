@@ -2,7 +2,7 @@ package com.example.shelve.dto.request;
 
 import com.example.shelve.entities.Admin;
 import com.example.shelve.entities.Brand;
-import com.example.shelve.entities.Retailer;
+import com.example.shelve.entities.Store;
 
 public class AccountRequest {
 
@@ -12,6 +12,6 @@ public class AccountRequest {
     private String role;
     private boolean status;
     private Admin admin;
-    private Retailer retailer;
+    private Store store;
     private Brand brand;
 }
