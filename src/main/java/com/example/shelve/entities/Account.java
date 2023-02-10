@@ -2,19 +2,20 @@ package com.example.shelve.entities;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "account")
 public class Account {
-
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "user_name")
+    private String userName;
 
     @Column(name = "password")
     private String password;
@@ -30,10 +31,12 @@ public class Account {
     private Admin admin;
 
     @OneToOne
-    @JoinColumn(name = "retailer_id")
-    private Retailer retailer;
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @OneToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+
 }

@@ -22,11 +22,11 @@ public class Shelves implements Serializable {
     private boolean status;
 
     @ManyToOne
-    @JoinColumn(name = "retailer_id")
-    private Retailer retailer;
+    @JoinColumn(name = "store_id")
+    private Store store;
 
     @ManyToOne
-    @JoinColumn(name = "shelvesType_id")
+    @JoinColumn(name = "shelves_type_id")
     private ShelvesType shelvesType;
 
     @OneToMany(mappedBy = "shelves")

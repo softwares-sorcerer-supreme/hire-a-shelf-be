@@ -21,6 +21,6 @@ public class Order implements Serializable {
     private Set<OrderDetail> orderDetails;
 
     @ManyToOne
-    @JoinColumn(name = "retailer_id")
-    private Retailer retailer;
+    @JoinColumn(name = "store_id")
+    private Store store;
 }

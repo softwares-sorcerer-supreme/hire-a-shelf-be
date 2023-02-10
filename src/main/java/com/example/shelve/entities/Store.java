@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "retailer")
-public class Retailer implements Serializable {
+public class Store implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,15 +39,15 @@ public class Retailer implements Serializable {
     @Column(name = "status")
     private boolean status;
 
-    @OneToMany(mappedBy = "retailer")
+    @OneToMany(mappedBy = "store")
     private Set<Contract> contracts;
 
-    @OneToMany(mappedBy = "retailer")
+    @OneToMany(mappedBy = "store")
     private Set<Shelves> shelves;
 
-    @OneToMany(mappedBy = "retailer")
+    @OneToMany(mappedBy = "store")
     private Set<Order> orders;
 
-    @OneToOne(mappedBy = "retailer")
+    @OneToOne(mappedBy = "store")
     private Account account;
 }
