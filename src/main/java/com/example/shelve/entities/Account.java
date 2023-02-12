@@ -1,17 +1,14 @@
 package com.example.shelve.entities;
 
 
-import lombok.*;
-
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
-@Table(name = "account")
-@Builder
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
+@Table(name = "account")
 public class Account {
 
 
@@ -20,8 +17,8 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "user_name")
+    private String userName;
 
     @Column(name = "password")
     private String password;
@@ -40,4 +37,17 @@ public class Account {
     @OneToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", status=" + status +
+                ", admin=" + admin +
+                ", store=" + store +
+                ", brand=" + brand +
+                '}';
+    }
 }

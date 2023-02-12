@@ -8,7 +8,7 @@ import java.sql.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "[order]")
+@Table(name = "order")
 @Builder
 @Getter
 @Setter

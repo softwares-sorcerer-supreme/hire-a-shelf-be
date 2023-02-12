@@ -34,7 +34,7 @@ public class Shelves implements Serializable {
     private Store store;
 
     @ManyToOne
-    @JoinColumn(name = "shelvesType_id")
+    @JoinColumn(name = "shelves_type_id")
     private ShelvesType shelvesType;
 
     @ManyToMany
