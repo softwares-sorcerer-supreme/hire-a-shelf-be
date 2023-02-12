@@ -1,5 +1,8 @@
 package com.example.shelve.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -7,7 +10,12 @@ import java.sql.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "retailer")
+@Table(name = "store")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Store implements Serializable {
 
     @Id
@@ -17,9 +25,6 @@ public class Store implements Serializable {
 
     @Column(name = "name")
     private String name;
-
-    @Column(name = "address")
-    private String address;
 
     @Column(name = "phone")
     private String phone;
@@ -49,5 +54,19 @@ public class Store implements Serializable {
     private Set<Order> orders;
 
     @OneToOne(mappedBy = "store")
+    @JsonIgnore
     private Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    @ManyToOne
+    @JoinColumn(name = "retailer_id")
+    private Retailer retailer;
+
+    @ManyToMany
+    @JoinTable(name = "store_category", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category>  categories;
+
 }

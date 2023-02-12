@@ -33,6 +33,4 @@ public class Registration {
     @Column(name = "typeAccount")
     private String typeAccount;
 
-
-
 }

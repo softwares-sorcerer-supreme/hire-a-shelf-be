@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/campaign")
@@ -24,12 +25,12 @@ public class CampaignController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CampaignResponse> getCampaign(@PathVariable Long id) {
-        return new ResponseEntity<>(campaignService.getCampaign(), HttpStatus.FOUND);
+        return new ResponseEntity<>(campaignService.getCampaign(id), HttpStatus.FOUND);
     }
 
     @PostMapping
     public ResponseEntity<CampaignResponse> createNewCampaign(@RequestBody CampaignRequest campaign) {
-        return new ResponseEntity<>(campaignService.createNewCampaign(), HttpStatus.OK);
+        return new ResponseEntity<>(campaignService.createNewCampaign(campaign), HttpStatus.OK);
     }
 
 }

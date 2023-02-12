@@ -1,10 +1,18 @@
 package com.example.shelve.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category implements Serializable {
 
     @Id
@@ -24,4 +32,7 @@ public class Category implements Serializable {
     @ManyToOne
     @JoinColumn(name = "products_id")
     private Products products;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<Store> store;
 }

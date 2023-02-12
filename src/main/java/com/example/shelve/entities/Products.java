@@ -28,8 +28,8 @@ public class Products implements Serializable {
     @Column(name = "price")
     private String price;
 
-    @OneToMany(mappedBy = "products")
-    private Set<ProductDrawersDetails> productDrawersDetails;
+    @Column(name = "imgURL")
+    private String imgURL;
 
     @OneToMany(mappedBy = "products")
     private Set<Category> categories;
@@ -37,10 +37,13 @@ public class Products implements Serializable {
     @OneToMany(mappedBy = "products")
     private Set<OrderDetail> orderDetails;
 
-    @OneToMany(mappedBy = "products")
-    private Set<Image> images;
-
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @ManyToMany(mappedBy = "products")
+    private Set<Shelves> shelves;
+
+    @ManyToMany(mappedBy = "products")
+    private Set<Campaign> campaigns;
 }

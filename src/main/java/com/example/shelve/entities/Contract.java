@@ -1,5 +1,7 @@
 package com.example.shelve.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -7,6 +9,11 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "contract")
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Contract implements Serializable {
 
     @Id

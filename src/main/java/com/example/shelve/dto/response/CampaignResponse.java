@@ -1,12 +1,16 @@
 package com.example.shelve.dto.response;
 
-import com.example.shelve.entities.Brand;
-import com.example.shelve.entities.Contract;
-import javax.persistence.*;
+import com.example.shelve.entities.*;
+import lombok.*;
 
 import java.sql.Date;
 import java.util.Set;
 
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CampaignResponse {
 
     private Long id;
@@ -21,8 +25,17 @@ public class CampaignResponse {
 
     private int duration;
 
+    private String imgURL;
+
     private Brand brand;
 
     private Set<Contract> contracts;
+
+    private Shelves shelves;
+
+    private Set<Order> orders;
+
+    private Set<Products> products;
+
 
 }
