@@ -1,5 +1,7 @@
 package com.example.shelve.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
@@ -7,6 +9,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "[order]")
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Order implements Serializable {
 
     @Id
