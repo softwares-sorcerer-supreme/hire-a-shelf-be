@@ -6,12 +6,11 @@ import com.example.shelve.entities.Store;
 
 public class AccountRequest {
 
-    private long id;
     private String username;
     private String password;
-    private String role;
     private boolean status;
     private Admin admin;
     private Store store;
     private Brand brand;
 }
+

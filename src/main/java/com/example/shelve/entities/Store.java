@@ -1,5 +1,8 @@
 package com.example.shelve.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -8,6 +11,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "store")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Store implements Serializable {
 
     @Id
@@ -46,6 +54,7 @@ public class Store implements Serializable {
     private Set<Order> orders;
 
     @OneToOne(mappedBy = "store")
+    @JsonIgnore
     private Account account;
 
     @ManyToOne

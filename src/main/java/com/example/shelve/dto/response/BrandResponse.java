@@ -3,9 +3,14 @@ package com.example.shelve.dto.response;
 import com.example.shelve.entities.Account;
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Products;
+import lombok.*;
 
 import java.util.Set;
-
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BrandResponse {
 
     private Long id;

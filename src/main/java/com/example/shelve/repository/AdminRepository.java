@@ -1,7 +1,7 @@
 package com.example.shelve.repository;
 
-import com.example.shelve.entities.Campaign;
+import com.example.shelve.entities.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AdminRepository extends JpaRepository<Campaign, Long> {
+public interface AdminRepository extends JpaRepository<Admin, Long> {
 }

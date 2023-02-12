@@ -1,5 +1,8 @@
 package com.example.shelve.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
 import javax.persistence.*;
 
 import java.io.Serializable;
@@ -8,6 +11,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "campaign")
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Campaign implements Serializable {
 
     @Id
@@ -29,6 +37,9 @@ public class Campaign implements Serializable {
 
     @Column(name = "duration")
     private int duration;
+
+    @Column(name = "imgURL")
+    private String imgURL;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")

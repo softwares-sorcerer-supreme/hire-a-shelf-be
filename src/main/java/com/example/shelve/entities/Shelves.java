@@ -1,11 +1,19 @@
 package com.example.shelve.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "shelves")
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Shelves implements Serializable {
     @Id
     @Column
@@ -37,6 +45,7 @@ public class Shelves implements Serializable {
     private Set<Image> images;
 
     @OneToMany(mappedBy = "shelves")
+    @JsonIgnore
     private Set<Campaign>  campaigns;
 
 }

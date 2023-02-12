@@ -1,10 +1,17 @@
 package com.example.shelve.entities;
 
 
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "account")
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
 
@@ -18,9 +25,6 @@ public class Account {
 
     @Column(name = "password")
     private String password;
-
-    @Column(name = "role")
-    private String role;
 
     @Column(name = "status")
     private boolean status;

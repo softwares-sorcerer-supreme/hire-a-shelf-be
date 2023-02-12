@@ -28,14 +28,14 @@ public class Products implements Serializable {
     @Column(name = "price")
     private String price;
 
+    @Column(name = "imgURL")
+    private String imgURL;
+
     @OneToMany(mappedBy = "products")
     private Set<Category> categories;
 
     @OneToMany(mappedBy = "products")
     private Set<OrderDetail> orderDetails;
-
-    @OneToMany(mappedBy = "products")
-    private Set<Image> images;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
