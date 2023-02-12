@@ -25,9 +25,6 @@ public class Account {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role;
-
     @Column(name = "status")
     private boolean status;
 
@@ -43,5 +40,16 @@ public class Account {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", status=" + status +
+                ", admin=" + admin +
+                ", store=" + store +
+                ", brand=" + brand +
+                '}';
+    }
 }
