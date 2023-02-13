@@ -1,10 +1,17 @@
 package com.example.shelve.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Table(name = "registration")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Registration {
 
     @Id

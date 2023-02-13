@@ -14,7 +14,6 @@ import java.util.List;
 @Table(name = "account")
 public class Account {
 
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,6 +27,9 @@ public class Account {
 
     @Column(name = "status")
     private boolean status;
+
+    @Column(name = "email")
+    private String email;
 
     @OneToOne
     @JoinColumn(name = "admin_id")

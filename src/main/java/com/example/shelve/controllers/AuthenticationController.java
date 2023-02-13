@@ -1,7 +1,9 @@
 package com.example.shelve.controllers;
 
 import com.example.shelve.dto.request.AccountRequest;
+import com.example.shelve.dto.request.RegistrationRequest;
 import com.example.shelve.dto.response.AuthenticationResponse;
+import com.example.shelve.dto.response.SuccessResponse;
 import com.example.shelve.entities.Registration;
 import com.example.shelve.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +34,11 @@ public class AuthenticationController {
     ) {
         return new ResponseEntity<>(authenticationService.authenticationResponse(request), HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<SuccessResponse> registration(@RequestBody RegistrationRequest registration) {
+        return new ResponseEntity<>(authenticationService.register(registration), HttpStatus.OK);
+    }
+
 
 }

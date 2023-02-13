@@ -19,10 +19,6 @@ import java.util.List;
 @Slf4j
 public class BrandServiceImpl implements BrandService {
 
-    private static final String KEY = "BRAND";
-
-    @Autowired
-    private RedisTemplate redisTemplate;
     @Autowired
     private BrandRepository brandRepository;
     @Autowired
