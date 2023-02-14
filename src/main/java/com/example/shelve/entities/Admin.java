@@ -20,9 +20,6 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "address")
     private String address;
 

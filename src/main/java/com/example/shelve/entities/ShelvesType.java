@@ -22,6 +22,6 @@ public class ShelvesType implements Serializable {
     @Column(name = "status")
     private boolean status;
 
-    @OneToMany(mappedBy = "shelvesType")
+    @OneToMany(mappedBy = "shelves_type")
     private Set<Shelves> shelves;
 }
