@@ -20,17 +20,17 @@ public class CampaignServiceImpl implements CampaignService {
     private CampaignRepository campaignRepository;
 
     @Autowired
-    private CampaignMapper mapper;
+    private CampaignMapper campaignMapper;
 
     public List<CampaignResponse> getAllCampaign() {
         List<CampaignResponse> campaignResponses = new ArrayList<>();
-        campaignRepository.findAll().forEach(x -> campaignResponses.add(mapper.toCampaignResponse(x)));
+        campaignRepository.findAll().forEach(x -> campaignResponses.add(campaignMapper.toCampaignResponse(x)));
         return campaignResponses;
     }
 
     @Override
     public CampaignResponse getCampaign(Long id) {
-        CampaignResponse campaignResponse = mapper.toCampaignResponse(campaignRepository
+        CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaignRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!")));
 
@@ -39,8 +39,11 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     public CampaignResponse createNewCampaign(CampaignRequest campaignRequest) {
-        campaignRepository.save(mapper.toCampaign(campaignRequest));
-        CampaignResponse campaignResponse = mapper.toCampaignResponse(campaignRequest);
+        campaignRepository.save(campaignMapper.toCampaign(campaignRequest));
+        CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaignRequest);
+
+
+
         return campaignResponse;
     }
 
