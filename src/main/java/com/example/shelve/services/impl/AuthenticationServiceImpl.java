@@ -5,15 +5,18 @@ import com.example.shelve.config.JwtService;
 import com.example.shelve.dto.request.AccountRequest;
 import com.example.shelve.dto.response.AuthenticationResponse;
 import com.example.shelve.entities.Account;
+import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.repository.AccountRepository;
 import com.example.shelve.repository.RegistrationRepository;
 import com.example.shelve.services.AuthenticationService;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.auth.FirebaseAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.google.firebase.FirebaseApp;
@@ -68,7 +71,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
     }
 
-    }
+
 
     @Override
     public AuthenticationResponse authenticationGoogleResponse(String idToken) {
@@ -103,9 +106,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         String userName = decodedToken.getEmail();
         Optional<Account> foundAccount = accountRepository.findByUserName(userName);
+
         if (foundAccount.isEmpty()){
             //Write code to response that user is the first time access the system.
-            return AuthenticationResponse.builder().token("User not in the system!").build();
+            return AuthenticationResponse.builder()
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .message("User not in system!")
+                    .build();
 
         }else{
             var userDetail = new CustomeUserDetail(foundAccount.get());

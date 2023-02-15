@@ -35,6 +35,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new UserExistedException("This email has been existed");
 
         Registration registration = registrationMapper.toRegistration(registrationRequest);
+
         registration.setStatus(Status.PENDING);
         registrationRepository.save(registration);
 
