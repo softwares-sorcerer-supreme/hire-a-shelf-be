@@ -51,9 +51,10 @@ public class SecurityConfig {
                                     "/swagger-ui/**",
                                     "/webjars/**",
                                     "/api/auth/**",
-                                    "/api/auth/google/**")
+                                    "/api/auth/google/**",
+                                    "/api/campaign/**")
                             .permitAll()
-                            .antMatchers("/api/campaign").hasAuthority("ROLE_ADMIN")
+                            .antMatchers("/api/brand").hasAuthority("ROLE_ADMIN")
                             .antMatchers("/test2").hasAuthority("ROLE_BRAND")
                             .anyRequest().authenticated();
         })

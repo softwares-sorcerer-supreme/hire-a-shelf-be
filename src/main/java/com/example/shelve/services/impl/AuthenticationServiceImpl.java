@@ -6,6 +6,7 @@ import com.example.shelve.dto.request.AccountRequest;
 import com.example.shelve.dto.response.AuthenticationResponse;
 import com.example.shelve.entities.Account;
 import com.example.shelve.exception.ResourceNotFoundException;
+import com.example.shelve.mapper.AccountMapper;
 import com.example.shelve.repository.AccountRepository;
 import com.example.shelve.repository.RegistrationRepository;
 import com.example.shelve.services.AuthenticationService;
@@ -35,6 +36,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
+    private AccountMapper accountMapper;
+    @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -53,25 +56,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .build();
         }
 
-
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         accountRequest.getUserName(),
                         accountRequest.getPassword()
                 ));
 
-
         var userDetail = new CustomeUserDetail(user);
 
         var jwtToken = jwtService.generateToken(userDetail);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .account(accountMapper.toAccountResponse(user))
                 .message("Successfully!")
+                .expiredDate(jwtService.extractExpiredDate(jwtToken))
                 .status(HttpStatus.OK.value())
                 .build();
     }
-
-
 
     @Override
     public AuthenticationResponse authenticationGoogleResponse(String idToken) {
@@ -120,6 +121,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             var jwtToken = jwtService.generateToken(userDetail);
             return AuthenticationResponse.builder()
                     .token(jwtToken)
+                    .account(accountMapper.toAccountResponse(foundAccount.get()))
+                    .expiredDate(jwtService.extractExpiredDate(jwtToken))
+                    .message("Successfully!")
+                    .status(HttpStatus.OK.value())
                     .build();
         }
     }
