@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
     private AccountMapper mapper;
 
     @Override
-    @Cacheable(value = "account")
+//    @Cacheable(value = "account")
     public List<AccountResponse> getAllAccount() {
         List<AccountResponse> accountResponses = new ArrayList<>();
         accountRepository.findAll().forEach(x-> accountResponses.add(mapper.toAccountResponse(x)));
@@ -29,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    @Cacheable(value = "account", key = "#id")
+//    @Cacheable(value = "account", key = "#id")
     public AccountResponse getAccount(Long id) {
         AccountResponse accountResponse = mapper.toAccountResponse(accountRepository
                 .findById(id)

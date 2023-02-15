@@ -25,7 +25,7 @@ public class BrandServiceImpl implements BrandService {
     private BrandMapper mapper;
 
     @Override
-    @Cacheable(value = "brand")
+//    @Cacheable(value = "brand")
     public List<BrandResponse> getAllBrand() {
         log.error("Get brand", "get all brabd");
         List<BrandResponse> brandResponses = new ArrayList<>();
@@ -35,7 +35,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    @Cacheable(value = "brand", key = "#id")
+//    @Cacheable(value = "brand", key = "#id")
     public BrandResponse getBrand(Long id) {
         BrandResponse brandResponse = mapper.toBrandResponse(brandRepository
                 .findById(id)
