@@ -1,10 +1,15 @@
 package com.example.shelve.dto.request;
 
-import com.example.shelve.entities.Brand;
-import com.example.shelve.entities.Shelves;
+import com.example.shelve.entities.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.sql.Date;
+import java.util.Set;
 
 @Builder
 @Getter
