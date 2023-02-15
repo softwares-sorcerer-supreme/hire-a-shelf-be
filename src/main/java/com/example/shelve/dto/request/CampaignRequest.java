@@ -18,12 +18,15 @@ public class CampaignRequest {
     private String content;
 
     private Date createdDate;
+    private Date startDate;
 
     private Date expirationDate;
 
     private int duration;
 
     private String imgURL;
+
     private Brand brand;
+
     private Shelves shelves;
 }

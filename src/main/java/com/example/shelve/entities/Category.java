@@ -33,6 +33,6 @@ public class Category implements Serializable {
     @JoinColumn(name = "products_id")
     private Products products;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Store> store;
+    @OneToMany(mappedBy = "category")
+    private Set<StoreCategory> storeCategories;
 }

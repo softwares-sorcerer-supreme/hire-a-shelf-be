@@ -25,11 +25,15 @@ public class Account {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "email")
-    private String email;
+
+    @Column(name = "fire_base_token")
+    private String fireBaseToken;
 
     @OneToOne
     @JoinColumn(name = "admin_id")
