@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseToken;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -83,9 +84,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (FirebaseAuthException e) {
             throw new RuntimeException(e);
         }
-        //Write code to check user is exist in the system. If user not exist throw exception!
-        //Generate JWT
+        String userName = decodedToken.getEmail();
+        Optional<Account> foundAccount = accountRepository.findByUserName(userName);
+        if (foundAccount.isEmpty()){
+            //Write code to response that user is the first time access the system.
+            return AuthenticationResponse.builder().token("User not in the system!").build();
 
-        return AuthenticationResponse.builder().token(decodedToken.getEmail()).build();
+        }else{
+            var userDetail = new CustomeUserDetail(foundAccount.get());
+
+            var jwtToken = jwtService.generateToken(userDetail);
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build();
+        }
     }
 }
