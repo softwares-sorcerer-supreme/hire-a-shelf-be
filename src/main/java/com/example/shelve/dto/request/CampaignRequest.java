@@ -17,8 +17,6 @@ public class CampaignRequest {
 
     private String content;
 
-    private Date createdDate;
-
     private Date expirationDate;
 
     private int duration;
@@ -27,7 +25,6 @@ public class CampaignRequest {
 
     private Date startDate;
 
-//    private Brand brand;
-//
-//    private Shelves shelves;
+    private Brand brand;
+    private Shelves shelves;
 }
