@@ -8,5 +8,4 @@ import com.example.shelve.dto.response.SuccessResponse;
 public interface AuthenticationService {
     AuthenticationResponse authenticationResponse(AccountRequest accountRequest);
 
-    SuccessResponse register(RegistrationRequest registration);
 }

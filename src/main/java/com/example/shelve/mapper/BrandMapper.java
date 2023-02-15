@@ -16,7 +16,6 @@ public class BrandMapper {
                 .id(brand.getId())
                 .address(brand.getAddress())
                 .description(brand.getDescription())
-                .email(brand.getEmail())
                 .logo(brand.getLogo())
                 .name(brand.getName())
                 .phone(brand.getPhone())

@@ -1,8 +1,7 @@
 package com.example.shelve.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import com.example.shelve.entities.enums.Status;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -12,6 +11,8 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
+@Setter
 public class Registration {
 
     @Id
@@ -40,4 +41,7 @@ public class Registration {
     @Column(name = "typeAccount")
     private String typeAccount;
 
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 }

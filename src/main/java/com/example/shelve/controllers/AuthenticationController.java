@@ -35,10 +35,5 @@ public class AuthenticationController {
         return new ResponseEntity<>(authenticationService.authenticationResponse(request), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<SuccessResponse> registration(@RequestBody RegistrationRequest registration) {
-        return new ResponseEntity<>(authenticationService.register(registration), HttpStatus.OK);
-    }
-
 
 }
