@@ -33,12 +33,11 @@ public class CampaignMapper {
                 .content(campaignRequest.getContent())
                 .duration(campaignRequest.getDuration())
                 .createdDate(campaignRequest.getCreatedDate())
+                .startDate(campaignRequest.getStartDate())
                 .duration(campaignRequest.getDuration())
                 .expirationDate(campaignRequest.getExpirationDate())
                 .imgURL(campaignRequest.getImgURL())
                 .title(campaignRequest.getTitle())
-                .brand(campaignRequest.getBrand())
-                .shelves(campaignRequest.getShelves())
                 .build();
 
         return campaignResponse;
@@ -50,11 +49,10 @@ public class CampaignMapper {
                 .duration(campaignRequest.getDuration())
                 .createdDate(campaignRequest.getCreatedDate())
                 .duration(campaignRequest.getDuration())
+                .startDate(campaignRequest.getStartDate())
                 .expirationDate(campaignRequest.getExpirationDate())
                 .imgURL(campaignRequest.getImgURL())
                 .title(campaignRequest.getTitle())
-                .brand(campaignRequest.getBrand())
-                .shelves(campaignRequest.getShelves())
                 .build();
 
         return campaign;
