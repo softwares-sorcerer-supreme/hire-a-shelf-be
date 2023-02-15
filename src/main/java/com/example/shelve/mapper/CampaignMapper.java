@@ -12,6 +12,7 @@ public class CampaignMapper {
 
     public CampaignResponse toCampaignResponse (Campaign campaign){
         CampaignResponse campaignResponse = CampaignResponse.builder()
+                .id(campaign.getId())
                 .content(campaign.getContent())
                 .duration(campaign.getDuration())
                 .createdDate(campaign.getCreatedDate())
