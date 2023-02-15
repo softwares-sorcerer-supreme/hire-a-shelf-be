@@ -21,6 +21,8 @@ public class CampaignResponse {
 
     private Date createdDate;
 
+    private Date startDate;
+
     private Date expirationDate;
 
     private int duration;

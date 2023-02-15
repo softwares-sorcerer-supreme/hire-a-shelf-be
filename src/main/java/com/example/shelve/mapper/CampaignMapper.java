@@ -16,6 +16,7 @@ public class CampaignMapper {
                 .content(campaign.getContent())
                 .duration(campaign.getDuration())
                 .createdDate(campaign.getCreatedDate())
+                .startDate(campaign.getStartDate())
                 .duration(campaign.getDuration())
                 .expirationDate(campaign.getExpirationDate())
                 .imgURL(campaign.getImgURL())
