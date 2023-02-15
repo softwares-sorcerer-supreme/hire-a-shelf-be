@@ -29,9 +29,6 @@ public class Store implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "logo")
     private String logo;
 
@@ -65,8 +62,7 @@ public class Store implements Serializable {
     @JoinColumn(name = "retailer_id")
     private Retailer retailer;
 
-    @ManyToMany
-    @JoinTable(name = "store_category", joinColumns = @JoinColumn(name = "store_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category>  categories;
+    @OneToMany(mappedBy = "store")
+    private Set<StoreCategory> storeCategories;
 
 }

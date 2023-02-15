@@ -35,10 +35,10 @@ public class Registration {
     @Column(name = "note")
     private String note;
 
-    @Column(name = "createDate")
+    @Column(name = "create_date")
     private Date createDate;
 
-    @Column(name = "typeAccount")
+    @Column(name = "type_account")
     private String typeAccount;
 
     @Column(name = "status")

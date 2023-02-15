@@ -25,7 +25,9 @@ public class CampaignRequest {
 
     private String imgURL;
 
-    private Brand brand;
+    private Date startDate;
 
-    private Shelves shelves;
+//    private Brand brand;
+//
+//    private Shelves shelves;
 }
