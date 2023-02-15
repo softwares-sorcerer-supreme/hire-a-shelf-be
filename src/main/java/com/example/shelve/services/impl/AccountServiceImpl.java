@@ -6,6 +6,7 @@ import com.example.shelve.mapper.AccountMapper;
 import com.example.shelve.repository.AccountRepository;
 import com.example.shelve.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class AccountServiceImpl implements AccountService {
     private AccountMapper mapper;
 
     @Override
+//    @Cacheable(value = "account")
     public List<AccountResponse> getAllAccount() {
         List<AccountResponse> accountResponses = new ArrayList<>();
         accountRepository.findAll().forEach(x-> accountResponses.add(mapper.toAccountResponse(x)));
@@ -27,6 +29,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+//    @Cacheable(value = "account", key = "#id")
     public AccountResponse getAccount(Long id) {
         AccountResponse accountResponse = mapper.toAccountResponse(accountRepository
                 .findById(id)

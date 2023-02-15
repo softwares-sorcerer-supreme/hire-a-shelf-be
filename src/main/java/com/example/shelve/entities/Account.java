@@ -20,8 +20,8 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "user_name")
+    private String userName;
 
     @Column(name = "password")
     private String password;
@@ -31,10 +31,6 @@ public class Account {
 
     @Column(name = "status")
     private boolean status;
-
-    @Column(name = "fire_base_token")
-    private String fireBaseToken;
-
 
     @OneToOne
     @JoinColumn(name = "admin_id")
@@ -47,4 +43,17 @@ public class Account {
     @OneToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", status=" + status +
+                ", admin=" + admin +
+                ", store=" + store +
+                ", brand=" + brand +
+                '}';
+    }
 }

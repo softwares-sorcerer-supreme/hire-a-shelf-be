@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "shelvestype")
+@Table(name = "shelves_type")
 public class ShelvesType implements Serializable {
 
     @Id

@@ -35,7 +35,7 @@ public class Shelves implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "shelves_type_id")
-    private ShelvesType shelves_type;
+    private ShelvesType shelvesType;
 
     @OneToMany(mappedBy = "shelves")
     private Set<ShelvesProducts> shelvesProducts;
