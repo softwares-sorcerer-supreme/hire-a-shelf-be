@@ -46,6 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private JwtService jwtService;
 
     public AuthenticationResponse authenticationResponse(AccountRequest accountRequest) {
+        System.out.println(accountRequest.getPassword() + " " + accountRequest.getUserName());
         var user = accountRepository.findByUserName(accountRequest.getUserName())
                 .orElseThrow(() -> new ResourceNotFoundException("User name has not found"));
 
@@ -89,10 +90,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (foundAccount.isEmpty()) {
             //Write code to response that user is the first time access the system.
-            return AuthenticationResponse.builder()
-                    .status(HttpStatus.NOT_FOUND.value())
-                    .message("User not in system!")
-                    .build();
+            throw new ResourceNotFoundException("User is not in the system!");
 
         } else {
             var userDetail = new CustomeUserDetail(foundAccount.get());
