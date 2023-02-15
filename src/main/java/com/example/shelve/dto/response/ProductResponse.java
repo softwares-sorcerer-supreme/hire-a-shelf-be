@@ -1,9 +1,14 @@
 package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.*;
+import lombok.*;
 
 import java.util.Set;
-
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductResponse {
 
     private long id;
