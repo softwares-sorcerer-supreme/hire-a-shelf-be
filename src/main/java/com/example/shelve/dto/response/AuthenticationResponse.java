@@ -1,11 +1,12 @@
 package com.example.shelve.dto.response;
 
+import com.example.shelve.entities.Account;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Builder
@@ -14,9 +15,7 @@ import java.sql.Date;
 public class AuthenticationResponse {
     private String token;
     private Date expiredDate;
-    private String userName;
-    private String name;
-    private String imgUrl;
+    private AccountResponse account;
     private String message;
     private int status;
 }

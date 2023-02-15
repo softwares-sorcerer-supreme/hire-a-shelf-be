@@ -6,6 +6,7 @@ import com.example.shelve.dto.request.AccountRequest;
 import com.example.shelve.dto.response.AuthenticationResponse;
 import com.example.shelve.entities.Account;
 import com.example.shelve.exception.ResourceNotFoundException;
+import com.example.shelve.mapper.AccountMapper;
 import com.example.shelve.repository.AccountRepository;
 import com.example.shelve.repository.RegistrationRepository;
 import com.example.shelve.services.AuthenticationService;
@@ -35,6 +36,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
+    private AccountMapper accountMapper;
+    @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -46,13 +49,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user = accountRepository.findByUserName(accountRequest.getUserName())
                 .orElseThrow(() -> new ResourceNotFoundException("User name has not found"));
 
-        if(!passwordEncoder.matches(accountRequest.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(accountRequest.getPassword(), user.getPassword())) {
             return AuthenticationResponse.builder()
                     .message("Invalid Password!")
                     .status(HttpStatus.BAD_REQUEST.value())
                     .build();
         }
-
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -60,44 +62,22 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                         accountRequest.getPassword()
                 ));
 
-
         var userDetail = new CustomeUserDetail(user);
 
         var jwtToken = jwtService.generateToken(userDetail);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .account(accountMapper.toAccountResponse(user))
                 .message("Successfully!")
+                .expiredDate(jwtService.extractExpiredDate(jwtToken))
                 .status(HttpStatus.OK.value())
                 .build();
     }
 
-
-
     @Override
     public AuthenticationResponse authenticationGoogleResponse(String idToken) {
-        String filePath = "config/serviceAccountKey.json";
-        FirebaseOptions options = null;
-        try {
-            options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(new FileInputStream(filePath)))
-                    .build();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        FirebaseApp firebaseApp = null;
-        List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
-        for (FirebaseApp app : firebaseApps) {
-            if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
-                firebaseApp = app;
-                break;
-            }
-        }
-        if (firebaseApp == null) {
-            firebaseApp = FirebaseApp.initializeApp(options);
-        }
-
-        // idToken comes from the client app (shown above)\
+        // idToken comes from the client app (shown above)
         FirebaseToken decodedToken = null;
         try {
             decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
@@ -107,19 +87,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String userName = decodedToken.getEmail();
         Optional<Account> foundAccount = accountRepository.findByUserName(userName);
 
-        if (foundAccount.isEmpty()){
+        if (foundAccount.isEmpty()) {
             //Write code to response that user is the first time access the system.
             return AuthenticationResponse.builder()
                     .status(HttpStatus.NOT_FOUND.value())
                     .message("User not in system!")
                     .build();
 
-        }else{
+        } else {
             var userDetail = new CustomeUserDetail(foundAccount.get());
 
             var jwtToken = jwtService.generateToken(userDetail);
             return AuthenticationResponse.builder()
                     .token(jwtToken)
+                    .account(accountMapper.toAccountResponse(foundAccount.get()))
+                    .expiredDate(jwtService.extractExpiredDate(jwtToken))
+                    .message("Successfully!")
+                    .status(HttpStatus.OK.value())
                     .build();
         }
     }
