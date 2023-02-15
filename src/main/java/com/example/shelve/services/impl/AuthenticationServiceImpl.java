@@ -49,7 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var user = accountRepository.findByUserName(accountRequest.getUserName())
                 .orElseThrow(() -> new ResourceNotFoundException("User name has not found"));
 
-        if(!passwordEncoder.matches(accountRequest.getPassword(), user.getPassword())) {
+        if (!passwordEncoder.matches(accountRequest.getPassword(), user.getPassword())) {
             return AuthenticationResponse.builder()
                     .message("Invalid Password!")
                     .status(HttpStatus.BAD_REQUEST.value())
@@ -87,14 +87,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String userName = decodedToken.getEmail();
         Optional<Account> foundAccount = accountRepository.findByUserName(userName);
 
-        if (foundAccount.isEmpty()){
+        if (foundAccount.isEmpty()) {
             //Write code to response that user is the first time access the system.
             return AuthenticationResponse.builder()
                     .status(HttpStatus.NOT_FOUND.value())
                     .message("User not in system!")
                     .build();
 
-        }else{
+        } else {
             var userDetail = new CustomeUserDetail(foundAccount.get());
 
             var jwtToken = jwtService.generateToken(userDetail);

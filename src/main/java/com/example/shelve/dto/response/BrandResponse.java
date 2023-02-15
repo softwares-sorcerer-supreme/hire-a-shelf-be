@@ -13,9 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BrandResponse implements Serializable {
-
     private Long id;
-
     private String name;
 
     private String address;
