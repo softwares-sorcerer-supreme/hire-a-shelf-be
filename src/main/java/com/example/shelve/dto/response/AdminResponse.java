@@ -9,9 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdminResponse {
-
     private long id;
-
     private String email;
 
     private String address;

@@ -76,29 +76,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse authenticationGoogleResponse(String idToken) {
-        String filePath = "config/serviceAccountKey.json";
-        FirebaseOptions options = null;
-        try {
-            options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(new FileInputStream(filePath)))
-                    .build();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
-        FirebaseApp firebaseApp = null;
-        List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
-        for (FirebaseApp app : firebaseApps) {
-            if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
-                firebaseApp = app;
-                break;
-            }
-        }
-        if (firebaseApp == null) {
-            firebaseApp = FirebaseApp.initializeApp(options);
-        }
-
-        // idToken comes from the client app (shown above)\
+        // idToken comes from the client app (shown above)
         FirebaseToken decodedToken = null;
         try {
             decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
