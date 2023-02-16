@@ -3,6 +3,7 @@ package com.example.shelve.dto.response;
 import com.example.shelve.entities.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Set;
 @Builder
 @Getter
@@ -19,9 +20,9 @@ public class ProductResponse {
 
     private String description;
 
-    private String quantity;
+    private int quantity;
 
-    private String price;
+    private BigDecimal price;
 
     private Set<Category> categories;
 
