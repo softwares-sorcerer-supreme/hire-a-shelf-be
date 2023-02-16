@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
@@ -31,10 +32,10 @@ public class Products implements Serializable {
     private String description;
 
     @Column(name = "quantity")
-    private String quantity;
+    private int quantity;
 
     @Column(name = "price")
-    private String price;
+    private BigDecimal price;
 
     @Column(name = "imgURL")
     private String imgURL;
