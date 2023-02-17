@@ -1,5 +1,6 @@
 package com.example.shelve.entities;
 
+import com.example.shelve.entities.enums.EStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -39,7 +40,8 @@ public class Store implements Serializable {
     private Date participateDate;
 
     @Column(name = "status")
-    private boolean status;
+    @Enumerated(EnumType.STRING)
+    private EStatus EStatus;
 
     @OneToMany(mappedBy = "store")
     private Set<Contract> contracts;

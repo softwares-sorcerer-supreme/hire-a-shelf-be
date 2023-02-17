@@ -1,16 +1,11 @@
 package com.example.shelve.dto.request;
 
 import com.example.shelve.entities.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.shelve.entities.enums.EStatus;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.sql.Date;
 import java.util.List;
-import java.util.Set;
 
 @Builder
 @Getter
@@ -28,6 +23,7 @@ public class CampaignRequest {
     private int duration;
     private String imgURL;
     private Brand brand;
+    private EStatus EStatus;
     private List<Long> products;
 
 }

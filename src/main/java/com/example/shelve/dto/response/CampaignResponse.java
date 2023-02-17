@@ -1,6 +1,5 @@
 package com.example.shelve.dto.response;
 
-import com.example.shelve.entities.*;
 import lombok.*;
 
 import java.sql.Date;
@@ -30,6 +29,8 @@ public class CampaignResponse {
     private String imgURL;
 
     private BrandResponse brand;
+
+    private String status;
 
     private Set<ContractResponse> contracts;
 

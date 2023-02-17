@@ -2,12 +2,9 @@ package com.example.shelve.mapper;
 
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.CampaignResponse;
-import com.example.shelve.entities.Brand;
 import com.example.shelve.entities.Campaign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class CampaignMapper {
@@ -27,6 +24,7 @@ public class CampaignMapper {
                 .imgURL(campaign.getImgURL())
                 .title(campaign.getTitle())
                 .brand(brandMapper.toBrandResponse(campaign.getBrand()))
+//                .status(campaign.getStatus().getName())
                 .build();
 
         return campaignResponse;
@@ -56,6 +54,7 @@ public class CampaignMapper {
                 .duration(campaignRequest.getDuration())
                 .imgURL(campaignRequest.getImgURL())
                 .brand(campaignRequest.getBrand())
+                .EStatus(campaignRequest.getEStatus())
                 .build();
 
         return campaign;

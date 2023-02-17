@@ -1,5 +1,6 @@
 package com.example.shelve.entities;
 
+import com.example.shelve.entities.enums.EStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -25,8 +26,8 @@ public class Brand implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "address")
-    private String address;
+    @OneToMany(mappedBy = "brand")
+    private Set<Location> location;
 
     @Column(name = "phone")
     private String phone;
@@ -38,7 +39,8 @@ public class Brand implements Serializable {
     private String description;
 
     @Column(name = "status")
-    private boolean status;
+    @Enumerated(EnumType.STRING)
+    private EStatus EStatus;
 
     @OneToMany(mappedBy = "brand")
     @JsonIgnore

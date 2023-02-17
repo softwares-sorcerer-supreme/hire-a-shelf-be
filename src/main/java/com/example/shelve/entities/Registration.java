@@ -1,6 +1,6 @@
 package com.example.shelve.entities;
 
-import com.example.shelve.entities.enums.Status;
+import com.example.shelve.entities.enums.EStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,9 +23,6 @@ public class Registration {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "address")
-    private String address;
-
     @Column(name = "phone")
     private String phone;
 
@@ -41,7 +38,11 @@ public class Registration {
     @Column(name = "type_account")
     private String typeAccount;
 
+    @OneToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private EStatus EStatus;
 }

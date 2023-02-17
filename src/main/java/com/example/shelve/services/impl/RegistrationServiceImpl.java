@@ -3,12 +3,10 @@ package com.example.shelve.services.impl;
 import com.example.shelve.dto.request.RegistrationRequest;
 import com.example.shelve.dto.response.RegistrationResponse;
 import com.example.shelve.dto.response.SuccessResponse;
-import com.example.shelve.entities.Account;
 import com.example.shelve.entities.Registration;
-import com.example.shelve.entities.enums.Status;
+import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.UserExistedException;
 import com.example.shelve.mapper.RegistrationMapper;
-import com.example.shelve.repository.AccountRepository;
 import com.example.shelve.repository.RegistrationRepository;
 import com.example.shelve.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +34,10 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         Registration registration = registrationMapper.toRegistration(registrationRequest);
 
-        registration.setStatus(Status.PENDING);
+        registration.setEStatus(EStatus.PENDING);
+
+
+
         registrationRepository.save(registration);
 
         return new SuccessResponse(HttpStatus.OK.value(), "Register account successfully!");

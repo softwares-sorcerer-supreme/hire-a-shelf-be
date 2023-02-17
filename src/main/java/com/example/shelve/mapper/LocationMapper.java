@@ -1,12 +1,12 @@
 package com.example.shelve.mapper;
 
 
+import com.example.shelve.dto.request.LocationRequest;
 import com.example.shelve.dto.response.LocationResponse;
 import com.example.shelve.entities.Location;
 import lombok.Builder;
 import org.springframework.stereotype.Component;
 
-@Builder
 @Component
 public class LocationMapper {
 
@@ -19,4 +19,13 @@ public class LocationMapper {
                 .build();
         return locationResponse;
     }
+
+    public Location toLocation(LocationRequest locationRequest) {
+        return Location.builder()
+                .district(locationRequest.getDistrict())
+                .city(locationRequest.getCity())
+                .address(locationRequest.getAddress())
+                .build();
+    }
+
 }

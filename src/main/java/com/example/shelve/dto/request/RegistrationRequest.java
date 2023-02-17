@@ -1,5 +1,6 @@
 package com.example.shelve.dto.request;
 
+import com.example.shelve.entities.enums.EStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,10 +11,11 @@ import lombok.NoArgsConstructor;
 public class RegistrationRequest {
 
     private String email;
-    private String address;
     private String phone;
     private String name;
     private String note;
     private String typeAccount;
+    private EStatus EStatus;
+    private LocationRequest location;
 
 }

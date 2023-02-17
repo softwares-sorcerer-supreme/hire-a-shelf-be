@@ -1,8 +1,6 @@
 package com.example.shelve.mapper;
 
-import com.example.shelve.dto.response.AccountResponse;
 import com.example.shelve.dto.response.BrandResponse;
-import com.example.shelve.entities.Account;
 import com.example.shelve.entities.Brand;
 import lombok.Builder;
 import org.springframework.stereotype.Component;
@@ -11,17 +9,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class BrandMapper {
 
-    public BrandResponse toBrandResponse (Brand brand){
-        BrandResponse brandResponse = BrandResponse.builder()
+    public BrandResponse toBrandResponse(Brand brand) {
+        if (brand == null)
+            return null;
+
+        return BrandResponse.builder()
                 .id(brand.getId())
                 .address(brand.getAddress())
                 .description(brand.getDescription())
                 .logo(brand.getLogo())
                 .name(brand.getName())
                 .phone(brand.getPhone())
-                .status(brand.isStatus())
+                .EStatus(brand.getEStatus().getName())
                 .build();
-
-        return brandResponse;
     }
 }

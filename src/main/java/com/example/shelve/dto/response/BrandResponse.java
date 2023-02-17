@@ -1,12 +1,10 @@
 package com.example.shelve.dto.response;
 
-import com.example.shelve.entities.Account;
-import com.example.shelve.entities.Campaign;
-import com.example.shelve.entities.Product;
+import com.example.shelve.entities.enums.EStatus;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Set;
+
 @Builder
 @Getter
 @Setter
@@ -26,7 +24,7 @@ public class BrandResponse implements Serializable {
 
     private String description;
 
-    private boolean status;
+    private String EStatus;
 
 //    private Set<CampaignResponse> campaigns;
 

@@ -5,6 +5,7 @@ import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.CampaignProduct;
 import com.example.shelve.entities.Product;
+import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CampaignMapper;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
@@ -59,6 +59,7 @@ public class CampaignServiceImpl implements CampaignService {
         if(campaign.getExpirationDate().before(campaign.getStartDate()))
             throw new BadRequestException("Expiration Date must be after Start Date");
 
+        campaign.setEStatus(EStatus.PENDING);
         Campaign campaignSaved = campaignRepository.save(campaign);
 
         List<Product> listProduct = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.example.shelve.entities;
 
+import com.example.shelve.entities.enums.EStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -57,5 +58,9 @@ public class Campaign implements Serializable {
     @OneToMany(mappedBy = "campaign")
     @JsonIgnore
     private Set<CampaignProduct> campaignProducts;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private EStatus EStatus;
 
 }
