@@ -2,13 +2,20 @@ package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.CampaignResponse;
+import com.example.shelve.entities.Campaign;
+import com.example.shelve.entities.CampaignProduct;
+import com.example.shelve.entities.Product;
+import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CampaignMapper;
+import com.example.shelve.repository.CampaignProductRepository;
 import com.example.shelve.repository.CampaignRepository;
+import com.example.shelve.repository.ProductRepository;
 import com.example.shelve.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +25,10 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Autowired
     private CampaignRepository campaignRepository;
+    @Autowired
+    private CampaignProductRepository campaignProductRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private CampaignMapper campaignMapper;
@@ -39,9 +50,36 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     public CampaignResponse createNewCampaign(CampaignRequest campaignRequest) {
-        campaignRepository.save(campaignMapper.toCampaign(campaignRequest));
-        CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaignRequest);
+        Campaign campaign = campaignMapper.toCampaign(campaignRequest);
+        campaign.setCreatedDate(new Date(System.currentTimeMillis()));
 
+        if(campaign.getStartDate().before(campaign.getCreatedDate()))
+            throw new BadRequestException("Start Date must be after Today!");
+
+        if(campaign.getExpirationDate().before(campaign.getStartDate()))
+            throw new BadRequestException("Expiration Date must be after Start Date");
+
+        Campaign campaignSaved = campaignRepository.save(campaign);
+
+        List<Product> listProduct = new ArrayList<>();
+        //get list object product and check
+        campaignRequest.getProducts().forEach(i -> listProduct.add(
+                productRepository
+                        .findById(i)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException("Product ID: " + i + " not existed"))
+        ));
+
+        //add to CampaignProduct table
+        listProduct.forEach(product -> {
+            campaignProductRepository.save(new CampaignProduct().builder()
+                    .status(true)
+                    .product(product)
+                    .campaign(campaignSaved)
+                    .build());
+        });
+
+        CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaign);
 
 
         return campaignResponse;

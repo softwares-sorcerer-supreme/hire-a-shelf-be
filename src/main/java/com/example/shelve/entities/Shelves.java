@@ -43,8 +43,4 @@ public class Shelves implements Serializable {
     @OneToMany(mappedBy = "shelves")
     private Set<Image> images;
 
-    @OneToMany(mappedBy = "shelves")
-    @JsonIgnore
-    private Set<Campaign>  campaigns;
-
 }

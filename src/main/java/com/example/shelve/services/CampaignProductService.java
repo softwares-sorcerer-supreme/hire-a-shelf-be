@@ -5,6 +5,5 @@ import com.example.shelve.dto.response.CampaignProductResponse;
 import java.util.List;
 
 public interface CampaignProductService {
-
-    public List<CampaignProductResponse> getProductsByCampaignId(Long id);
+    List<CampaignProductResponse> getProductsByCampaignId(Long id);
 }

@@ -45,7 +45,7 @@ public class Brand implements Serializable {
     private Set<Campaign> campaigns;
 
     @OneToMany(mappedBy = "brand")
-    private Set<Products> products;
+    private Set<Product> products;
 
     @OneToOne(mappedBy = "brand")
     @JsonIgnore

@@ -29,15 +29,13 @@ public class CampaignResponse {
 
     private String imgURL;
 
-    private Brand brand;
+    private BrandResponse brand;
 
-    private Set<Contract> contracts;
+    private Set<ContractResponse> contracts;
 
-    private Shelves shelves;
+    private Set<OrderResponse> orders;
 
-    private Set<Order> orders;
-
-    private Set<Products> products;
+    private Set<ProductResponse> products;
 
 
 }

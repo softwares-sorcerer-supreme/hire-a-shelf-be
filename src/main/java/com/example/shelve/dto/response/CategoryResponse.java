@@ -1,6 +1,6 @@
 package com.example.shelve.dto.response;
 
-import com.example.shelve.entities.Products;
+import com.example.shelve.entities.Product;
 import com.example.shelve.entities.Store;
 import lombok.*;
 
@@ -20,7 +20,7 @@ public class CategoryResponse {
 
     private String description;
 
-    private Products products;
+    private Set<Product> products;
 
     private Set<Store> store;
 }

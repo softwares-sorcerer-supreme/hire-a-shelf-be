@@ -18,5 +18,5 @@ public class ShelvesProducts {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Products products;
+    private Product product;
 }

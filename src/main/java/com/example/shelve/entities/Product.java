@@ -5,16 +5,17 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
-@Table(name = "products")
+@Table(name = "product")
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Products implements Serializable {
+public class Product implements Serializable {
 
     @Id
     @Column
@@ -31,28 +32,31 @@ public class Products implements Serializable {
     private String description;
 
     @Column(name = "quantity")
-    private String quantity;
+    private int quantity;
 
     @Column(name = "price")
-    private String price;
+    private BigDecimal price;
 
     @Column(name = "imgURL")
     private String imgURL;
 
-    @OneToMany(mappedBy = "products")
-    private Set<Category> categories;
+    @ManyToOne
+    @JoinColumn(name = "cate_id")
+    @JsonIgnore
+    private Category category;
 
-    @OneToMany(mappedBy = "products")
+    @OneToMany(mappedBy = "product")
     private Set<OrderDetail> orderDetails;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @OneToMany(mappedBy = "products")
+    @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private Set<ShelvesProducts> shelvesProducts;
 
-    @OneToMany(mappedBy = "products")
+    @OneToMany(mappedBy = "product")
     @JsonIgnore
     private Set<CampaignProduct> campaignProducts;
 }

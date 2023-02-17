@@ -6,11 +6,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "campaign_product")
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CampaignProduct {
 
     @Id
@@ -24,6 +24,9 @@ public class CampaignProduct {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Products products;
+    private Product product;
+
+    @Column(name = "status")
+    private boolean status;
 
 }

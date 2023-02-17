@@ -47,13 +47,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public AuthenticationResponse authenticationResponse(AccountRequest accountRequest) {
         var user = accountRepository.findByUserName(accountRequest.getUserName())
-                .orElseThrow(() -> new ResourceNotFoundException("User name has not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Username or password invalid!"));
 
         if (!passwordEncoder.matches(accountRequest.getPassword(), user.getPassword())) {
-            return AuthenticationResponse.builder()
-                    .message("Invalid Password!")
-                    .status(HttpStatus.BAD_REQUEST.value())
-                    .build();
+            throw new ResourceNotFoundException("Username or password invalid!");
         }
 
         authenticationManager.authenticate(
@@ -89,10 +86,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (foundAccount.isEmpty()) {
             //Write code to response that user is the first time access the system.
-            return AuthenticationResponse.builder()
-                    .status(HttpStatus.NOT_FOUND.value())
-                    .message("User not in system!")
-                    .build();
+            throw new ResourceNotFoundException("User is not in system");
 
         } else {
             var userDetail = new CustomeUserDetail(foundAccount.get());

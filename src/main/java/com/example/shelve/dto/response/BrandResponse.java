@@ -2,7 +2,7 @@ package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.Account;
 import com.example.shelve.entities.Campaign;
-import com.example.shelve.entities.Products;
+import com.example.shelve.entities.Product;
 import lombok.*;
 
 import java.io.Serializable;
@@ -28,9 +28,9 @@ public class BrandResponse implements Serializable {
 
     private boolean status;
 
-    private Set<Campaign> campaigns;
+//    private Set<CampaignResponse> campaigns;
 
-    private Set<Products> products;
+//    private Set<ProductResponse> products;
 
-    private Account account;
+//    private AccountResponse account;
 }

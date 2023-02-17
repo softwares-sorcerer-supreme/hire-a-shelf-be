@@ -1,6 +1,6 @@
 package com.example.shelve.dto.response;
 
-import com.example.shelve.entities.Products;
+import com.example.shelve.entities.Product;
 import com.example.shelve.entities.Shelves;
 import lombok.*;
 

@@ -51,10 +51,6 @@ public class Campaign implements Serializable {
     @OneToMany(mappedBy = "campaign")
     private Set<Contract> contracts;
 
-    @ManyToOne
-    @JoinColumn(name = "shelves_id")
-    private Shelves shelves;
-
     @OneToMany(mappedBy = "campaign")
     private Set<Order> orders;
 

@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -27,7 +28,6 @@ public class CampaignRequest {
     private int duration;
     private String imgURL;
     private Brand brand;
-    private Shelves shelves;
-
+    private List<Long> products;
 
 }

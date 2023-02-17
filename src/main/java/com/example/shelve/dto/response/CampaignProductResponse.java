@@ -1,7 +1,7 @@
 package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.Campaign;
-import com.example.shelve.entities.Products;
+import com.example.shelve.entities.Product;
 import lombok.*;
 
 import java.util.Set;
@@ -15,5 +15,5 @@ public class CampaignProductResponse {
 
     private Campaign campaigns;
 
-    private  Products products;
+    private Product products;
 }
