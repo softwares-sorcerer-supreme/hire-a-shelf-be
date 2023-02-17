@@ -52,7 +52,8 @@ public class SecurityConfig {
                                     "/webjars/**",
                                     "/api/auth/**",
                                     "/api/auth/google/**",
-                                    "/api/**")
+                                    "/api/campaign/**",
+                                    "/api/register/**")
                             .permitAll()
                             .antMatchers("/api/brand").hasAuthority("ROLE_ADMIN")
                             .antMatchers("/test2").hasAuthority("ROLE_BRAND")

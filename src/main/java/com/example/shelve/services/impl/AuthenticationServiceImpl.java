@@ -86,7 +86,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         if (foundAccount.isEmpty()) {
             //Write code to response that user is the first time access the system.
-            throw new ResourceNotFoundException("User is not in system");
+            return AuthenticationResponse.builder()
+                    .status(HttpStatus.NOT_FOUND.value())
+                    .message("User not in system!")
+                    .build();
 
         } else {
             var userDetail = new CustomeUserDetail(foundAccount.get());
