@@ -17,7 +17,6 @@ public class CampaignMapper {
                 .duration(campaign.getDuration())
                 .createdDate(campaign.getCreatedDate())
                 .startDate(campaign.getStartDate())
-                .duration(campaign.getDuration())
                 .expirationDate(campaign.getExpirationDate())
                 .imgURL(campaign.getImgURL())
                 .title(campaign.getTitle())
@@ -34,9 +33,7 @@ public class CampaignMapper {
                 .duration(campaignRequest.getDuration())
                 .createdDate(campaignRequest.getCreatedDate())
                 .startDate(campaignRequest.getStartDate())
-                .duration(campaignRequest.getDuration())
                 .expirationDate(campaignRequest.getExpirationDate())
-                .imgURL(campaignRequest.getImgURL())
                 .title(campaignRequest.getTitle())
                 .build();
 
@@ -48,10 +45,8 @@ public class CampaignMapper {
                 .content(campaignRequest.getContent())
                 .duration(campaignRequest.getDuration())
                 .createdDate(campaignRequest.getCreatedDate())
-                .duration(campaignRequest.getDuration())
                 .startDate(campaignRequest.getStartDate())
                 .expirationDate(campaignRequest.getExpirationDate())
-                .imgURL(campaignRequest.getImgURL())
                 .title(campaignRequest.getTitle())
                 .build();
 

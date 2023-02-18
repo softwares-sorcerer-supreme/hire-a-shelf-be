@@ -2,20 +2,26 @@ package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.CampaignResponse;
+import com.example.shelve.entities.Campaign;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CampaignMapper;
 import com.example.shelve.repository.CampaignRepository;
 import com.example.shelve.services.CampaignService;
+import com.example.shelve.services.StorageService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
-
+    @Autowired
+    private StorageService storageService;
     @Autowired
     private CampaignRepository campaignRepository;
 
@@ -38,10 +44,17 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public CampaignResponse createNewCampaign(CampaignRequest campaignRequest) {
-        campaignRepository.save(mapper.toCampaign(campaignRequest));
-        CampaignResponse campaignResponse = mapper.toCampaignResponse(campaignRequest);
-        return campaignResponse;
+    public CampaignResponse createNewCampaign(String campaignStr, MultipartFile file) {
+        String ImageLinkCloud = storageService.uploadFile(file);
+        Campaign savedCampaign = new Campaign();
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            savedCampaign = objectMapper.readValue(campaignStr, Campaign.class);
+        } catch (IOException e){
+            System.out.printf("Error", e.toString());
+        }
+        savedCampaign.setImgURL("https://s3.ap-southeast-1.amazonaws.com/hireashelf.com/"+ImageLinkCloud);
+        return mapper.toCampaignResponse(campaignRepository.save(savedCampaign));
     }
 
 }
