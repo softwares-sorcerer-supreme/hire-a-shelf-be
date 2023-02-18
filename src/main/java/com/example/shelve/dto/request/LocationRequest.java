@@ -19,4 +19,8 @@ public class LocationRequest {
     private String district;
     private String address;
     private String city;
+    private String ward;
+    private BrandRequest brand;
+    private boolean status;
+
 }

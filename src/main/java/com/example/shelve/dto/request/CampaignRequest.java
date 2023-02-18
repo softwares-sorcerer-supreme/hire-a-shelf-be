@@ -2,10 +2,13 @@ package com.example.shelve.dto.request;
 
 import com.example.shelve.entities.*;
 import com.example.shelve.entities.enums.EStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -25,5 +28,4 @@ public class CampaignRequest {
     private Brand brand;
     private EStatus EStatus;
     private List<Long> products;
-
 }

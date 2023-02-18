@@ -27,7 +27,7 @@ public class Brand implements Serializable {
     private String name;
 
     @OneToMany(mappedBy = "brand")
-    private Set<Location> location;
+    private Set<Location> locations;
 
     @Column(name = "phone")
     private String phone;

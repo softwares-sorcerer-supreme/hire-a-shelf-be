@@ -4,6 +4,7 @@ import com.example.shelve.entities.enums.EStatus;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Builder
 @Getter
@@ -14,7 +15,7 @@ public class BrandResponse implements Serializable {
     private Long id;
     private String name;
 
-    private String address;
+    private Set<LocationResponse> location;
 
     private String phone;
 

@@ -59,6 +59,9 @@ public class Campaign implements Serializable {
     @JsonIgnore
     private Set<CampaignProduct> campaignProducts;
 
+    @OneToMany(mappedBy = "campaign")
+    private Set<CampaignShelveType> campaignShelveTypes;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private EStatus EStatus;

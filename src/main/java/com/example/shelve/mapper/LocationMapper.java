@@ -25,6 +25,9 @@ public class LocationMapper {
                 .district(locationRequest.getDistrict())
                 .city(locationRequest.getCity())
                 .address(locationRequest.getAddress())
+                .status(locationRequest.isStatus())
+                .ward(locationRequest.getWard())
+//                .brand(locationRequest.getBrand())
                 .build();
     }
 

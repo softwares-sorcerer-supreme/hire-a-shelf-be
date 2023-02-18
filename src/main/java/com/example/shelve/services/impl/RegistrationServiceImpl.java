@@ -3,10 +3,13 @@ package com.example.shelve.services.impl;
 import com.example.shelve.dto.request.RegistrationRequest;
 import com.example.shelve.dto.response.RegistrationResponse;
 import com.example.shelve.dto.response.SuccessResponse;
+import com.example.shelve.entities.Location;
 import com.example.shelve.entities.Registration;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.UserExistedException;
+import com.example.shelve.mapper.LocationMapper;
 import com.example.shelve.mapper.RegistrationMapper;
+import com.example.shelve.repository.LocationRepository;
 import com.example.shelve.repository.RegistrationRepository;
 import com.example.shelve.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +27,28 @@ public class RegistrationServiceImpl implements RegistrationService {
     private RegistrationRepository registrationRepository;
     @Autowired
     private RegistrationMapper registrationMapper;
+    @Autowired
+    private LocationRepository locationRepository;
+    @Autowired
+    private LocationMapper locationMapper;
 
     @Override
     public SuccessResponse register(RegistrationRequest registrationRequest) {
         //Check email duplicate
         Optional<Registration> accountEmail = registrationRepository.findByEmail(registrationRequest.getEmail());
-        if(accountEmail.isPresent())
-            throw new UserExistedException("This email has been existed");
+        if (accountEmail.isPresent())
+            throw new UserExistedException("This email has been registered");
 
+        //Save new location
+        Location location = locationRepository.save(locationMapper.toLocation(registrationRequest.getLocation()));
+
+        
+        //Mapping
         Registration registration = registrationMapper.toRegistration(registrationRequest);
 
+        //Map location to registration
+        registration.setLocation(location);
         registration.setEStatus(EStatus.PENDING);
-
-
 
         registrationRepository.save(registration);
 
