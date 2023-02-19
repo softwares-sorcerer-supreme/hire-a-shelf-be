@@ -1,7 +1,7 @@
 package com.example.shelve.repository;
 
-import com.example.shelve.entities.Products;
+import com.example.shelve.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductRepository extends JpaRepository<Products, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
 }

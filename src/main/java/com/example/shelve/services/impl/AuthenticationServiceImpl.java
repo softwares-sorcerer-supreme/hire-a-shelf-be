@@ -47,15 +47,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public AuthenticationResponse authenticationResponse(AccountRequest accountRequest) {
         var user = accountRepository.findByUserName(accountRequest.getUserName())
-                .orElseThrow(() -> new ResourceNotFoundException("User name has not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Username or password invalid!"));
 
         if (!passwordEncoder.matches(accountRequest.getPassword(), user.getPassword())) {
-            return AuthenticationResponse.builder()
-                    .message("Invalid Password!")
-                    .status(HttpStatus.BAD_REQUEST.value())
-                    .build();
+            throw new ResourceNotFoundException("Username or password invalid!");
         }
 
+        //set firebase token
+        user.setFireBaseToken(accountRequest.getFirebaseToken());
+        accountRepository.save(user);
+
+        //authen
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         accountRequest.getUserName(),
@@ -75,7 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResponse authenticationGoogleResponse(String idToken) {
+    public AuthenticationResponse authenticationGoogleResponse(String idToken, String firebaseToken) {
 
         // idToken comes from the client app (shown above)
         FirebaseToken decodedToken = null;
@@ -95,6 +97,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .build();
 
         } else {
+            //set firebase token
+            foundAccount.get().setFireBaseToken(firebaseToken);
+            accountRepository.save(foundAccount.get());
+
+
             var userDetail = new CustomeUserDetail(foundAccount.get());
 
             var jwtToken = jwtService.generateToken(userDetail);

@@ -1,10 +1,18 @@
 package com.example.shelve.dto.response;
 
-import com.example.shelve.entities.*;
+import com.example.shelve.entities.enums.EStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.util.Set;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class StoreResponse {
 
     private Long id;
@@ -12,8 +20,6 @@ public class StoreResponse {
     private String name;
 
     private String phone;
-
-    private String email;
 
     private String logo;
 
@@ -23,17 +29,15 @@ public class StoreResponse {
 
     private boolean status;
 
-    private Set<Contract> contracts;
+    private Set<ContractResponse> contracts;
 
-    private Set<Shelves> shelves;
+    private Set<ShelvesResponse> shelves;
 
-    private Set<Order> orders;
+//    private Set<Order> orders;
 
-    private Account account;
+//    private Account account;
 
-    private Location location;
+    private LocationResponse location;
 
-    private Retailer retailer;
-
-    private Set<Category>  categories;
+//    private Retailer retailer;
 }

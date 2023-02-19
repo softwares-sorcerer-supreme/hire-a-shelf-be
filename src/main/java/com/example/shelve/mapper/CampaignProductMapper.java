@@ -11,7 +11,7 @@ public class CampaignProductMapper {
 
     public CampaignProductResponse toCampaignProductResponse (CampaignProduct campaignProduct){
         CampaignProductResponse campaignProductResponse = CampaignProductResponse.builder()
-                .products(campaignProduct.getProducts())
+                .products(campaignProduct.getProduct())
                 .campaigns(campaignProduct.getCampaign())
                 .build();
 

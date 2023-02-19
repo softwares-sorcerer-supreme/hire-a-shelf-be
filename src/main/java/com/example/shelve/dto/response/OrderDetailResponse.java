@@ -1,7 +1,7 @@
 package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.Order;
-import com.example.shelve.entities.Products;
+import com.example.shelve.entities.Product;
 import lombok.*;
 
 @Builder
@@ -15,7 +15,7 @@ public class OrderDetailResponse {
 
     private String sales;
 
-    private Products products;
+    private Product products;
 
     private Order order;
 }

@@ -4,16 +4,17 @@ package com.example.shelve.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "account")
 @Builder
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Account {
-
 
     @Id
     @Column
@@ -26,11 +27,15 @@ public class Account {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "email")
-    private String email;
+
+    @Column(name = "fire_base_token")
+    private String fireBaseToken;
 
     @OneToOne
     @JoinColumn(name = "admin_id")

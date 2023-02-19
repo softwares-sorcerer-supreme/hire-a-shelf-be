@@ -1,30 +1,31 @@
 package com.example.shelve.entities;
 
+
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "campaign_product")
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class CampaignProduct {
+@Table(name = "campaign_shelve_type")
+public class CampaignShelveType {
 
     @Id
-    @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    @Column
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "campaign_id")
     private Campaign campaign;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "shelve_type_id")
+    private ShelvesType shelvesType;
 
     @Column(name = "status")
     private boolean status;

@@ -16,11 +16,11 @@ public class OrderDetail implements Serializable {
     private String sales;
 
     @ManyToOne
-    @JoinColumn(name = "products_id")
-    private Products products;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "orders_id")
+    @JoinColumn(name = "order_id")
     private Order order;
 
 }

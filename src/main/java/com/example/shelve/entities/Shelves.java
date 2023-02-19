@@ -34,7 +34,7 @@ public class Shelves implements Serializable {
     private Store store;
 
     @ManyToOne
-    @JoinColumn(name = "shelvesType_id")
+    @JoinColumn(name = "shelves_type_id")
     private ShelvesType shelvesType;
 
     @OneToMany(mappedBy = "shelves")
@@ -42,9 +42,5 @@ public class Shelves implements Serializable {
 
     @OneToMany(mappedBy = "shelves")
     private Set<Image> images;
-
-    @OneToMany(mappedBy = "shelves")
-    @JsonIgnore
-    private Set<Campaign>  campaigns;
 
 }

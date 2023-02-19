@@ -6,5 +6,5 @@ import com.example.shelve.dto.response.AuthenticationResponse;
 public interface AuthenticationService {
     AuthenticationResponse authenticationResponse(AccountRequest accountRequest);
 
-    AuthenticationResponse authenticationGoogleResponse(String idToken);
+    AuthenticationResponse authenticationGoogleResponse(String idToken, String firebaseToken);
 }
