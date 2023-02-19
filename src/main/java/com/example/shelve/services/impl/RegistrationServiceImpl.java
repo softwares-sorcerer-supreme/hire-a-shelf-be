@@ -49,13 +49,14 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Override
     public SuccessResponse register(RegistrationRequest registrationRequest) {
         //Check email duplicate
-        Optional<Registration> accountEmail = registrationRepository.findByEmail(registrationRequest.getEmail());
-        if (accountEmail.isPresent())
+
+        //In registration
+        Optional<Registration> regisEmail = registrationRepository.findByEmail(registrationRequest.getEmail());
+        if (regisEmail.isPresent())
             throw new UserExistedException("This email has been registered");
 
         //Save new location
         Location location = locationRepository.save(locationMapper.toLocation(registrationRequest.getLocation()));
-
 
         //Mapping
         Registration registration = registrationMapper.toRegistration(registrationRequest);
@@ -90,18 +91,20 @@ public class RegistrationServiceImpl implements RegistrationService {
         Registration registration = registrationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Registration not found!"));
 
-        if(registration.getEStatus() != PENDING)
+        if (registration.getEStatus() != PENDING)
             throw new BadRequestException("This registration has been " + registration.getEStatus());
 
         switch (status) {
             case APPROVED:
-                pushNotification(true);
-                handleStatusApproved(registration);
+                if (registration.isRegisterByGoogle())
+                    handleStatusApprovedByGoogleRegistration(registration);
+                 else
+                     handleStatusApproved(registration);
+
                 break;
 
             case DECLINED:
                 //push notification to notice
-                pushNotification(false);
                 break;
 
             default:
@@ -120,14 +123,30 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private void handleStatusApproved(Registration registration) {
         String username = registration.getEmail().substring(0, registration.getEmail().indexOf('@'));
+        String password = generatePassword.generatePassword();
 
         Account account = Account.builder()
                 .email(registration.getEmail())
                 .userName(username)
-                .password(passwordEncoder.encode(generatePassword.generatePassword()))
+                .password(passwordEncoder.encode(password))
                 .status(true)
                 .build();
 
+        accountRepository.save(initTypeAccount(registration, account));
+    }
+
+    private void handleStatusApprovedByGoogleRegistration(Registration registration) {
+        Account account = Account.builder()
+                .email(registration.getEmail())
+                .userName(registration.getEmail())
+                .status(true)
+                .build();
+
+        accountRepository.save(initTypeAccount(registration, account));
+    }
+
+
+    private Account initTypeAccount(Registration registration, Account account) {
         switch (registration.getTypeAccount()) {
             case "Brand":
                 Brand brand = brandRepository.save(Brand.builder()
@@ -143,32 +162,19 @@ public class RegistrationServiceImpl implements RegistrationService {
                 break;
 
             case "Store":
-                Store store = Store.builder()
+                Store store = storeRepository.save(Store.builder()
                         .name(registration.getName())
                         .phone(registration.getPhone())
                         .location(registration.getLocation())
                         .name(registration.getName())
                         .participateDate(new Date(System.currentTimeMillis()))
                         .status(true)
-                        .build();
+                        .build());
 
                 account.setStore(store);
                 break;
         }
-        accountRepository.save(account);
+
+        return account;
     }
-
-
-    private void pushNotification(boolean isApproved) {
-        //notify to user's email
-        if (isApproved) {
-            //using firebase to send email the user's password
-
-
-        }
-
-
-    }
-
-
 }
