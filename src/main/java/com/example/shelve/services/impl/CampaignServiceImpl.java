@@ -106,4 +106,18 @@ public class CampaignServiceImpl implements CampaignService {
         return campaignResponse;
     }
 
+    @Override
+    public CampaignResponse approveCampaign(Long id, EStatus status) {
+        Campaign campaign = campaignRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!"));
+
+        campaign.setEStatus(status);
+        Campaign campaignSaved = campaignRepository.save(campaign);
+
+        return campaignMapper.toCampaignResponse(campaignSaved);
+
+        }
+
+
+
 }
