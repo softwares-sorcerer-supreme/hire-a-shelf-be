@@ -16,7 +16,7 @@ public class FirebaseConfig {
 
     @Bean
     public FirebaseApp config() {
-        String filePath = "config/serviceAccountKey.json";
+        String filePath = "src/main/resources/config/serviceAccountKey.json";
         FirebaseOptions options = null;
         try {
             options = new FirebaseOptions.Builder()
