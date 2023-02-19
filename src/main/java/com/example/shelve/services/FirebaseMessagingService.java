@@ -1,7 +1,9 @@
 package com.example.shelve.services;
 
+import com.example.shelve.dto.request.PushNotificationRequest;
+
 public interface FirebaseMessagingService {
 
-//    String sendNotification(NoteRequest noteRequest);
+    void sendNotificationToToken(PushNotificationRequest request);
 
 }

@@ -22,5 +22,21 @@ spring:
       max-file-size: 5MB
       max-request-size: 10MB
 
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    port: 587
+    username: hireashelfinc@gmail.com
+    password: nphmrwaucjrweebc
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
+    test-connection: false
+    protocol: smtp
+
 server:
   port: 8080

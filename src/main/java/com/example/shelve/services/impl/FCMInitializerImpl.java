@@ -1,5 +1,6 @@
 package com.example.shelve.services.impl;
 
+import com.example.shelve.services.FCMInitializer;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
@@ -13,11 +14,12 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 
 @Service
-public class FCMInitializer {
+public class FCMInitializerImpl implements FCMInitializer {
 
     @Value("${app.firebase-configuration-file}")
     private String firebaseConfigPath;
-    Logger logger = LoggerFactory.getLogger(FCMInitializer.class);
+    Logger logger = LoggerFactory.getLogger(FCMInitializerImpl.class);
+    @Override
     @PostConstruct
     public void initialize(){
         try{

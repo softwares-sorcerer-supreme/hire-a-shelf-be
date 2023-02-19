@@ -1,6 +1,7 @@
 package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.PushNotificationRequest;
+import com.example.shelve.services.FCMService;
 import com.google.firebase.messaging.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -13,9 +14,10 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Service
-public class FCMService {
-    private Logger logger = LoggerFactory.getLogger(FCMService.class);
+public class FCMServiceImpl implements FCMService {
+    private Logger logger = LoggerFactory.getLogger(FCMServiceImpl.class);
 
+    @Override
     public void sendMessageToToken(PushNotificationRequest request)
         throws InterruptedException, ExecutionException {
         Message message = getPreconfiguredMessageToToken(request);
@@ -24,6 +26,7 @@ public class FCMService {
         String response = sendAndGetResponse(message);
         logger.info("Sent message to token. Device token: " + request.getToken() + "," + response + " msg " + jsonOutput );
     }
+
     private String sendAndGetResponse(Message message) throws InterruptedException, ExecutionException{
         return FirebaseMessaging.getInstance().sendAsync(message).get();
     }
