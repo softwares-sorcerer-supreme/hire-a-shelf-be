@@ -53,6 +53,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new ResourceNotFoundException("Username or password invalid!");
         }
 
+        //set firebase token
+        user.setFireBaseToken(accountRequest.getFirebaseToken());
+        accountRepository.save(user);
+
+        //authen
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         accountRequest.getUserName(),
@@ -72,7 +77,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResponse authenticationGoogleResponse(String idToken) {
+    public AuthenticationResponse authenticationGoogleResponse(String idToken, String firebaseToken) {
 
         // idToken comes from the client app (shown above)
         FirebaseToken decodedToken = null;
@@ -92,6 +97,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .build();
 
         } else {
+            //set firebase token
+            foundAccount.get().setFireBaseToken(firebaseToken);
+            accountRepository.save(foundAccount.get());
+
+
             var userDetail = new CustomeUserDetail(foundAccount.get());
 
             var jwtToken = jwtService.generateToken(userDetail);

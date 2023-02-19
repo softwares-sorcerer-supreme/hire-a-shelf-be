@@ -32,9 +32,10 @@ public class AuthenticationController {
 
     @PostMapping("/google")
     public ResponseEntity<AuthenticationResponse> googleAuthenticate(
-            @RequestParam String idToken
+            @RequestParam String idToken,
+            @RequestParam String firebaseToken
     ) {
-        return new ResponseEntity<>(authenticationService.authenticationGoogleResponse(idToken), HttpStatus.OK);
+        return new ResponseEntity<>(authenticationService.authenticationGoogleResponse(idToken, firebaseToken), HttpStatus.OK);
     }
 
 

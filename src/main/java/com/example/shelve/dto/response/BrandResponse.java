@@ -18,14 +18,12 @@ public class BrandResponse implements Serializable {
     private Set<LocationResponse> location;
 
     private String phone;
-
-    private String email;
-
+    
     private String logo;
 
     private String description;
 
-    private String EStatus;
+    private boolean status;
 
 //    private Set<CampaignResponse> campaigns;
 

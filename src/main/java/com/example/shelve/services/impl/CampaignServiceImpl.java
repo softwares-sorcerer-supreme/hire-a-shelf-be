@@ -2,16 +2,12 @@ package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.CampaignResponse;
-import com.example.shelve.entities.Campaign;
-import com.example.shelve.entities.CampaignProduct;
-import com.example.shelve.entities.Product;
+import com.example.shelve.entities.*;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CampaignMapper;
-import com.example.shelve.repository.CampaignProductRepository;
-import com.example.shelve.repository.CampaignRepository;
-import com.example.shelve.repository.ProductRepository;
+import com.example.shelve.repository.*;
 import com.example.shelve.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +25,11 @@ public class CampaignServiceImpl implements CampaignService {
     private CampaignProductRepository campaignProductRepository;
     @Autowired
     private ProductRepository productRepository;
+    @Autowired
+    private CampaignShelvesTypeRepository camapignShelvesTypeRepository;
+    @Autowired
+    private ShelvesTypeRepository shelvesTypeRepository;
+
 
     @Autowired
     private CampaignMapper campaignMapper;
@@ -53,10 +54,10 @@ public class CampaignServiceImpl implements CampaignService {
         Campaign campaign = campaignMapper.toCampaign(campaignRequest);
         campaign.setCreatedDate(new Date(System.currentTimeMillis()));
 
-        if(campaign.getStartDate().before(campaign.getCreatedDate()))
+        if (campaign.getStartDate().before(campaign.getCreatedDate()))
             throw new BadRequestException("Start Date must be after Today!");
 
-        if(campaign.getExpirationDate().before(campaign.getStartDate()))
+        if (campaign.getExpirationDate().before(campaign.getStartDate()))
             throw new BadRequestException("Expiration Date must be after Start Date");
 
         campaign.setEStatus(EStatus.PENDING);
@@ -68,7 +69,7 @@ public class CampaignServiceImpl implements CampaignService {
                 productRepository
                         .findById(i)
                         .orElseThrow(() ->
-                                new ResourceNotFoundException("Product ID: " + i + " not existed"))
+                                new ResourceNotFoundException("Product ID: " + i + " not existed!"))
         ));
 
         //add to CampaignProduct table
@@ -79,6 +80,25 @@ public class CampaignServiceImpl implements CampaignService {
                     .campaign(campaignSaved)
                     .build());
         });
+
+
+        List<ShelvesType> listShelvesType = new ArrayList<>();
+        //get list shelve type
+        campaignRequest.getShelveTypes().forEach(i -> listShelvesType.add(
+                shelvesTypeRepository
+                        .findById(i)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException("Shelve Type ID: " + i + " not existed!"))
+        ));
+
+        //add to Campaign Shelve Type table
+        listShelvesType.forEach(shelvesType ->
+                camapignShelvesTypeRepository.save(new CampaignShelveType().builder()
+                        .campaign(campaignSaved)
+                        .shelvesType(shelvesType)
+                        .status(true)
+                        .build())
+        );
 
         CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaign);
 

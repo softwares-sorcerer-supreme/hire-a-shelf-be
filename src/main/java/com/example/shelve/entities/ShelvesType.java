@@ -1,9 +1,16 @@
 package com.example.shelve.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "shelves_type")
 public class ShelvesType implements Serializable {

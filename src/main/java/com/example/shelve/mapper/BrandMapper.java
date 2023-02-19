@@ -30,7 +30,7 @@ public class BrandMapper {
                 .logo(brand.getLogo())
                 .name(brand.getName())
                 .phone(brand.getPhone())
-                .EStatus(brand.getEStatus().getName())
+                .status(brand.isStatus())
                 .build();
     }
 }

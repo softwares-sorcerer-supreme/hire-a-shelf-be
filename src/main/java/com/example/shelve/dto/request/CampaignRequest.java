@@ -28,4 +28,5 @@ public class CampaignRequest {
     private Brand brand;
     private EStatus EStatus;
     private List<Long> products;
+    private List<Long> shelveTypes;
 }

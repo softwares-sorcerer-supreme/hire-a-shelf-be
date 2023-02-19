@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.Set;
 
 @Entity
@@ -35,12 +36,11 @@ public class Brand implements Serializable {
     @Column(name = "logo")
     private String logo;
 
+    @Column(name = "participate_date")
+    private Date participateDate;
+
     @Column(name = "description")
     private String description;
-
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private EStatus EStatus;
 
     @OneToMany(mappedBy = "brand")
     @JsonIgnore
@@ -52,4 +52,7 @@ public class Brand implements Serializable {
     @OneToOne(mappedBy = "brand")
     @JsonIgnore
     private Account account;
+
+    @Column(name = "status")
+    private boolean status;
 }

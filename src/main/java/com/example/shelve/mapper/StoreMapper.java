@@ -21,7 +21,7 @@ public class StoreMapper {
                 .logo(store.getLogo())
                 .description(store.getDescription())
                 .participateDate(store.getParticipateDate())
-                .EStatus(store.getEStatus())
+                .status(store.isStatus())
                 .location(locationMapper.toLocationResponse(store.getLocation()))
                 .build();
     }

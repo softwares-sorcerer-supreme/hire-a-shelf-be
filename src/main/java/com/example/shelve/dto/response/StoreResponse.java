@@ -27,7 +27,7 @@ public class StoreResponse {
 
     private Date participateDate;
 
-    private EStatus EStatus;
+    private boolean status;
 
     private Set<ContractResponse> contracts;
 

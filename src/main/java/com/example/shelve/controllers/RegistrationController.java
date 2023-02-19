@@ -3,6 +3,7 @@ package com.example.shelve.controllers;
 import com.example.shelve.dto.request.RegistrationRequest;
 import com.example.shelve.dto.response.RegistrationResponse;
 import com.example.shelve.dto.response.SuccessResponse;
+import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.services.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,14 +24,20 @@ public class RegistrationController {
         return new ResponseEntity<>(registrationService.getAllRegistration(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<RegistrationResponse> getRegistrationById(@PathVariable Long id) {
+        return new ResponseEntity<>(registrationService.getRegistrationById(id), HttpStatus.FOUND);
+    }
+
     @PostMapping
     public ResponseEntity<SuccessResponse> registration(@RequestBody RegistrationRequest registration) {
         return new ResponseEntity<>(registrationService.register(registration), HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity<RegistrationResponse> approvalRegistration(@RequestBody RegistrationRequest registration) {
-        return new ResponseEntity<>(registrationService.approve(registration), HttpStatus.FOUND);
+    @PutMapping("/{id}")
+    public ResponseEntity<SuccessResponse> approvalRegistration(@RequestParam(name = "status") EStatus status,
+                                                                     @PathVariable Long id) {
+        return new ResponseEntity<>(registrationService.approve(status, id), HttpStatus.FOUND);
     }
 
 }

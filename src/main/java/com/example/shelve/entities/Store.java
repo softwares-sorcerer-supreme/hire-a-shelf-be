@@ -40,8 +40,7 @@ public class Store implements Serializable {
     private Date participateDate;
 
     @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private EStatus EStatus;
+    private boolean status;
 
     @OneToMany(mappedBy = "store")
     private Set<Contract> contracts;

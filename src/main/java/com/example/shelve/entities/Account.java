@@ -1,8 +1,7 @@
 package com.example.shelve.entities;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +11,9 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "account")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account {
 
     @Id
