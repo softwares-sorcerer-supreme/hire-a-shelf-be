@@ -20,6 +20,7 @@ public class AccountMapper {
         AccountResponse accountResponse = AccountResponse.builder()
                 .id(account.getId())
                 .username(account.getUserName())
+                .email(account.getEmail())
                 .status(account.isStatus())
                 .admin(adminMapper.toAdminResponse(account.getAdmin()))
                 .store(storeMapper.toStoreResponse(account.getStore()))
