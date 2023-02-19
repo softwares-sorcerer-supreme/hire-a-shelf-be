@@ -18,7 +18,7 @@ public class FirebaseConfig {
 
     @Bean
     public FirebaseApp config() {
-        ClassPathResource resource = new ClassPathResource("config/serviceAccountKey.json");
+        ClassPathResource resource = new ClassPathResource("D:/home/site/wwwroot/src/main/resources/config/serviceAccountKey.json");
         File file = null;
         try {
             file = resource.getFile();
