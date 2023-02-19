@@ -29,10 +29,9 @@ public class Category implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "products_id")
-    private Products products;
+    @OneToMany(mappedBy = "category")
+    private Set<Product> products;
 
-    @ManyToMany(mappedBy = "categories")
-    private Set<Store> store;
+    @OneToMany(mappedBy = "category")
+    private Set<StoreCategory> storeCategories;
 }

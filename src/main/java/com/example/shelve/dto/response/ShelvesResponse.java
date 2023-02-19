@@ -22,5 +22,5 @@ public class ShelvesResponse {
 
     private Set<Campaign>  campaigns;
 
-    private Set<Products> products;
+    private Set<Product> products;
 }

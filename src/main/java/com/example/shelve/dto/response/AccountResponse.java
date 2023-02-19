@@ -3,24 +3,26 @@ package com.example.shelve.dto.response;
 import com.example.shelve.entities.Admin;
 import com.example.shelve.entities.Brand;
 import com.example.shelve.entities.Store;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+
+import java.io.Serializable;
 
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountResponse {
+public class AccountResponse implements Serializable {
 
     private long id;
 
     private String username;
-
+    private String email;
     private boolean status;
 
-    private Admin admin;
+    private AdminResponse admin;
 
-    private Store store;
-
-    private Brand brand;
+    private StoreResponse store;
+    private BrandResponse brand;
 }

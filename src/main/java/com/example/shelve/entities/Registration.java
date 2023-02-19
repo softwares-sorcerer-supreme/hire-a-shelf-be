@@ -1,10 +1,18 @@
 package com.example.shelve.entities;
 
+import com.example.shelve.entities.enums.EStatus;
+import lombok.*;
+
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Table(name = "registration")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
 public class Registration {
 
     @Id
@@ -15,9 +23,6 @@ public class Registration {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "address")
-    private String address;
-
     @Column(name = "phone")
     private String phone;
 
@@ -27,10 +32,17 @@ public class Registration {
     @Column(name = "note")
     private String note;
 
-    @Column(name = "createDate")
+    @Column(name = "create_date")
     private Date createDate;
 
-    @Column(name = "typeAccount")
+    @Column(name = "type_account")
     private String typeAccount;
 
+    @OneToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private EStatus EStatus;
 }

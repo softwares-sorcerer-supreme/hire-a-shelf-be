@@ -26,9 +26,22 @@ public class Location implements Serializable {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "ward")
+    private String ward;
+
     @Column(name = "city")
     private String city;
 
     @OneToMany(mappedBy = "location")
     private Set<Store> store;
+
+    @OneToOne(mappedBy = "location")
+    private Registration registration;
+
+    @ManyToOne
+    @JoinColumn(name = "brand_id")
+    private Brand brand;
+
+    @Column(name = "status")
+    private boolean status;
 }

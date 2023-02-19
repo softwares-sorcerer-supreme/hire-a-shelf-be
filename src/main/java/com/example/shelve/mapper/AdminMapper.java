@@ -8,14 +8,14 @@ import lombok.Builder;
 import org.springframework.stereotype.Component;
 
 @Component
-@Builder
 public class AdminMapper {
 
     public AdminResponse toAdminResponse (Admin admin){
+        if(admin == null)
+            return null;
         AdminResponse adminResponse = AdminResponse.builder()
                 .id(admin.getId())
                 .address(admin.getAddress())
-                .email(admin.getEmail())
                 .phone(admin.getPhone())
                 .build();
         return adminResponse;
