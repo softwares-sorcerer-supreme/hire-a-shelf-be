@@ -31,9 +31,6 @@ public class Brand implements Serializable {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "logo")
     private String logo;
 

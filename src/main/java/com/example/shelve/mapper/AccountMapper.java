@@ -5,7 +5,6 @@ import com.example.shelve.entities.Account;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-@Builder
 @Component
 public class AccountMapper {
 

@@ -34,12 +34,11 @@ public class Shelves implements Serializable {
     private Store store;
 
     @ManyToOne
-    @JoinColumn(name = "shelves_type_id")
+    @JoinColumn(name = "shelvesType_id")
     private ShelvesType shelvesType;
 
-    @ManyToMany
-    @JoinTable(name = "shelves_products", joinColumns = @JoinColumn(name = "shelves_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
-    private Set<Products> products;
+    @OneToMany(mappedBy = "shelves")
+    private Set<ShelvesProducts> shelvesProducts;
 
     @OneToMany(mappedBy = "shelves")
     private Set<Image> images;

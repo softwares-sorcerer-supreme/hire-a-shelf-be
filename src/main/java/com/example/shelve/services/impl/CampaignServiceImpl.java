@@ -33,7 +33,7 @@ public class CampaignServiceImpl implements CampaignService {
         CampaignResponse campaignResponse = mapper.toCampaignResponse(campaignRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!")));
-        ;
+
         return campaignResponse;
     }
 

@@ -5,16 +5,15 @@ import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Products;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.Set;
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BrandResponse {
-
+public class BrandResponse implements Serializable {
     private Long id;
-
     private String name;
 
     private String address;

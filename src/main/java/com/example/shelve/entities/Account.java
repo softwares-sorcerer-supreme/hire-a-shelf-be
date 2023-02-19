@@ -1,17 +1,17 @@
 package com.example.shelve.entities;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "account")
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
 
@@ -28,6 +28,9 @@ public class Account {
 
     @Column(name = "status")
     private boolean status;
+
+    @Column(name = "email")
+    private String email;
 
     @OneToOne
     @JoinColumn(name = "admin_id")

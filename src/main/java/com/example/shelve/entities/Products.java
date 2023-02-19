@@ -1,11 +1,19 @@
 package com.example.shelve.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
 @Entity
 @Table(name = "products")
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Products implements Serializable {
 
     @Id
@@ -41,9 +49,10 @@ public class Products implements Serializable {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @ManyToMany(mappedBy = "products")
-    private Set<Shelves> shelves;
+    @OneToMany(mappedBy = "products")
+    private Set<ShelvesProducts> shelvesProducts;
 
-    @ManyToMany(mappedBy = "products")
-    private Set<Campaign> campaigns;
+    @OneToMany(mappedBy = "products")
+    @JsonIgnore
+    private Set<CampaignProduct> campaignProducts;
 }
