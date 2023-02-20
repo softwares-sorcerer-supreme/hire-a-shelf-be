@@ -17,7 +17,7 @@ public class FirebaseConfig {
 
     @Bean
     public FirebaseApp config() {
-        String serviceAccountKeyPath = System.getenv("SERVICE_ACCOUNT_KEY_PATH");
+        String serviceAccountKeyPath = "D:/home/site/wwwroot/src/main/resources/config/serviceAccountKey.json";
         FirebaseOptions options = null;
         try {
             options = new FirebaseOptions.Builder()
