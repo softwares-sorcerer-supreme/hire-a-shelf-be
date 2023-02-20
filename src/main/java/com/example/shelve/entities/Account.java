@@ -1,12 +1,14 @@
 package com.example.shelve.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -46,6 +48,10 @@ public class Account {
     @OneToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @OneToMany(mappedBy = "account")
+    @JsonIgnore
+    private Set<Notification> notifications;
 
     @Override
     public String toString() {

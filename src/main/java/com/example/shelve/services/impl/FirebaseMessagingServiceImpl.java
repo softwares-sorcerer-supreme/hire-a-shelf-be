@@ -1,6 +1,7 @@
 package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.PushNotificationRequest;
+import com.example.shelve.dto.response.NotificationResponse;
 import com.example.shelve.services.FCMService;
 import com.example.shelve.services.FirebaseMessagingService;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -23,5 +24,10 @@ public class FirebaseMessagingServiceImpl implements FirebaseMessagingService {
         } catch (Exception e){
             logger.error(e.getMessage());
         }
+    }
+
+    @Override
+    public NotificationResponse getNotificationByAccountId(Long id) {
+        return null;
     }
 }

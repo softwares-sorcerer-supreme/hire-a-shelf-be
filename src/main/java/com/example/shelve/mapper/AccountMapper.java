@@ -14,6 +14,7 @@ public class AccountMapper {
                 .username(account.getUserName())
                 .status(account.isStatus())
                 .admin(account.getAdmin())
+                .email(account.getEmail())
                 .store(account.getStore())
                 .brand(account.getBrand())
                 .build();
