@@ -18,6 +18,7 @@ public class AccountResponse implements Serializable {
     private long id;
 
     private String username;
+private String email;
     private boolean status;
 
     private AdminResponse admin;

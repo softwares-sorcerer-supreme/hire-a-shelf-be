@@ -15,4 +15,8 @@ public interface CampaignService {
     CampaignResponse createNewCampaign(CampaignRequest campaignRequest);
 
     CampaignResponse approveCampaign(Long id, EStatus status);
+
+    CampaignResponse updateCampaign(Long id, CampaignRequest campaign);
+
+    CampaignResponse disableCampaign(Long id);
 }

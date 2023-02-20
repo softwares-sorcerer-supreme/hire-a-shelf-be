@@ -118,6 +118,36 @@ public class CampaignServiceImpl implements CampaignService {
 
         }
 
+    @Override
+    public CampaignResponse updateCampaign(Long id, CampaignRequest campaignRequest) {
+        Campaign campaign = campaignRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!"));
+
+        if(campaign.getEStatus() != EStatus.PENDING)
+            throw new BadRequestException("Can't update campaign after approve!");
+
+        campaign.setTitle(campaignRequest.getTitle());
+        campaign.setContent(campaignRequest.getContent());
+        campaign.setStartDate(campaignRequest.getStartDate());
+        campaign.setExpirationDate(campaignRequest.getExpirationDate());
+        campaign.setDuration(campaignRequest.getDuration());
+        campaign.setImgURL(campaignRequest.getImgURL());
+
+
+
+        return null;
+    }
+
+    @Override
+    public CampaignResponse disableCampaign(Long id) {
+        Campaign campaign = campaignRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!"));
+
+        campaign.setEStatus(EStatus.DISABLE);
+        Campaign campaignSaved = campaignRepository.save(campaign);
+
+        return campaignMapper.toCampaignResponse(campaignSaved);
+    }
 
 
 }

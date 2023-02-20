@@ -42,4 +42,16 @@ public class CampaignController {
         return new ResponseEntity<>(campaignService.approveCampaign(id, status), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CampaignResponse> disableCampaign(@PathVariable Long id) {
+        return new ResponseEntity<>(campaignService.disableCampaign(id), HttpStatus.OK);
+    }
+
+
+//    @PutMapping("/{id}")
+//    public ResponseEntity<CampaignResponse> updateCamapaign(@RequestBody CampaignRequest campaign,
+//                                                            @PathVariable Long id) {
+//        return new ResponseEntity<>(campaignService.updateCampaign(id, campaign), HttpStatus.OK);
+//    }
+
 }

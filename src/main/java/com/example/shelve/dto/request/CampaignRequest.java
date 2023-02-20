@@ -16,8 +16,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CampaignRequest {
-
-    private Long id;
     private String title;
     private String content;
     private Date createdDate;
