@@ -5,6 +5,9 @@ import com.example.shelve.config.JwtService;
 import com.example.shelve.dto.request.AccountRequest;
 import com.example.shelve.dto.response.AuthenticationResponse;
 import com.example.shelve.entities.Account;
+import com.example.shelve.entities.Registration;
+import com.example.shelve.entities.enums.EStatus;
+import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.AccountMapper;
 import com.example.shelve.repository.AccountRepository;
@@ -40,6 +43,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
+    private RegistrationRepository registrationRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -47,10 +52,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public AuthenticationResponse authenticationResponse(AccountRequest accountRequest) {
         var user = accountRepository.findByUserName(accountRequest.getUserName())
-                .orElseThrow(() -> new ResourceNotFoundException("Username or password invalid!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Username or password is invalid!"));
 
         if (!passwordEncoder.matches(accountRequest.getPassword(), user.getPassword())) {
-            throw new ResourceNotFoundException("Username or password invalid!");
+            throw new ResourceNotFoundException("Username or password is invalid!");
         }
 
         //set firebase token
@@ -87,31 +92,45 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException(e);
         }
         String userName = decodedToken.getEmail();
-        Optional<Account> foundAccount = accountRepository.findByUserName(userName);
 
+        //check if email is registered
+        Optional<Registration> registrationAccount = registrationRepository.findByEmail(userName);
+        if (registrationAccount.isPresent()) {
+            switch (registrationAccount.get().getEStatus()) {
+                case PENDING:
+                    throw new BadRequestException("This email is waiting for approved!");
+
+                case DECLINED:
+                    throw new BadRequestException("Your account don't have enough condition to log in!");
+            }
+        }
+
+        //check if email is existed in user
+        accountRepository.findByEmail(userName).ifPresent(s -> {
+            throw new BadRequestException("This email has been used!");
+        });
+
+        //check if email is exist
+        Optional<Account> foundAccount = accountRepository.findByUserName(userName);
         if (foundAccount.isEmpty()) {
             //Write code to response that user is the first time access the system.
-            return AuthenticationResponse.builder()
-                    .status(HttpStatus.NOT_FOUND.value())
-                    .message("User not in system!")
-                    .build();
-
-        } else {
-            //set firebase token
-            foundAccount.get().setFireBaseToken(firebaseToken);
-            accountRepository.save(foundAccount.get());
-
-
-            var userDetail = new CustomeUserDetail(foundAccount.get());
-
-            var jwtToken = jwtService.generateToken(userDetail);
-            return AuthenticationResponse.builder()
-                    .token(jwtToken)
-                    .account(accountMapper.toAccountResponse(foundAccount.get()))
-                    .expiredDate(jwtService.extractExpiredDate(jwtToken))
-                    .message("Successfully!")
-                    .status(HttpStatus.OK.value())
-                    .build();
+            throw new ResourceNotFoundException("User not found!");
         }
+
+        //set firebase token
+        foundAccount.get().setFireBaseToken(firebaseToken);
+        accountRepository.save(foundAccount.get());
+
+        var userDetail = new CustomeUserDetail(foundAccount.get());
+
+        var jwtToken = jwtService.generateToken(userDetail);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .account(accountMapper.toAccountResponse(foundAccount.get()))
+                .expiredDate(jwtService.extractExpiredDate(jwtToken))
+                .message("Successfully!")
+                .status(HttpStatus.OK.value())
+                .build();
     }
 }
+

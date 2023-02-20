@@ -3,7 +3,9 @@ package com.example.shelve.entities.enums;
 public enum EStatus {
     APPROVED("Approved"),
     DECLINED("Declined"),
-    PENDING("Pending");
+    PENDING("Pending"),
+    CANCEL("Cancel"),
+    DISABLE("Disable");
 
     private String name;
 
