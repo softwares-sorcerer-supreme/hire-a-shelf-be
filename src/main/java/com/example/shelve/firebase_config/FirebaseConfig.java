@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Configuration
@@ -16,11 +17,11 @@ public class FirebaseConfig {
 
     @Bean
     public FirebaseApp config() {
-        String filePath = "home/site/wwwroot/src/main/resources/config/serviceAccountKey.json";
+        String serviceAccountKeyPath = System.getenv("SERVICE_ACCOUNT_KEY_PATH");
         FirebaseOptions options = null;
         try {
             options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(new FileInputStream(filePath)))
+                    .setCredentials(GoogleCredentials.fromStream(new FileInputStream(serviceAccountKeyPath)))
                     .build();
         } catch (IOException e) {
             throw new RuntimeException(e);
