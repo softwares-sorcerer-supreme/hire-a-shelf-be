@@ -42,6 +42,9 @@ public class Registration {
     @JoinColumn(name = "location_id")
     private Location location;
 
+    @Column(name = "is_register_by_google")
+    private boolean isRegisterByGoogle;
+
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private EStatus EStatus;

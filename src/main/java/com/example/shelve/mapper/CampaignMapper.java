@@ -30,21 +30,6 @@ public class CampaignMapper {
         return campaignResponse;
     }
 
-    public CampaignResponse toCampaignResponse(CampaignRequest campaignRequest) {
-        CampaignResponse campaignResponse = CampaignResponse.builder()
-                .content(campaignRequest.getContent())
-                .duration(campaignRequest.getDuration())
-                .createdDate(campaignRequest.getCreatedDate())
-                .startDate(campaignRequest.getStartDate())
-                .duration(campaignRequest.getDuration())
-                .expirationDate(campaignRequest.getExpirationDate())
-                .imgURL(campaignRequest.getImgURL())
-                .title(campaignRequest.getTitle())
-                .build();
-
-        return campaignResponse;
-    }
-
     public Campaign toCampaign(CampaignRequest campaignRequest) {
         Campaign campaign = Campaign.builder()
                 .title(campaignRequest.getTitle())
