@@ -33,7 +33,6 @@ public class Account {
     @Column(name = "status")
     private boolean status;
 
-
     @Column(name = "fire_base_token")
     private String fireBaseToken;
 
