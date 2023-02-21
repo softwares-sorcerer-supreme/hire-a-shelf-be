@@ -21,7 +21,6 @@ public class LocationRequest {
     private String address;
     private String city;
     private String ward;
-    private Brand brand;
     private boolean status;
 
 }

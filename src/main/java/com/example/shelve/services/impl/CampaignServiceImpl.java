@@ -82,7 +82,7 @@ public class CampaignServiceImpl implements CampaignService {
         });
 
 
-        List<ShelvesType> listShelvesType = new ArrayList<>();
+        List<ShelveType> listShelvesType = new ArrayList<>();
         //get list shelve type
         campaignRequest.getShelveTypes().forEach(i -> listShelvesType.add(
                 shelvesTypeRepository
@@ -92,10 +92,10 @@ public class CampaignServiceImpl implements CampaignService {
         ));
 
         //add to Campaign Shelve Type table
-        listShelvesType.forEach(shelvesType ->
+        listShelvesType.forEach(shelveType ->
                 camapignShelvesTypeRepository.save(new CampaignShelveType().builder()
                         .campaign(campaignSaved)
-                        .shelvesType(shelvesType)
+                        .shelvesType(shelveType)
                         .status(true)
                         .build())
         );
