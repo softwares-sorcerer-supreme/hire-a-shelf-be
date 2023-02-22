@@ -1,5 +1,6 @@
 package com.example.shelve.mapper;
 
+import com.example.shelve.dto.request.ShelvesRequest;
 import com.example.shelve.dto.response.ImageResponse;
 import com.example.shelve.dto.response.ProductResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
@@ -51,6 +52,14 @@ public class ShelveMapper {
                 .shelveType(shelve.getShelvesType())
                 .images(imageResponseSet)
                 .products(productResponseSet)
+                .build();
+    }
+
+    public Shelve toShelve(ShelvesRequest shelvesRequest) {
+        return Shelve.builder()
+                .name(shelvesRequest.getName())
+                .description(shelvesRequest.getDescription())
+                .status(shelvesRequest.isStatus())
                 .build();
     }
 

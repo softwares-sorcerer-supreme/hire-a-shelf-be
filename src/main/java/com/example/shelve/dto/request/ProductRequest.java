@@ -22,6 +22,6 @@ public class ProductRequest {
     private int quantity;
     private BigDecimal price;
     private String imgURL;
-    private Category category;
-    private Brand brand;
+    private Long categoryId;
+    private Long brandId;
 }

@@ -21,7 +21,7 @@ public class ContractRequest {
     private String description;
     private Date approvalDate;
     private EStatus eStatus;
-    private Campaign campaign;
-    private Store store;
+    private Long campaignId;
+    private Long storeId;
 
 }
