@@ -10,6 +10,8 @@ import com.example.shelve.mapper.CampaignMapper;
 import com.example.shelve.repository.*;
 import com.example.shelve.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -19,6 +21,8 @@ import java.util.Optional;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
+
+    private static final int PAGE_SIZE = 9;
 
     @Autowired
     private CampaignRepository campaignRepository;
@@ -35,6 +39,9 @@ public class CampaignServiceImpl implements CampaignService {
     @Autowired
     private CampaignMapper campaignMapper;
 
+
+    @Override
+    @Cacheable(value = "campaign")
     public List<CampaignResponse> getAllCampaign() {
         List<CampaignResponse> campaignResponses = new ArrayList<>();
         campaignRepository.findAll().forEach(x -> campaignResponses.add(campaignMapper.toCampaignResponse(x)));
@@ -42,6 +49,7 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
+    @Cacheable(value = "campaign", key = "#id")
     public CampaignResponse getCampaign(Long id) {
         CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaignRepository
                 .findById(id)
@@ -120,6 +128,7 @@ public class CampaignServiceImpl implements CampaignService {
         }
 
     @Override
+    @CachePut(value = "campaign", key = "#id")
     public CampaignResponse updateCampaign(Long id, CampaignRequest campaignRequest) {
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!"));

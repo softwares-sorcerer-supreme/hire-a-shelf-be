@@ -1,16 +1,16 @@
 package com.example.shelve.controllers;
 
+import com.example.shelve.dto.request.BrandRequest;
 import com.example.shelve.dto.response.BrandResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,4 +29,11 @@ public class BrandController {
     public ResponseEntity<BrandResponse> getCampaign(@PathVariable Long id) {
         return new ResponseEntity<>(brandService.getBrand(id), HttpStatus.FOUND);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BrandResponse> updateCampaign(@PathVariable Long id,
+                                                        @Valid @RequestBody BrandRequest brandRequest) {
+        return new ResponseEntity<>(brandService.updateBrand(id, brandRequest), HttpStatus.OK);
+    }
+
 }

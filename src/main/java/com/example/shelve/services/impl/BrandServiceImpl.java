@@ -1,5 +1,6 @@
 package com.example.shelve.services.impl;
 
+import com.example.shelve.dto.request.BrandRequest;
 import com.example.shelve.dto.response.BrandResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.exception.ResourceNotFoundException;
@@ -8,6 +9,7 @@ import com.example.shelve.repository.BrandRepository;
 import com.example.shelve.services.BrandService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -22,10 +24,10 @@ public class BrandServiceImpl implements BrandService {
     @Autowired
     private BrandRepository brandRepository;
     @Autowired
-    private BrandMapper mapper;
+    private BrandMapper brandMapper;
 
     @Override
-//    @Cacheable(value = "brand")
+    @Cacheable(value = "brand")
     public List<BrandResponse> getAllBrand() {
         log.error("Get brand", "get all brabd");
         List<BrandResponse> brandResponses = new ArrayList<>();
@@ -35,7 +37,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-//    @Cacheable(value = "brand", key = "#id")
+    @Cacheable(value = "brand", key = "#id")
     public BrandResponse getBrand(Long id) {
         BrandResponse brandResponse = mapper.toBrandResponse(brandRepository
                 .findById(id)
@@ -43,4 +45,14 @@ public class BrandServiceImpl implements BrandService {
         ;
         return brandResponse;
     }
+
+    @Override
+    @CachePut(value = "brand", key = "#id")
+    public BrandResponse updateBrand(Long id, BrandRequest brandRequest) {
+        Brand brand = brandMapper.toBrandResponse()
+
+        return null;
+    }
+
+
 }
