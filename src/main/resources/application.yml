@@ -34,7 +34,7 @@ spring:
           auth: true
           starttls:
             enable: true
-        debug: true
+        debug: false
     test-connection: false
     protocol: smtp
 
