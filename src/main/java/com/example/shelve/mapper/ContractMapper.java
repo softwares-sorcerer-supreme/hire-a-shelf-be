@@ -28,11 +28,11 @@ public class ContractMapper {
         return contractResponse;
     }
 
-    public Contract toContract(ContractRequest contractRequest) {
-        return Contract.builder()
-                .store(contractRequest.getStore())
-                .campaign(contractRequest.getCampaign())
-                .description(contractRequest.getDescription())
-                .build();
-    }
+//    public Contract toContract(ContractRequest contractRequest) {
+//        return Contract.builder()
+//                .store(contractRequest.getStore())
+//                .campaign(contractRequest.getCampaign())
+//                .description(contractRequest.getDescription())
+//                .build();
+//    }
 }

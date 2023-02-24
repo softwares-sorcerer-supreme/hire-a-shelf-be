@@ -1,5 +1,6 @@
 package com.example.shelve.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,8 +13,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "shelves_type")
-public class ShelvesType implements Serializable {
+@Table(name = "shelve_type")
+public class ShelveType implements Serializable {
 
     @Id
     @Column
@@ -30,7 +31,8 @@ public class ShelvesType implements Serializable {
     private boolean status;
 
     @OneToMany(mappedBy = "shelvesType")
-    private Set<Shelves> shelves;
+    @JsonIgnore
+    private Set<Shelve> shelves;
 
     @OneToMany(mappedBy = "shelvesType")
     private Set<CampaignShelveType> campaignShelveTypes;

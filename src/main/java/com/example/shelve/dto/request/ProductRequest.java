@@ -15,13 +15,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class ProductRequest {
 
-    private long id;
     private boolean status;
     private String name;
     private String description;
     private int quantity;
     private BigDecimal price;
     private String imgURL;
-    private Category category;
-    private Brand brand;
+    private Long categoryId;
+    private Long brandId;
 }

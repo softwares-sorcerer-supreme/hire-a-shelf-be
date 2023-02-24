@@ -15,7 +15,6 @@ public class ImageMapper {
         ImageResponse imageResponse = ImageResponse.builder()
                 .id(image.getId())
                 .imgUrl(image.getImgUrl())
-                .shelves(image.getShelves())
                 .build();
         return imageResponse;
     }

@@ -16,8 +16,8 @@ public class ProductMapper {
                 .quantity(productRequest.getQuantity())
                 .price(productRequest.getPrice())
                 .imgURL(productRequest.getImgURL())
-                .category(productRequest.getCategory())
-                .brand(productRequest.getBrand())
+//                .category(productRequest.getCategory())
+//                .brand(productRequest.getBrand())
                 .build();
     }
 

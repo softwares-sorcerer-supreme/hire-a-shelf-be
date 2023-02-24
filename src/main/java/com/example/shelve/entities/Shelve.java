@@ -8,13 +8,13 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "shelves")
+@Table(name = "shelve")
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Shelves implements Serializable {
+public class Shelve implements Serializable {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,16 +31,17 @@ public class Shelves implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "store_id")
+    @JsonIgnore
     private Store store;
 
     @ManyToOne
     @JoinColumn(name = "shelves_type_id")
-    private ShelvesType shelvesType;
+    private ShelveType shelvesType;
 
-    @OneToMany(mappedBy = "shelves")
+    @OneToMany(mappedBy = "shelve")
     private Set<ShelvesProducts> shelvesProducts;
 
-    @OneToMany(mappedBy = "shelves")
+    @OneToMany(mappedBy = "shelve")
     private Set<Image> images;
 
 }

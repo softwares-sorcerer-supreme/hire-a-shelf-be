@@ -6,6 +6,7 @@ import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ContractResponse;
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Contract;
+import com.example.shelve.entities.Store;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
@@ -50,24 +51,26 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public ContractResponse createContract(ContractRequest contractRequest) {
-        campaignRepository.findById(
+        Campaign campaign = campaignRepository.findById(
                 contractRequest
-                        .getCampaign()
-                        .getId())
+                        .getCampaignId())
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!"));
 
 
-        storeRepository.findById(
+        Store store = storeRepository.findById(
                 contractRequest
-                        .getStore()
-                        .getId())
+                        .getStoreId())
                 .orElseThrow(() -> new ResourceNotFoundException("Store not found!"));
 
 
-        Contract contract = contractMapper.toContract(contractRequest);
+        Contract contract = Contract.builder()
+                .description(contractRequest.getDescription())
+                .campaign(campaign)
+                .store(store)
+                .createDate(new Date(System.currentTimeMillis()))
+                .EStatus(EStatus.PENDING)
+                .build();
 
-        contract.setCreateDate(new Date(System.currentTimeMillis()));
-        contract.setEStatus(EStatus.PENDING);
         Contract contractSaved = contractRepository.save(contract);
 
         return contractMapper.toContractResponse(contractSaved);

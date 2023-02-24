@@ -27,4 +27,5 @@ public class ProductResponse implements Serializable {
     private BigDecimal price;
     private String imgURL;
 //    private CategoryResponse category;
+
 }

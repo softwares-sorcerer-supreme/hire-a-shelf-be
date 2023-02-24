@@ -46,7 +46,7 @@ public class Store implements Serializable {
     private Set<Contract> contracts;
 
     @OneToMany(mappedBy = "store")
-    private Set<Shelves> shelves;
+    private Set<Shelve> shelves;
 
     @OneToMany(mappedBy = "store")
     private Set<Order> orders;
