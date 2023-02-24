@@ -5,7 +5,6 @@ import com.example.shelve.entities.enums.EStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.*;
 import java.sql.Date;
 import java.util.List;
 import java.util.Set;
@@ -16,8 +15,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CampaignRequest {
-
-    private Long id;
     private String title;
     private String content;
     private Date createdDate;

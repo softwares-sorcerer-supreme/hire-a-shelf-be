@@ -1,7 +1,7 @@
 package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.Product;
-import com.example.shelve.entities.Shelves;
+import com.example.shelve.entities.Shelve;
 import lombok.*;
 
 @Builder
@@ -14,6 +14,4 @@ public class ImageResponse {
     private long id;
 
     private String imgUrl;
-
-    private Shelves shelves;
 }

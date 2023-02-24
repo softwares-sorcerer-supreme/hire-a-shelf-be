@@ -52,10 +52,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     public AuthenticationResponse authenticationResponse(AccountRequest accountRequest) {
         var user = accountRepository.findByUserName(accountRequest.getUserName())
-                .orElseThrow(() -> new ResourceNotFoundException("Username or password invalid!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Username or password is invalid!"));
 
         if (!passwordEncoder.matches(accountRequest.getPassword(), user.getPassword())) {
-            throw new ResourceNotFoundException("Username or password invalid!");
+            throw new ResourceNotFoundException("Username or password is invalid!");
         }
 
         //set firebase token

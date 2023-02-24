@@ -2,6 +2,7 @@ package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Store;
+import com.example.shelve.entities.enums.EStatus;
 import lombok.*;
 
 import java.sql.Date;
@@ -17,10 +18,10 @@ public class ContractResponse {
     private Date createDate;
 
     private Date cancelDate;
-
+    private Date approvalDate;
     private String description;
 
-    private boolean status;
+    private String status;
 
     private Campaign campaign;
 

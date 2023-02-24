@@ -1,5 +1,6 @@
 package com.example.shelve.dto.request;
 
+import com.example.shelve.entities.Brand;
 import com.example.shelve.entities.Registration;
 import com.example.shelve.entities.Store;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,6 @@ public class LocationRequest {
     private String address;
     private String city;
     private String ward;
-    private BrandRequest brand;
     private boolean status;
 
 }
