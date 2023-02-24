@@ -15,7 +15,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class ProductRequest {
 
-    private long id;
     private boolean status;
     private String name;
     private String description;

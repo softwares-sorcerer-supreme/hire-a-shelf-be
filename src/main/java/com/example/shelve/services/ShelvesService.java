@@ -7,4 +7,6 @@ public interface ShelvesService {
     ShelvesResponse getShelve(Long id);
 
     ShelvesResponse createShelve(ShelvesRequest shelvesRequest);
+
+    ShelvesResponse updateShelve(Long id, ShelvesRequest shelvesRequest);
 }

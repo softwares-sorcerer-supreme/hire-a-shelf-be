@@ -36,12 +36,30 @@ public class ShelveServiceImpl implements ShelvesService {
 
     @Override
     public ShelvesResponse createShelve(ShelvesRequest shelvesRequest) {
-        Store store = storeRepository.findById(shelvesRequest.getStoreId()).orElseThrow(() -> new ResourceNotFoundException("Store not found!"));
+        Store store = storeRepository.findById(shelvesRequest.getStoreId()).get();
         ShelveType shelveType = shelvesTypeRepository.findById(shelvesRequest.getShelvesTypeId()).orElseThrow(() -> new ResourceNotFoundException("Shelve type not found!"));
 
         Shelve shelve = shelveMapper.toShelve(shelvesRequest);
         shelve.setStore(store);
         shelve.setShelvesType(shelveType);
+        Shelve shelveSaved = shelvesRepository.save(shelve);
+
+        return shelveMapper.toShelveResponse(shelveSaved);
+    }
+
+    @Override
+    public ShelvesResponse updateShelve(Long id, ShelvesRequest shelvesRequest) {
+        Store store = storeRepository.findById(shelvesRequest.getStoreId()).get();
+        ShelveType shelveType = shelvesTypeRepository.findById(shelvesRequest.getShelvesTypeId()).orElseThrow(() -> new ResourceNotFoundException("Shelve type not found!"));
+
+        Shelve shelve = shelvesRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Shelve not found!"));
+
+        shelve.setName(shelvesRequest.getName());
+        shelve.setDescription(shelvesRequest.getDescription());
+        shelve.setShelvesType(shelveType);
+        shelve.setStore(store);
+
         Shelve shelveSaved = shelvesRepository.save(shelve);
 
         return shelveMapper.toShelveResponse(shelveSaved);
