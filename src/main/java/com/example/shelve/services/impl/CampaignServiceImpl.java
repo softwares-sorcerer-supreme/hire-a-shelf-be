@@ -53,7 +53,7 @@ public class CampaignServiceImpl implements CampaignService {
         } catch (IOException e){
             System.out.printf("Error", e.toString());
         }
-        savedCampaign.setImgURL("https://s3.ap-southeast-1.amazonaws.com/hireashelf.com/"+ImageLinkCloud);
+        savedCampaign.setImgURL(ImageLinkCloud);
         return mapper.toCampaignResponse(campaignRepository.save(savedCampaign));
     }
 
