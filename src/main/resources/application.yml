@@ -1,0 +1,42 @@
+cloud:
+  aws:
+    credentials:
+      access-key: AKIA43CGW6CNL5YKY2AI
+      secret-key: 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
+    region:
+      static: ap-southeast-1
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: hireashelf.com
+
+
+
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    port: 587
+    username: hireashelfinc@gmail.com
+    password: nphmrwaucjrweebc
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
+    test-connection: false
+    protocol: smtp
+
+server:
+  port: 8080

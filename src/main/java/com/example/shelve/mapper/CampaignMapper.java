@@ -3,8 +3,9 @@ package com.example.shelve.mapper;
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.entities.Campaign;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class CampaignMapper {

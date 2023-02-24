@@ -3,7 +3,6 @@ package com.example.shelve.mapper;
 import com.example.shelve.dto.response.AccountResponse;
 import com.example.shelve.entities.Account;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,7 +1,12 @@
 package com.example.shelve.services;
 
+import com.example.shelve.dto.request.PushNotificationRequest;
+import com.example.shelve.dto.response.NotificationResponse;
+
 public interface FirebaseMessagingService {
 
-//    String sendNotification(NoteRequest noteRequest);
+    void sendNotificationToToken(PushNotificationRequest request);
+
+    NotificationResponse getNotificationByAccountId(Long id);
 
 }

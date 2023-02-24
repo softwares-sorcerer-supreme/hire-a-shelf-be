@@ -1,20 +1,26 @@
 package com.example.shelve.controllers;
 
+import com.example.shelve.dto.response.BrandResponse;
+import com.example.shelve.dto.response.NotificationResponse;
+import com.example.shelve.services.BrandService;
 import com.example.shelve.services.FirebaseMessagingService;
+import com.example.shelve.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/notification")
-public class NotificationController {
+import java.util.List;
 
+@RestController
+@RequestMapping("/api/notification")
+public class NotificationController {
     @Autowired
-    private FirebaseMessagingService firebaseMessagingService;
-//
-//    @PostMapping
-//    public String sendNotification(
-//            @RequestBody NoteRequest note) {
-//        return firebaseMessagingService.sendNotification(note);
-//    }
+    NotificationService notificationService;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<NotificationResponse>> getNotificationByAccountId(@PathVariable  Long id) {
+        return new ResponseEntity<>(notificationService.getNotificationByAccountId(id), HttpStatus.OK);
+    }
 
 }

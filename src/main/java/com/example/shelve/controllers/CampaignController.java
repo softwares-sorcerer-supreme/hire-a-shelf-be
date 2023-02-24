@@ -2,9 +2,7 @@ package com.example.shelve.controllers;
 
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.CampaignResponse;
-import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.services.CampaignService;
-import com.google.api.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
