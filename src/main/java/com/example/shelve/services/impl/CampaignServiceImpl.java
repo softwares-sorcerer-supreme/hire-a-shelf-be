@@ -3,6 +3,7 @@ package com.example.shelve.services.impl;
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.entities.Campaign;
+import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CampaignMapper;
 import com.example.shelve.repository.CampaignRepository;
@@ -41,6 +42,21 @@ public class CampaignServiceImpl implements CampaignService {
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!")));
 
         return campaignResponse;
+    }
+
+    @Override
+    public CampaignResponse approveCampaign(Long id, EStatus status) {
+        return null;
+    }
+
+    @Override
+    public CampaignResponse updateCampaign(Long id, CampaignRequest campaign) {
+        return null;
+    }
+
+    @Override
+    public CampaignResponse disableCampaign(Long id) {
+        return null;
     }
 
     @Override
