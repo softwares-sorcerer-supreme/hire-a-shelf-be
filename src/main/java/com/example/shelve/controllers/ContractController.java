@@ -28,7 +28,7 @@ public class ContractController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ContractResponse> getContract(@PathVariable Long id) {
-        return new ResponseEntity<>(contractService.getContract(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(contractService.getContract(id), HttpStatus.OK);
     }
 
     @PostMapping

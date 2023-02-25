@@ -27,6 +27,6 @@ public class BrandController {
 
     @GetMapping("/{id}")
     public ResponseEntity<BrandResponse> getCampaign(@PathVariable Long id) {
-        return new ResponseEntity<>(brandService.getBrand(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(brandService.getBrand(id), HttpStatus.OK);
     }
 }
