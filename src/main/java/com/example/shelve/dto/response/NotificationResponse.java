@@ -11,5 +11,5 @@ import lombok.*;
 public class NotificationResponse {
     private String title;
     private String body;
-    private Account account;
+    private AccountResponse account;
 }

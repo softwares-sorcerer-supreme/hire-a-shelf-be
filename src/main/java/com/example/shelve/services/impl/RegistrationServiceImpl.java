@@ -56,13 +56,15 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new UserExistedException("This email has been registered");
 
         //Save new location
-        Location location = locationRepository.save(locationMapper.toLocation(registrationRequest.getLocation()));
+        Location location = locationMapper.toLocation(registrationRequest.getLocation());
+        location.setStatus(true);
+        Location locationSaved = locationRepository.save(location);
 
         //Mapping
         Registration registration = registrationMapper.toRegistration(registrationRequest);
 
         //Map location to registration
-        registration.setLocation(location);
+        registration.setLocation(locationSaved);
         registration.setEStatus(PENDING);
 
         registrationRepository.save(registration);
@@ -98,8 +100,8 @@ public class RegistrationServiceImpl implements RegistrationService {
             case APPROVED:
                 if (registration.isRegisterByGoogle())
                     handleStatusApprovedByGoogleRegistration(registration);
-                 else
-                     handleStatusApproved(registration);
+                else
+                    handleStatusApproved(registration);
 
                 break;
 
@@ -110,6 +112,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             default:
                 throw new BadRequestException("Error status");
         }
+
 
         registration.setEStatus(status);
         registrationRepository.save(registration);
@@ -152,13 +155,18 @@ public class RegistrationServiceImpl implements RegistrationService {
                 Brand brand = brandRepository.save(Brand.builder()
                         .name(registration.getName())
                         .phone(registration.getPhone())
-                        .locations(Collections.singleton(registration.getLocation()))
+//                        .locations(Collections.singleton(registration.getLocation()))
                         .name(registration.getName())
                         .participateDate(new Date(System.currentTimeMillis()))
                         .status(true)
                         .build());
 
                 account.setBrand(brand);
+
+                Location location = locationRepository.findById(registration.getLocation().getId()).orElseThrow(() -> new ResourceNotFoundException("Location not found!"));
+                location.setBrand(brand);
+                locationRepository.save(location);
+
                 break;
 
             case "Store":
