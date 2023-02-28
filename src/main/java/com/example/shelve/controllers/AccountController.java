@@ -28,6 +28,6 @@ public class AccountController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AccountResponse> getAccount(@PathVariable Long id){
-        return new ResponseEntity<>(accountService.getAccount(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(accountService.getAccount(id), HttpStatus.OK);
     }
 }
