@@ -10,9 +10,8 @@ import com.example.shelve.mapper.CampaignMapper;
 import com.example.shelve.repository.*;
 import com.example.shelve.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -21,8 +20,6 @@ import java.util.Optional;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
-
-    private static final int PAGE_SIZE = 9;
 
     @Autowired
     private CampaignRepository campaignRepository;
@@ -49,13 +46,17 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    @Cacheable(value = "campaign", key = "#id")
     public CampaignResponse getCampaign(Long id) {
         CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaignRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!")));
 
         return campaignResponse;
+    }
+
+    @Override
+    public CampaignResponse createNewCampaign(String campaignStr, MultipartFile file) {
+        return null;
     }
 
     @Override
@@ -128,7 +129,6 @@ public class CampaignServiceImpl implements CampaignService {
         }
 
     @Override
-    @CachePut(value = "campaign", key = "#id")
     public CampaignResponse updateCampaign(Long id, CampaignRequest campaignRequest) {
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!"));
@@ -159,5 +159,18 @@ public class CampaignServiceImpl implements CampaignService {
         return campaignMapper.toCampaignResponse(campaignSaved);
     }
 
+    @Override
+    public CampaignResponse createNewCampaign(String campaignStr, MultipartFile file) {
+        String ImageLinkCloud = storageService.uploadFile(file);
+        Campaign savedCampaign = new Campaign();
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+            savedCampaign = objectMapper.readValue(campaignStr, Campaign.class);
+        } catch (IOException e){
+            System.out.printf("Error", e.toString());
+        }
+        savedCampaign.setImgURL(ImageLinkCloud);
+        return mapper.toCampaignResponse(campaignRepository.save(savedCampaign));
+    }
 
 }
