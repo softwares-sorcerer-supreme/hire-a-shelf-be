@@ -20,8 +20,4 @@ public class OrderResponse {
 
     private Set<OrderDetail> orderDetails;
 
-    private Store store;
-
-    private Campaign campaign;
-
 }

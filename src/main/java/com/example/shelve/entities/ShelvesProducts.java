@@ -27,6 +27,9 @@ public class ShelvesProducts {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Column(name = "quantity")
+    private int quantity;
+
     @Column(name = "status")
     private boolean status;
 }
