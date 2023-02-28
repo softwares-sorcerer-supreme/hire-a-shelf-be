@@ -13,7 +13,9 @@ public interface CampaignService {
 
     CampaignResponse getCampaign(Long id);
 
-    CampaignResponse createNewCampaign(String campaignStr, MultipartFile file);
+//    CampaignResponse createNewCampaign(String campaignStr, MultipartFile file);
+
+    CampaignResponse createNewCampaign(CampaignRequest campaignRequest);
 
     CampaignResponse approveCampaign(Long id, EStatus status);
 

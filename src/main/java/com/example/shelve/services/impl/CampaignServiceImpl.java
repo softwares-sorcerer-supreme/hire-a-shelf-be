@@ -9,10 +9,14 @@ import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CampaignMapper;
 import com.example.shelve.repository.*;
 import com.example.shelve.services.CampaignService;
+import com.example.shelve.services.StorageService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,8 @@ public class CampaignServiceImpl implements CampaignService {
     private CampaignShelvesTypeRepository camapignShelvesTypeRepository;
     @Autowired
     private ShelvesTypeRepository shelvesTypeRepository;
+    @Autowired
+    private StorageService storageService;
 
 
     @Autowired
@@ -52,11 +58,6 @@ public class CampaignServiceImpl implements CampaignService {
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!")));
 
         return campaignResponse;
-    }
-
-    @Override
-    public CampaignResponse createNewCampaign(String campaignStr, MultipartFile file) {
-        return null;
     }
 
     @Override
@@ -110,6 +111,8 @@ public class CampaignServiceImpl implements CampaignService {
                         .build())
         );
 
+        campaign.setImgURL(storageService.uploadFile(campaignRequest.getImgMultipart()));
+
         CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaign);
 
 
@@ -141,11 +144,11 @@ public class CampaignServiceImpl implements CampaignService {
         campaign.setStartDate(campaignRequest.getStartDate());
         campaign.setExpirationDate(campaignRequest.getExpirationDate());
         campaign.setDuration(campaignRequest.getDuration());
-        campaign.setImgURL(campaignRequest.getImgURL());
+        campaign.setImgURL(storageService.uploadFile(campaignRequest.getImgMultipart()));
 
+        Campaign campaignSaved = campaignRepository.save(campaign);
 
-
-        return null;
+        return campaignMapper.toCampaignResponse(campaignSaved);
     }
 
     @Override
@@ -159,7 +162,6 @@ public class CampaignServiceImpl implements CampaignService {
         return campaignMapper.toCampaignResponse(campaignSaved);
     }
 
-    @Override
     public CampaignResponse createNewCampaign(String campaignStr, MultipartFile file) {
         String ImageLinkCloud = storageService.uploadFile(file);
         Campaign savedCampaign = new Campaign();
@@ -170,7 +172,7 @@ public class CampaignServiceImpl implements CampaignService {
             System.out.printf("Error", e.toString());
         }
         savedCampaign.setImgURL(ImageLinkCloud);
-        return mapper.toCampaignResponse(campaignRepository.save(savedCampaign));
+        return campaignMapper.toCampaignResponse(campaignRepository.save(savedCampaign));
     }
 
 }
