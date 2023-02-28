@@ -84,7 +84,7 @@ public class ContractServiceImpl implements ContractService {
 
         switch(contract.getCampaign().getEStatus()) {
             case PENDING:
-                throw new BadRequestException("This campaign has not approved!");
+                throw new BadRequestException("This campaign is waiting for approved!");
 
             case DECLINED:
                 throw new BadRequestException("This campaign has been declined");

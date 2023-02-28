@@ -39,7 +39,6 @@ public class CampaignMapper {
                 .startDate(campaignRequest.getStartDate())
                 .expirationDate(campaignRequest.getExpirationDate())
                 .duration(campaignRequest.getDuration())
-                .imgURL(campaignRequest.getImgURL())
                 .brand(campaignRequest.getBrand())
                 .EStatus(campaignRequest.getEStatus())
                 .build();
