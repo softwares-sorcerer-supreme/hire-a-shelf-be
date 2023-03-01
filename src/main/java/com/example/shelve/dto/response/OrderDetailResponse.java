@@ -12,5 +12,5 @@ import lombok.*;
 public class OrderDetailResponse {
     private long id;
     private int sale;
-    private Product product;
+    private ProductResponse product;
 }

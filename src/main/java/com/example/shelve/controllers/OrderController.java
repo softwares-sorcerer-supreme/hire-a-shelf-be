@@ -28,6 +28,4 @@ public class OrderController {
                                                         @Valid OrderRequest orderRequest) {
         return new ResponseEntity<>(orderService.createNewOrder(orderRequest), HttpStatus.OK);
     }
-
-
 }

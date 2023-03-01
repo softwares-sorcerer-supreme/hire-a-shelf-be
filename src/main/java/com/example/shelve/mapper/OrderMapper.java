@@ -19,9 +19,10 @@ public class OrderMapper {
 
     public OrderResponse toOrderResponse(Order order) {
         Set<OrderDetailResponse> list = new HashSet<>();
-        order.getOrderDetails().forEach(ord -> list.add(
-                orderDetailMapper.toOrderDetailResponse(ord))
-        );
+
+            order.getOrderDetails().forEach(ord -> list.add(
+                    orderDetailMapper.toOrderDetailResponse(ord))
+            );
 
         return OrderResponse.builder()
                 .id(order.getId())

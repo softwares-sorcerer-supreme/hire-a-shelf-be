@@ -67,7 +67,6 @@ public class OrderServiceImpl implements OrderService {
         });
 
         Order newOrder = orderRepository.findById(order.getId()).get();
-
         return orderMapper.toOrderResponse(newOrder);
     }
 

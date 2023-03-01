@@ -11,6 +11,7 @@ import java.util.Set;
 @Table(name = "[order]")
 @Builder
 @Getter
+@ToString
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
