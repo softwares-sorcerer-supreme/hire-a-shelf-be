@@ -18,6 +18,6 @@ public class OrderResponse {
 
     private Date date;
 
-    private Set<OrderDetail> orderDetails;
+    private Set<OrderDetailResponse> orderDetails;
 
 }

@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,11 +65,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         accountRepository.save(user);
 
         //authen
-        authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         accountRequest.getUserName(),
                         accountRequest.getPassword()
                 ));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
 
         var userDetail = new CustomeUserDetail(user);
 
@@ -116,6 +121,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             //Write code to response that user is the first time access the system.
             throw new ResourceNotFoundException("User not found!");
         }
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        foundAccount.get().getUserName(),
+                        foundAccount.get().getPassword()
+                ));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
 
         //set firebase token
         foundAccount.get().setFireBaseToken(firebaseToken);
