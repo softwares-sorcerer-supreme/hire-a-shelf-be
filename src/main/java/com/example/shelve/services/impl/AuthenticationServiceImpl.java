@@ -76,10 +76,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         var userDetail = new CustomeUserDetail(user);
 
+
         var jwtToken = jwtService.generateToken(userDetail);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .account(accountMapper.toAccountResponse(user))
+                .role(userDetail.getAuthorities().toString())
                 .message("Successfully!")
                 .expiredDate(jwtService.extractExpiredDate(jwtToken))
                 .status(HttpStatus.OK.value())
@@ -141,6 +143,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .account(accountMapper.toAccountResponse(foundAccount.get()))
+                .role(userDetail.getAuthorities().toString())
                 .expiredDate(jwtService.extractExpiredDate(jwtToken))
                 .message("Successfully!")
                 .status(HttpStatus.OK.value())
