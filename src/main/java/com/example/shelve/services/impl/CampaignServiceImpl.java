@@ -37,6 +37,8 @@ public class CampaignServiceImpl implements CampaignService {
     private ShelvesTypeRepository shelvesTypeRepository;
     @Autowired
     private StorageService storageService;
+    @Autowired
+    private BrandRepository brandRepository;
 
 
     @Autowired
@@ -63,6 +65,10 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public CampaignResponse createNewCampaign(CampaignRequest campaignRequest) {
         Campaign campaign = campaignMapper.toCampaign(campaignRequest);
+        Brand brand = brandRepository.findById(campaignRequest.getBrandId())
+                .orElseThrow(() -> new ResourceNotFoundException("Brand not found!"));
+
+        campaign.setBrand(brand);
         campaign.setCreatedDate(new Date(System.currentTimeMillis()));
 
         if (campaign.getStartDate().before(campaign.getCreatedDate()))
