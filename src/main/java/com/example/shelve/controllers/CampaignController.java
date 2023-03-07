@@ -1,6 +1,7 @@
 package com.example.shelve.controllers;
 
 import com.example.shelve.dto.request.CampaignRequest;
+import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.services.CampaignService;
@@ -32,12 +33,17 @@ public class CampaignController {
         return new ResponseEntity<>(campaignService.getCampaign(id), HttpStatus.OK);
     }
 
+    @GetMapping("/brand")
+    public APIResponse<List<CampaignResponse>> getCampaignByBrand(@RequestParam(required = false, defaultValue = "") String keyword,
+                                                                  @RequestParam long brandId, @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+        return campaignService.getBrandCampaigns(brandId, keyword, page);
+    }
+
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<CampaignResponse> createNewCampaign(@ModelAttribute
                                                               @Valid CampaignRequest campaign) {
         return new ResponseEntity<>(campaignService.createNewCampaign(campaign), HttpStatus.OK);
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<CampaignResponse> approveCampaign(@RequestParam EStatus status,
                                                             @PathVariable Long id
