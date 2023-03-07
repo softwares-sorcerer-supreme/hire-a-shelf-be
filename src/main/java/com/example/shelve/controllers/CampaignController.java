@@ -6,6 +6,7 @@ import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.services.CampaignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,8 +32,8 @@ public class CampaignController {
         return new ResponseEntity<>(campaignService.getCampaign(id), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<CampaignResponse> createNewCampaign(@RequestBody
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<CampaignResponse> createNewCampaign(@ModelAttribute
                                                               @Valid CampaignRequest campaign) {
         return new ResponseEntity<>(campaignService.createNewCampaign(campaign), HttpStatus.OK);
     }
