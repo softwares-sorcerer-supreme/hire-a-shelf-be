@@ -26,7 +26,7 @@ public class CampaignMapper {
                 .imgURL(campaign.getImgURL())
                 .title(campaign.getTitle())
                 .brand(brandMapper.toBrandResponse(campaign.getBrand()))
-//                .status(campaign.getStatus().getName())
+                .status(campaign.getEStatus().getName())
                 .build();
 
         return campaignResponse;
