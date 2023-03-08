@@ -60,7 +60,7 @@ public class Campaign implements Serializable {
     private Set<CampaignProduct> campaignProducts;
 
     @OneToMany(mappedBy = "campaign")
-    private Set<CampaignShelveType> campaignShelveTypes;
+    private Set<CampaignShelvesType> campaignShelvesTypes;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
