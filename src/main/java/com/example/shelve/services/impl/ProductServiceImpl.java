@@ -32,6 +32,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductMapper productMapper;
 
     @Override
+    @Cacheable(value = "product")
     public List<ProductResponse> getAllProduct() {
         List<ProductResponse> productResponseList = new ArrayList<>();
         productRepository.findAll().forEach(product -> productResponseList.add(productMapper.toProductResponse(product)));
