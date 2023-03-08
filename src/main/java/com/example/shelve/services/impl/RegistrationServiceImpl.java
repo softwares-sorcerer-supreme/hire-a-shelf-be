@@ -152,6 +152,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private Account initTypeAccount(Registration registration, Account account) {
         switch (registration.getTypeAccount()) {
             case "Brand":
+
                 Brand brand = brandRepository.save(Brand.builder()
                         .name(registration.getName())
                         .phone(registration.getPhone())
@@ -159,13 +160,12 @@ public class RegistrationServiceImpl implements RegistrationService {
                         .name(registration.getName())
                         .participateDate(new Date(System.currentTimeMillis()))
                         .status(true)
+                        .location(locationRepository.save(registration.getLocation()))
                         .build());
 
                 account.setBrand(brand);
 
-                Location location = locationRepository.findById(registration.getLocation().getId()).orElseThrow(() -> new ResourceNotFoundException("Location not found!"));
-                location.setBrand(brand);
-                locationRepository.save(location);
+
 
                 break;
 
@@ -173,7 +173,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 Store store = storeRepository.save(Store.builder()
                         .name(registration.getName())
                         .phone(registration.getPhone())
-                        .location(registration.getLocation())
+                        .location(locationRepository.save(registration.getLocation()))
                         .name(registration.getName())
                         .participateDate(new Date(System.currentTimeMillis()))
                         .status(true)
