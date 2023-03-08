@@ -22,7 +22,6 @@ public class AccountResponse implements Serializable {
     private boolean status;
 
     private AdminResponse admin;
-
     private StoreResponse store;
     private BrandResponse brand;
 }

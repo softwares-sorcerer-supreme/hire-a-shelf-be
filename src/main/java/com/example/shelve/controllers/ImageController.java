@@ -28,6 +28,6 @@ public class ImageController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ImageResponse> getCampaign(@PathVariable Long id) {
-        return new ResponseEntity<>(imageService.getImage(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(imageService.getImage(id), HttpStatus.OK);
     }
 }

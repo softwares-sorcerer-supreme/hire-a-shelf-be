@@ -1,6 +1,7 @@
 package com.example.shelve.services;
 
 import com.example.shelve.dto.request.CampaignRequest;
+import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.entities.enums.EStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,11 +14,15 @@ public interface CampaignService {
 
     CampaignResponse getCampaign(Long id);
 
-    CampaignResponse createNewCampaign(String campaignStr, MultipartFile file);
+//    CampaignResponse createNewCampaign(String campaignStr, MultipartFile file);
+
+    CampaignResponse createNewCampaign(CampaignRequest campaignRequest);
 
     CampaignResponse approveCampaign(Long id, EStatus status);
 
     CampaignResponse updateCampaign(Long id, CampaignRequest campaign);
 
     CampaignResponse disableCampaign(Long id);
+
+    APIResponse<List<CampaignResponse>> getBrandCampaigns(Long brandId, String keyword, int page);
 }

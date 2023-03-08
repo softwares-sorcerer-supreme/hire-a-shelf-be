@@ -4,7 +4,9 @@ import com.example.shelve.entities.*;
 import com.example.shelve.entities.enums.EStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
 import java.sql.Date;
 import java.util.List;
 import java.util.Set;
@@ -21,8 +23,8 @@ public class CampaignRequest {
     private Date startDate;
     private Date expirationDate;
     private int duration;
-    private String imgURL;
-    private Brand brand;
+    private MultipartFile imgMultipart;
+    private Long brandId;
     private EStatus EStatus;
     private List<Long> products;
     private List<Long> shelveTypes;

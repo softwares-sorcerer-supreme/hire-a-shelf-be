@@ -18,10 +18,6 @@ public class OrderResponse {
 
     private Date date;
 
-    private Set<OrderDetail> orderDetails;
-
-    private Store store;
-
-    private Campaign campaign;
+    private Set<OrderDetailResponse> orderDetails;
 
 }
