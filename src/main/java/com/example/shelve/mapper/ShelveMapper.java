@@ -6,7 +6,6 @@ import com.example.shelve.dto.response.ProductResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
 import com.example.shelve.entities.Product;
 import com.example.shelve.entities.Shelve;
-import com.example.shelve.entities.ShelvesProducts;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,7 @@ public class ShelveMapper {
                 .description(shelve.getDescription())
                 .status(shelve.isStatus())
                 .store(storeMapper.toStoreResponse(shelve.getStore()))
-                .shelveType(shelve.getShelvesType())
+                .shelveType(shelve.getShelveType())
                 .images(imageResponseSet)
                 .products(productResponseSet)
                 .build();

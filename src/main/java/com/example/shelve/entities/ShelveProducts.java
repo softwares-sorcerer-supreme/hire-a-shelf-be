@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShelvesProducts {
+public class ShelveProducts {
 
     @Id
     @Column
