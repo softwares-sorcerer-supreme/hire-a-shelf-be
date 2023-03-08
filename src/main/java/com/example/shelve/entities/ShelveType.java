@@ -34,6 +34,6 @@ public class ShelveType implements Serializable {
     @JsonIgnore
     private Set<Shelve> shelves;
 
-    @OneToMany(mappedBy = "shelvesType")
+    @OneToMany(mappedBy = "shelveType")
     private Set<CampaignShelveType> campaignShelveTypes;
 }
