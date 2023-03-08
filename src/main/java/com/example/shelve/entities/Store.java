@@ -54,7 +54,7 @@ public class Store implements Serializable {
     @JsonIgnore
     private Account account;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "location_id")
     private Location location;
 
