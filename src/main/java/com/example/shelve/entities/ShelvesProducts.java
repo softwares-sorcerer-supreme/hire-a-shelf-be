@@ -6,13 +6,13 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "shelve_product")
+@Table(name = "shelves_products")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShelveProducts {
+public class ShelvesProducts {
 
     @Id
     @Column
@@ -21,7 +21,7 @@ public class ShelveProducts {
 
     @ManyToOne
     @JoinColumn(name = "shelve_id")
-    private Shelve shelve;
+    private Shelves shelves;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

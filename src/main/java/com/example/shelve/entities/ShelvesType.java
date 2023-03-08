@@ -7,14 +7,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 
-@Entity
-@Table(name = "shelve")
-@Builder
 @Getter
 @Setter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
-public class Shelve implements Serializable {
+@NoArgsConstructor
+@Entity
+@Table(name = "shelves_type")
+public class ShelvesType implements Serializable {
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,19 +30,10 @@ public class Shelve implements Serializable {
     @Column(name = "status")
     private boolean status;
 
-    @ManyToOne
-    @JoinColumn(name = "store_id")
+    @OneToMany(mappedBy = "shelvesType")
     @JsonIgnore
-    private Store store;
+    private Set<Shelves> shelves;
 
-    @ManyToOne
-    @JoinColumn(name = "shelves_type_id")
-    private ShelveType shelveType;
-
-    @OneToMany(mappedBy = "shelve")
-    private Set<ShelveProducts> shelvesProducts;
-
-    @OneToMany(mappedBy = "shelve")
-    private Set<Image> images;
-
+    @OneToMany(mappedBy = "shelvesType")
+    private Set<CampaignShelvesType> campaignShelvesTypes;
 }
