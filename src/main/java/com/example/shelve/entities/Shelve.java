@@ -36,10 +36,10 @@ public class Shelve implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "shelves_type_id")
-    private ShelveType shelvesType;
+    private ShelveType shelveType;
 
     @OneToMany(mappedBy = "shelve")
-    private Set<ShelvesProducts> shelvesProducts;
+    private Set<ShelveProducts> shelvesProducts;
 
     @OneToMany(mappedBy = "shelve")
     private Set<Image> images;

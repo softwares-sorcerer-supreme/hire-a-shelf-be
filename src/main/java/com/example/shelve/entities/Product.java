@@ -55,7 +55,7 @@ public class Product implements Serializable {
 
     @OneToMany(mappedBy = "product")
     @JsonIgnore
-    private Set<ShelvesProducts> shelvesProducts;
+    private Set<ShelveProducts> shelvesProducts;
 
     @OneToMany(mappedBy = "product")
     @JsonIgnore

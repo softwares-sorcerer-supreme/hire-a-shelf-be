@@ -30,7 +30,7 @@ public class ShelveType implements Serializable {
     @Column(name = "status")
     private boolean status;
 
-    @OneToMany(mappedBy = "shelvesType")
+    @OneToMany(mappedBy = "shelveType")
     @JsonIgnore
     private Set<Shelve> shelves;
 

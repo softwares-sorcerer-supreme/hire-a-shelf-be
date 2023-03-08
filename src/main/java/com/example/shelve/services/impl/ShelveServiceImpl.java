@@ -41,7 +41,7 @@ public class ShelveServiceImpl implements ShelvesService {
 
         Shelve shelve = shelveMapper.toShelve(shelvesRequest);
         shelve.setStore(store);
-        shelve.setShelvesType(shelveType);
+        shelve.setShelveType(shelveType);
         Shelve shelveSaved = shelvesRepository.save(shelve);
 
         return shelveMapper.toShelveResponse(shelveSaved);
@@ -57,7 +57,7 @@ public class ShelveServiceImpl implements ShelvesService {
 
         shelve.setName(shelvesRequest.getName());
         shelve.setDescription(shelvesRequest.getDescription());
-        shelve.setShelvesType(shelveType);
+        shelve.setShelveType(shelveType);
         shelve.setStore(store);
 
         Shelve shelveSaved = shelvesRepository.save(shelve);
