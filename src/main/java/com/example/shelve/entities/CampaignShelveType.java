@@ -25,7 +25,7 @@ public class CampaignShelveType {
 
     @ManyToOne
     @JoinColumn(name = "shelve_type_id")
-    private ShelveType shelvesType;
+    private ShelveType shelveType;
 
     @Column(name = "status")
     private boolean status;

@@ -116,7 +116,7 @@ public class CampaignServiceImpl implements CampaignService {
         listShelvesType.forEach(shelveType ->
                 camapignShelvesTypeRepository.save(new CampaignShelveType().builder()
                         .campaign(campaignSaved)
-                        .shelvesType(shelveType)
+                        .shelveType(shelveType)
                         .status(true)
                         .build())
         );
