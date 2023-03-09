@@ -10,11 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/campaign")
@@ -34,10 +32,11 @@ public class CampaignController {
     }
 
     @GetMapping
-    public APIResponse<List<CampaignResponse>> getCampaignByBrand(@RequestParam(required = false, defaultValue = "") String keyword,
+    public APIResponse<List<CampaignResponse>> getAllCampaignsWithFilter(@RequestParam(required = false, defaultValue = "") String keyword,
                                                                   @RequestParam(required = false, defaultValue = "0") long brandId,
-                                                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
-        return campaignService.getBrandCampaigns(brandId, keyword, page);
+                                                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                                                  @RequestParam(required = false, defaultValue = "") List<String> states) {
+        return campaignService.getAllCampaignsWithFilter(brandId, keyword, page, states);
     }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})

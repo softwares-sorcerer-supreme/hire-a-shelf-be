@@ -4,7 +4,6 @@ import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.entities.enums.EStatus;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,5 +23,5 @@ public interface CampaignService {
 
     CampaignResponse disableCampaign(Long id);
 
-    APIResponse<List<CampaignResponse>> getBrandCampaigns(Long brandId, String keyword, int page);
+    APIResponse<List<CampaignResponse>> getAllCampaignsWithFilter(Long brandId, String keyword, int page, List<String> statusList);
 }

@@ -169,13 +169,25 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public APIResponse<List<CampaignResponse>> getBrandCampaigns(Long brandId, String keyword, int page) {
+    public APIResponse<List<CampaignResponse>> getAllCampaignsWithFilter(Long brandId, String keyword, int page, List<String> statusListFilter) {
         Pageable pageable;
         pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC , "createdDate");
         Page<Campaign> result;
 
+
+        //This is stateList use to querrt
+        List<EStatus> stateList = new ArrayList<>();
+
+        //Checking to see whether the state form frontend match any state from the EStatus
+        EStatus[] eStatuses = EStatus.values();
+        for (EStatus status : eStatuses) {
+            if(statusListFilter.contains(status.getName())){
+                stateList.add(status);
+            }
+        }
+
         result = campaignRepository.findByKeywordWithFilter
-                (keyword.toLowerCase(), brandId ,pageable);
+                (stateList, keyword.toLowerCase(), brandId ,pageable);
         List<CampaignResponse> campaignResponses = new ArrayList<>();
         result.toList().forEach((x -> campaignResponses.add(campaignMapper.toCampaignResponse(x))));
         return new APIResponse<>(result.getTotalPages(), campaignResponses);
