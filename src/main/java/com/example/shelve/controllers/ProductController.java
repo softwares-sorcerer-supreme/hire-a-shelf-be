@@ -1,5 +1,6 @@
 package com.example.shelve.controllers;
 
+import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.request.ProductRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
@@ -8,6 +9,7 @@ import com.example.shelve.entities.Product;
 import com.example.shelve.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,15 +29,15 @@ public class ProductController {
 //    }
 
     @GetMapping
-    public APIResponse<List<ProductResponse>> getCampaignByBrand(@RequestParam(required = false, defaultValue = "") String keyword,
+    public APIResponse<List<ProductResponse>> getAllProductWithFilter(@RequestParam(required = false, defaultValue = "") String keyword,
                                                                  @RequestParam(required = false, defaultValue = "0") long brandId,
                                                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                                  @RequestParam(required = false) List<Long> categoriesId) {
-        return productService.getBrandProducts(brandId, keyword, page, categoriesId);
+        return productService.getAllProductWithFilter(brandId, keyword, page, categoriesId);
     }
 
-    @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody ProductRequest productRequest) {
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ProductResponse> createProduct(@ModelAttribute @Valid ProductRequest productRequest) {
         return new ResponseEntity<>(productService.creteProduct(productRequest), HttpStatus.OK);
     }
 

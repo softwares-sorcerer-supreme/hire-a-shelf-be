@@ -11,4 +11,5 @@ public interface CategoryService {
 
     CategoryResponse getCategory(Long id);
 
+    List<CategoryResponse> getCategoriesByStatus(boolean status);
 }

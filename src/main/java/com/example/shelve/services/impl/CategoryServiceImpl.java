@@ -35,4 +35,11 @@ public class CategoryServiceImpl implements CategoryService {
         ;
         return categoryResponse;
     }
+
+    @Override
+    public List<CategoryResponse> getCategoriesByStatus(boolean status) {
+        List<CategoryResponse> categoryResponses = new ArrayList<>();
+        categoryRepository.findCategoriesByStatus(status).forEach(x -> categoryResponses.add(mapper.toCategoryResponse(x)));
+        return categoryResponses;
+    }
 }

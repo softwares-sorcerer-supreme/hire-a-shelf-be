@@ -14,6 +14,7 @@ import com.example.shelve.repository.BrandRepository;
 import com.example.shelve.repository.CategoryRepository;
 import com.example.shelve.repository.ProductRepository;
 import com.example.shelve.services.ProductService;
+import com.example.shelve.services.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,7 +37,8 @@ public class ProductServiceImpl implements ProductService {
     private CategoryRepository categoryRepository;
     @Autowired
     private BrandRepository brandRepository;
-
+    @Autowired
+    private StorageService storageService;
     @Autowired
     private ProductMapper productMapper;
 
@@ -50,6 +52,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse creteProduct(ProductRequest productRequest) {
+        productRequest.setStatus(true);
         Category category = categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
 
@@ -57,6 +60,8 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Brand not found!"));
 
         Product product = productMapper.toProduct(productRequest);
+
+        product.setImgURL(storageService.uploadFile(productRequest.getImgMultipart()));
         product.setCategory(category);
         product.setBrand(brand);
 
@@ -66,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public APIResponse<List<ProductResponse>> getBrandProducts(long brandId, String keyword, int page, List<Long> categoriesId) {
+    public APIResponse<List<ProductResponse>> getAllProductWithFilter(long brandId, String keyword, int page, List<Long> categoriesId) {
         Pageable pageable;
         pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC, "name");
 
