@@ -14,7 +14,7 @@ import java.util.List;
 public interface CampaignRepository extends JpaRepository<Campaign, Long> {
     @Query(value = "SELECT c FROM Campaign c" +
             " WHERE LOWER(c.title) LIKE %:keyword%" +
-            " AND c.brand.id = :brandId")
+            " AND (:brandId = 0L OR c.brand.id = :brandId)")
     Page<Campaign> findByKeywordWithFilter(
             @Param("keyword") String keyword,
             @Param("brandId") long brandId,

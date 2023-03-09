@@ -14,20 +14,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT p FROM Product p join p.category" +
             " WHERE p.category IN :categories" +
             " AND (LOWER(p.name) LIKE %:keyword%)" +
-            " AND p.brand.id = :brandId")
+            " AND (:brandId = 0L OR p.brand.id = :brandId)")
     Page<Product> findByKeywordWithFilter(
             @Param("categories") List<Category> categories,
             @Param("keyword") String keyword,
             @Param("brandId") long brandId,
-            Pageable pageable
-    );
-
-    @Query(value = "SELECT p FROM Product p join p.category" +
-            " WHERE p.category IN :categories" +
-            " AND (LOWER(p.name) LIKE %:keyword%)")
-    Page<Product> findByKeywordWithFilterAdmin(
-            @Param("categories") List<Category> categories,
-            @Param("keyword") String keyword,
             Pageable pageable
     );
 }

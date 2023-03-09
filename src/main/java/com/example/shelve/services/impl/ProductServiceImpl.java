@@ -68,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public APIResponse<List<ProductResponse>> getBrandProducts(long brandId, String keyword, int page, List<Long> categoriesId) {
         Pageable pageable;
-        pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC , "name");
+        pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC, "name");
 
         //By default, filter by all categories, else filter by categories that user choose.
         List<Category> categories;
@@ -79,12 +79,8 @@ public class ProductServiceImpl implements ProductService {
         }
 
         Page<Product> result;
-        if(brandId != 0){
-            result = productRepository.findByKeywordWithFilter
-                    (categories, keyword.toLowerCase(), brandId ,pageable);
-        }else {
-            result = productRepository.findByKeywordWithFilterAdmin(categories, keyword.toLowerCase() ,pageable);
-        }
+        result = productRepository.findByKeywordWithFilter
+                (categories, keyword.toLowerCase(), brandId, pageable);
 
         List<ProductResponse> productResponseList = new ArrayList<>();
         result.toList().forEach((x -> productResponseList.add(productMapper.toProductResponse(x))));

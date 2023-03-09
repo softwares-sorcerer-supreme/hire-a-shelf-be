@@ -23,19 +23,20 @@ public class CampaignController {
     @Autowired
     private CampaignService campaignService;
 
-    @GetMapping
-    public ResponseEntity<List<CampaignResponse>> getAllCampaign() {
-        return new ResponseEntity<>(campaignService.getAllCampaign(), HttpStatus.OK);
-    }
+//    @GetMapping
+//    public ResponseEntity<List<CampaignResponse>> getAllCampaign() {
+//        return new ResponseEntity<>(campaignService.getAllCampaign(), HttpStatus.OK);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CampaignResponse> getCampaign(@PathVariable Long id) {
         return new ResponseEntity<>(campaignService.getCampaign(id), HttpStatus.OK);
     }
 
-    @GetMapping("/brand")
+    @GetMapping
     public APIResponse<List<CampaignResponse>> getCampaignByBrand(@RequestParam(required = false, defaultValue = "") String keyword,
-                                                                  @RequestParam long brandId, @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+                                                                  @RequestParam(required = false, defaultValue = "0") long brandId,
+                                                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
         return campaignService.getBrandCampaigns(brandId, keyword, page);
     }
 

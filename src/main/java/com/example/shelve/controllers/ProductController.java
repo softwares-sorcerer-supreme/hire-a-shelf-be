@@ -21,12 +21,12 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProduct() {
-        return new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
-    }
+//    @GetMapping
+//    public ResponseEntity<List<ProductResponse>> getAllProduct() {
+//        return new ResponseEntity<>(productService.getAllProduct(), HttpStatus.OK);
+//    }
 
-    @GetMapping("/brand")
+    @GetMapping
     public APIResponse<List<ProductResponse>> getCampaignByBrand(@RequestParam(required = false, defaultValue = "") String keyword,
                                                                  @RequestParam(required = false, defaultValue = "0") long brandId,
                                                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page,

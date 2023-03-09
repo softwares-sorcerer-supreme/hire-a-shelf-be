@@ -173,6 +173,7 @@ public class CampaignServiceImpl implements CampaignService {
         Pageable pageable;
         pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC , "createdDate");
         Page<Campaign> result;
+
         result = campaignRepository.findByKeywordWithFilter
                 (keyword.toLowerCase(), brandId ,pageable);
         List<CampaignResponse> campaignResponses = new ArrayList<>();
