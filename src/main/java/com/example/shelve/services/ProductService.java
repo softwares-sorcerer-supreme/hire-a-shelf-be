@@ -11,5 +11,5 @@ public interface ProductService {
 
     ProductResponse creteProduct(ProductRequest productRequest);
 
-    APIResponse<List<ProductResponse>> getBrandProducts(long brandId, String keyword, int page, List<Long> categoriesId);
+    APIResponse<List<ProductResponse>> getAllProductWithFilter(long brandId, String keyword, int page, List<Long> categoriesId);
 }
