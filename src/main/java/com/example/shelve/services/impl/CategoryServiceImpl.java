@@ -29,11 +29,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryResponse getCategory(Long id) {
-        CategoryResponse categoryResponse = mapper.toCategoryResponse(categoryRepository
+        return mapper.toCategoryResponse(categoryRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found!")));
-        ;
-        return categoryResponse;
     }
 
     @Override

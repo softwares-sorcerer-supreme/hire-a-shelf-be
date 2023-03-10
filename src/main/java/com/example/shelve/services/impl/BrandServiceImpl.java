@@ -64,13 +64,8 @@ public class BrandServiceImpl implements BrandService {
         brand.setName(brandRequest.getName());
         brand.setDescription(brandRequest.getDescription());
 
-        if(!brand.getLocation().getCity().equalsIgnoreCase(brandRequest.getLocation().getCity())
-        || !brand.getLocation().getAddress().equalsIgnoreCase(brandRequest.getLocation().getAddress())
-        || !brand.getLocation().getWard().equalsIgnoreCase(brandRequest.getLocation().getWard())
-        || !brand.getLocation().getDistrict().equalsIgnoreCase(brandRequest.getLocation().getDistrict())) {
-            Location location = locationRepository.save(locationMapper.toLocation(brandRequest.getLocation()));
-            brand.setLocation(location);
-        }
+        Location location = locationRepository.save(locationMapper.toLocation(brandRequest.getLocation()));
+        brand.setLocation(location);
 
         Brand brandSaved = brandRepository.save(brand);
 

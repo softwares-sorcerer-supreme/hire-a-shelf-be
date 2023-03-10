@@ -1,6 +1,6 @@
 package com.example.shelve.services.impl;
 
-import ch.qos.logback.core.status.Status;
+import com.example.shelve.dto.request.DataMailRequest;
 import com.example.shelve.dto.request.RegistrationRequest;
 import com.example.shelve.dto.response.RegistrationResponse;
 import com.example.shelve.dto.response.SuccessResponse;
@@ -12,6 +12,7 @@ import com.example.shelve.exception.UserExistedException;
 import com.example.shelve.mapper.LocationMapper;
 import com.example.shelve.mapper.RegistrationMapper;
 import com.example.shelve.repository.*;
+import com.example.shelve.services.MailService;
 import com.example.shelve.services.RegistrationService;
 import com.example.shelve.utils.GeneratePassword;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ import static com.example.shelve.entities.enums.EStatus.PENDING;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
-
+    @Autowired
+    private MailService mailService;
     @Autowired
     private RegistrationRepository registrationRepository;
     @Autowired
@@ -102,11 +104,10 @@ public class RegistrationServiceImpl implements RegistrationService {
                     handleStatusApprovedByGoogleRegistration(registration);
                 else
                     handleStatusApproved(registration);
-
                 break;
 
             case DECLINED:
-                //push notification to notice
+                mailService.sendMailDeclinedAccount(registration.getEmail());
                 break;
 
             default:
@@ -127,7 +128,6 @@ public class RegistrationServiceImpl implements RegistrationService {
     private void handleStatusApproved(Registration registration) {
         String username = registration.getEmail().substring(0, registration.getEmail().indexOf('@'));
         String password = generatePassword.generatePassword();
-
         Account account = Account.builder()
                 .email(registration.getEmail())
                 .userName(username)
@@ -136,16 +136,30 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .build();
 
         accountRepository.save(initTypeAccount(registration, account));
+        DataMailRequest dataMailRequest = DataMailRequest.builder()
+                .email(registration.getEmail())
+                .password(password)
+                .userName(username)
+                .build();
+        mailService.sendMailApprovedAccount(dataMailRequest);
     }
 
     private void handleStatusApprovedByGoogleRegistration(Registration registration) {
         Account account = Account.builder()
                 .email(registration.getEmail())
                 .userName(registration.getEmail())
+                .password(passwordEncoder.encode("123456"))
                 .status(true)
                 .build();
 
         accountRepository.save(initTypeAccount(registration, account));
+
+        DataMailRequest dataMailRequest = DataMailRequest.builder()
+                .email(registration.getEmail())
+                .userName("This field is empty because you login with google account!")
+                .password("This field is empty because you login with google account!")
+                .build();
+        mailService.sendMailApprovedAccount(dataMailRequest);
     }
 
 
@@ -156,7 +170,6 @@ public class RegistrationServiceImpl implements RegistrationService {
                 Brand brand = brandRepository.save(Brand.builder()
                         .name(registration.getName())
                         .phone(registration.getPhone())
-//                        .locations(Collections.singleton(registration.getLocation()))
                         .name(registration.getName())
                         .participateDate(new Date(System.currentTimeMillis()))
                         .status(true)
@@ -164,9 +177,6 @@ public class RegistrationServiceImpl implements RegistrationService {
                         .build());
 
                 account.setBrand(brand);
-
-
-
                 break;
 
             case "Store":
