@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/product/brand")
+@RequestMapping("/api/product")
 public class ProductController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class ProductController {
                                                                  @RequestParam(required = false) List<Long> categoriesId) {
         return productService.getAllProductWithFilter(brandId, keyword, page, categoriesId);
     }
-    @GetMapping("/{brandId}")
+    @GetMapping("/brand/{brandId}")
     public List<ProductResponse> getAllBrandsAvailableProductWithoutFilter(@PathVariable long brandId) {
         return productService.getAllBrandsAvailableProductWithoutFilter(brandId);
     }
