@@ -103,6 +103,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //check if email is registered
         Optional<Registration> registrationAccount = registrationRepository.findByEmail(userName);
         if (registrationAccount.isPresent()) {
+            //check if email is existed in user
+            Optional<Account> foundAccount = accountRepository.findByEmail(userName);
+
+            if (foundAccount.isPresent()){
+                if(!foundAccount.get().getUserName().equals(foundAccount.get().getEmail())){
+                    throw new BadRequestException("This email has been used!");
+                }
+            }
+
             switch (registrationAccount.get().getEStatus()) {
                 case PENDING:
                     throw new BadRequestException("This email is waiting for approved!");
@@ -111,11 +120,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     throw new BadRequestException("Your account don't have enough condition to log in!");
             }
         }
-
-        //check if email is existed in user
-        accountRepository.findByEmail(userName).ifPresent(s -> {
-            throw new BadRequestException("This email has been used!");
-        });
 
         //check if email is exist
         Optional<Account> foundAccount = accountRepository.findByUserName(userName);
@@ -127,7 +131,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         foundAccount.get().getUserName(),
-                        foundAccount.get().getPassword()
+                        "123456"
                 ));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
