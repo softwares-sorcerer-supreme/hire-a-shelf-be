@@ -7,6 +7,7 @@ import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ContractResponse;
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Contract;
+import com.example.shelve.entities.Notification;
 import com.example.shelve.entities.Store;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.BadRequestException;
@@ -14,6 +15,7 @@ import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.ContractMapper;
 import com.example.shelve.repository.CampaignRepository;
 import com.example.shelve.repository.ContractRepository;
+import com.example.shelve.repository.NotificationRepository;
 import com.example.shelve.repository.StoreRepository;
 import com.example.shelve.services.ContractService;
 import com.example.shelve.services.FirebaseMessagingService;
@@ -39,7 +41,7 @@ public class ContractServiceImpl implements ContractService {
     private FirebaseMessagingService firebaseMessagingService;
 
     @Autowired
-
+    private NotificationRepository notificationRepository;
 
     @Override
     public List<ContractResponse> getAllContract() {
@@ -58,8 +60,6 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public ContractResponse createContract(ContractRequest contractRequest) {
-        PushNotificationRequest request = new PushNotificationRequest();
-
         Campaign campaign = campaignRepository.findById(
                 contractRequest
                         .getCampaignId())
@@ -82,10 +82,15 @@ public class ContractServiceImpl implements ContractService {
 
         Contract contractSaved = contractRepository.save(contract);
 
-        request.setToken(campaign.getBrand().getAccount().getFireBaseToken());
-        request.setMessage("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn");
-        request.setTitle(campaign.getTitle());
-        firebaseMessagingService.sendNotificationToToken(request);
+        firebaseMessagingService.sendNotificationToToken(PushNotificationRequest.builder()
+                .token(campaign.getBrand().getAccount().getFireBaseToken())
+                .message("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn")
+                .title(campaign.getTitle()).build());
+        notificationRepository.save(Notification.builder()
+                .title(campaign.getTitle())
+                .body("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn")
+                .account(campaign.getBrand().getAccount())
+                .build());
 
         return contractMapper.toContractResponse(contractSaved);
     }
