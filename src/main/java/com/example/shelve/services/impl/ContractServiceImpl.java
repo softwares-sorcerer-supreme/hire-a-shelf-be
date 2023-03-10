@@ -15,6 +15,7 @@ import com.example.shelve.repository.CampaignRepository;
 import com.example.shelve.repository.ContractRepository;
 import com.example.shelve.repository.StoreRepository;
 import com.example.shelve.services.ContractService;
+import com.example.shelve.services.FirebaseMessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,11 @@ public class ContractServiceImpl implements ContractService {
     private CampaignRepository campaignRepository;
     @Autowired
     private StoreRepository storeRepository;
+
+    @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
+
+    @Autowired
 
 
     @Override
@@ -72,6 +78,10 @@ public class ContractServiceImpl implements ContractService {
                 .build();
 
         Contract contractSaved = contractRepository.save(contract);
+
+        firebaseMessagingService.sendNotificationToToken("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn" ,
+                campaign.getTitle(),
+                campaign.getBrand().getAccount().getFireBaseToken());
 
         return contractMapper.toContractResponse(contractSaved);
     }
