@@ -2,8 +2,10 @@ package com.example.shelve.controllers;
 
 import com.example.shelve.dto.request.ShelvesRequest;
 import com.example.shelve.dto.response.APIResponse;
-import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
+import com.example.shelve.dto.response.ShelvesTypeResponse;
+import com.example.shelve.entities.Shelves;
+import com.example.shelve.entities.ShelvesType;
 import com.example.shelve.services.ShelvesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,5 +44,12 @@ public class ShelvesController {
     public ResponseEntity<ShelvesResponse> updateShelve(@PathVariable Long id, @Valid @RequestBody ShelvesRequest shelvesRequest) {
         return new ResponseEntity<>(shelvesService.updateShelve(id, shelvesRequest), HttpStatus.OK);
     }
+
+    @GetMapping("/types")
+    public List<ShelvesTypeResponse> getListShelvesTypes(@RequestParam(required = false, defaultValue = "none") String status) {
+        return shelvesService.getListShelvesTypes(status);
+    }
+
+
 
 }

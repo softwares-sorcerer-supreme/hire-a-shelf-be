@@ -33,4 +33,6 @@ public interface ShelvesRepository extends JpaRepository<Shelves, Long> {
             @Param("storeId") long storeId,
             Pageable pageable
     );
+
+
 }

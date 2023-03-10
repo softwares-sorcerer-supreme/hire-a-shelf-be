@@ -4,6 +4,7 @@ import com.example.shelve.dto.request.ShelvesRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
+import com.example.shelve.dto.response.ShelvesTypeResponse;
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Shelves;
 import com.example.shelve.entities.ShelvesType;
@@ -11,6 +12,7 @@ import com.example.shelve.entities.Store;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.ShelvesMapper;
+import com.example.shelve.mapper.ShelvesTypeMapper;
 import com.example.shelve.repository.ShelvesRepository;
 import com.example.shelve.repository.ShelvesTypeRepository;
 import com.example.shelve.repository.StoreRepository;
@@ -24,18 +26,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShelvesServiceImpl implements ShelvesService {
-
+    @Autowired
+    private ShelvesTypeMapper shelvesTypeMapper;
     @Autowired
     private ShelvesRepository shelvesRepository;
+    @Autowired
+    private ShelvesTypeRepository shelvesTypeRepository;
     @Autowired
     private ShelvesMapper shelvesMapper;
     @Autowired
     private StoreRepository storeRepository;
-    @Autowired
-    private ShelvesTypeRepository shelvesTypeRepository;
 
     @Override
     public ShelvesResponse getShelve(Long id) {
@@ -93,5 +97,20 @@ public class ShelvesServiceImpl implements ShelvesService {
         List<ShelvesResponse> shelvesResponses = new ArrayList<>();
         result.toList().forEach((x -> shelvesResponses.add(shelvesMapper.toShelveResponse(x))));
         return new APIResponse<>(result.getTotalPages(), shelvesResponses);
+    }
+
+    @Override
+    public List<ShelvesTypeResponse> getListShelvesTypes(String status) {
+        List<ShelvesType> shelvesTypes = new ArrayList<>();
+        if (!status.equals("none")){
+            boolean state = Boolean.parseBoolean(status);
+            shelvesTypes = shelvesTypeRepository.findShelvesTypesByStatus(state);
+        }else {
+            shelvesTypes = shelvesTypeRepository.findAll();
+        }
+        List<ShelvesTypeResponse> shelvesTypeResponses = new ArrayList<>();
+        shelvesTypes.forEach((x -> shelvesTypeResponses.add(shelvesTypeMapper.toShelvesTypeResponse(x))));
+
+        return shelvesTypeResponses;
     }
 }

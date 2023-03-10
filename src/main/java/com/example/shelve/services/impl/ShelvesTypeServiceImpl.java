@@ -6,6 +6,4 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class ShelvesTypeServiceImpl implements ShelvesTypeService {
 
-    @Autowired
-    private ShelvesTypeRepository shelvesTypeRepository;
 }
