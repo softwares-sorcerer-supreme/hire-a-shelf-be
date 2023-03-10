@@ -22,6 +22,7 @@ public class AccountMapper {
                 .username(account.getUserName())
                 .email(account.getEmail())
                 .status(account.isStatus())
+                .fireBaseToken(account.getFireBaseToken())
                 .email(account.getEmail())
                 .admin(adminMapper.toAdminResponse(account.getAdmin()))
                 .store(storeMapper.toStoreResponse(account.getStore()))

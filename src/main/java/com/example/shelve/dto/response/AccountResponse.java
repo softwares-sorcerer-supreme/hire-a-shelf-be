@@ -20,6 +20,7 @@ public class AccountResponse implements Serializable {
     private String username;
     private String email;
     private boolean status;
+    private String fireBaseToken;
 
     private AdminResponse admin;
     private StoreResponse store;

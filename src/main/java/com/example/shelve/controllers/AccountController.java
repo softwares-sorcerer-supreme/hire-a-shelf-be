@@ -30,4 +30,9 @@ public class AccountController {
     public ResponseEntity<AccountResponse> getAccount(@PathVariable Long id){
         return new ResponseEntity<>(accountService.getAccount(id), HttpStatus.OK);
     }
+
+    @GetMapping("/get_account_by_brand_id/{id}")
+    public ResponseEntity<AccountResponse> getAccountByBrandId(@PathVariable Long id){
+        return new ResponseEntity<>(accountService.getAccountByBrandId(id), HttpStatus.OK);
+    }
 }

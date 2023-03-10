@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class CampaignProductResponse {
 
-    private Campaign campaigns;
+    private CampaignResponse campaigns;
 
-    private Product products;
+    private ProductResponse products;
 }

@@ -36,4 +36,12 @@ public class AccountServiceImpl implements AccountService {
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found")));
         return accountResponse;
     }
+
+    @Override
+    public AccountResponse getAccountByBrandId(Long id) {
+        AccountResponse accountResponse = mapper.toAccountResponse(accountRepository
+                .findAccountByBrandId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found")));
+        return accountResponse;
+    }
 }

@@ -9,4 +9,6 @@ public interface AccountService {
     List<AccountResponse> getAllAccount();
 
     AccountResponse getAccount(Long id);
+
+    AccountResponse getAccountByBrandId(Long id);
 }
