@@ -1,6 +1,5 @@
 package com.example.shelve.services.impl;
 
-import ch.qos.logback.core.status.Status;
 import com.example.shelve.dto.request.DataMailRequest;
 import com.example.shelve.dto.request.RegistrationRequest;
 import com.example.shelve.dto.response.RegistrationResponse;
@@ -108,7 +107,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 break;
 
             case DECLINED:
-                //push notification to notice
+                mailService.sendMailDeclinedAccount(registration.getEmail());
                 break;
 
             default:
@@ -142,7 +141,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .password(password)
                 .userName(username)
                 .build();
-        mailService.sendMail(dataMailRequest);
+        mailService.sendMailApprovedAccount(dataMailRequest);
     }
 
     private void handleStatusApprovedByGoogleRegistration(Registration registration) {
@@ -160,7 +159,7 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .userName("This field is empty because you login with google account!")
                 .password("This field is empty because you login with google account!")
                 .build();
-        mailService.sendMail(dataMailRequest);
+        mailService.sendMailApprovedAccount(dataMailRequest);
     }
 
 
@@ -178,9 +177,6 @@ public class RegistrationServiceImpl implements RegistrationService {
                         .build());
 
                 account.setBrand(brand);
-
-
-
                 break;
 
             case "Store":

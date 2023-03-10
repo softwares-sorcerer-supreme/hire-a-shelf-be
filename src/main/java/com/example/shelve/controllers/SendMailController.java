@@ -18,7 +18,7 @@ public class SendMailController {
 
     @PostMapping
     public ResponseEntity<String> sendMail(@RequestBody  DataMailRequest dataMailRequest){
-        mailService.sendMail(dataMailRequest);
+        mailService.sendMailApprovedAccount(dataMailRequest);
         return new ResponseEntity<>("Send Email", HttpStatus.OK);
     }
 }
