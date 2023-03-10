@@ -16,7 +16,6 @@ public class CategoryMapper {
                 .description(category.getDescription())
                 .name(category.getName())
                 .status(category.isStatus())
-                .products(category.getProducts())
                 .build();
 
         return categoryResponse;

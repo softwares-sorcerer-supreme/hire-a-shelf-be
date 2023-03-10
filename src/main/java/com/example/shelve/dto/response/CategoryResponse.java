@@ -20,7 +20,4 @@ public class CategoryResponse {
 
     private String description;
 
-    private Set<Product> products;
-
-    private Set<Store> store;
 }

@@ -8,5 +8,6 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findCategoriesByIdIsIn(List<Long> categoryNames);
+    List<Category> findCategoriesByStatus(Boolean status);
 
 }

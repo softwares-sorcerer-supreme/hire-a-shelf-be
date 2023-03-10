@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -20,7 +21,7 @@ public class ProductRequest {
     private String description;
     private int quantity;
     private BigDecimal price;
-    private String imgURL;
+    private MultipartFile imgMultipart;
     private Long categoryId;
     private Long brandId;
 }
