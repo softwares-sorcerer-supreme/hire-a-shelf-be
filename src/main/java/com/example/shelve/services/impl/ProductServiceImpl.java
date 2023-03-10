@@ -91,4 +91,12 @@ public class ProductServiceImpl implements ProductService {
         result.toList().forEach((x -> productResponseList.add(productMapper.toProductResponse(x))));
         return new APIResponse<>(result.getTotalPages(), productResponseList);
     }
+
+    @Override
+    public List<ProductResponse> getAllBrandsAvailableProductWithoutFilter(long brandId) {
+        List<ProductResponse> productResponseList = new ArrayList<>();
+        List<Product> products = productRepository.findProductsByBrandIdAndStatus(brandId, true);
+        products.forEach((x -> productResponseList.add(productMapper.toProductResponse(x))));
+        return productResponseList;
+    }
 }

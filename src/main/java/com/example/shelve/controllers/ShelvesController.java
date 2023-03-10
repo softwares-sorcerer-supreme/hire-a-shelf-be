@@ -4,8 +4,6 @@ import com.example.shelve.dto.request.ShelvesRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
 import com.example.shelve.dto.response.ShelvesTypeResponse;
-import com.example.shelve.entities.Shelves;
-import com.example.shelve.entities.ShelvesType;
 import com.example.shelve.services.ShelvesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
