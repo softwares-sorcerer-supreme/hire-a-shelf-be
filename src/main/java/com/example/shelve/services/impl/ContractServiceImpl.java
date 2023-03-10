@@ -2,6 +2,7 @@ package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.request.ContractRequest;
+import com.example.shelve.dto.request.PushNotificationRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ContractResponse;
 import com.example.shelve.entities.Campaign;
@@ -57,6 +58,8 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public ContractResponse createContract(ContractRequest contractRequest) {
+        PushNotificationRequest request = new PushNotificationRequest();
+
         Campaign campaign = campaignRepository.findById(
                 contractRequest
                         .getCampaignId())
@@ -79,9 +82,10 @@ public class ContractServiceImpl implements ContractService {
 
         Contract contractSaved = contractRepository.save(contract);
 
-        firebaseMessagingService.sendNotificationToToken("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn" ,
-                campaign.getTitle(),
-                campaign.getBrand().getAccount().getFireBaseToken());
+        request.setToken(campaign.getBrand().getAccount().getFireBaseToken());
+        request.setMessage("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn");
+        request.setTitle(campaign.getTitle());
+        firebaseMessagingService.sendNotificationToToken(request);
 
         return contractMapper.toContractResponse(contractSaved);
     }

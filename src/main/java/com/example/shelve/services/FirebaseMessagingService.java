@@ -5,7 +5,7 @@ import com.example.shelve.dto.response.NotificationResponse;
 
 public interface FirebaseMessagingService {
 
-    void sendNotificationToToken(String message, String title, String token);
+    void sendNotificationToToken(PushNotificationRequest request);
 
     NotificationResponse getNotificationByAccountId(Long id);
 
