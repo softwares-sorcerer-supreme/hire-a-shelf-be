@@ -1,6 +1,5 @@
 package com.example.shelve.mapper;
 
-import com.example.shelve.dto.response.AccountResponse;
 import com.example.shelve.dto.response.NotificationResponse;
 import com.example.shelve.entities.Notification;
 import lombok.Builder;
@@ -11,13 +10,13 @@ import org.springframework.stereotype.Component;
 public class NotificationMapper {
 
     @Autowired
-    AccountMapper mapper;
+    private AccountMapper accountMapper;
+
     public NotificationResponse toNotificationResponse (Notification notification){
-        NotificationResponse notificationResponse = NotificationResponse.builder()
+        return NotificationResponse.builder()
                 .body(notification.getBody())
                 .title(notification.getTitle())
-                .accountResponse(mapper.toAccountResponse(notification.getAccount()))
+                .accountResponse(accountMapper.toAccountResponse(notification.getAccount()))
                 .build();
-        return notificationResponse;
     }
 }

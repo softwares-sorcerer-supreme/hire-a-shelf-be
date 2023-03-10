@@ -46,6 +46,7 @@ public class Product implements Serializable {
     private Category category;
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     private Set<OrderDetail> orderDetails;
 
     @ManyToOne

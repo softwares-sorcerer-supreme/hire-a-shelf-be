@@ -37,6 +37,7 @@ public class RegistrationMapper {
                 .typeAccount(registration.getTypeAccount())
                 .status(registration.getEStatus().getName())
                 .name(registration.getName())
+                .locationResponse(locationMapper.toLocationResponse(registration.getLocation()))
                 .build();
     }
 

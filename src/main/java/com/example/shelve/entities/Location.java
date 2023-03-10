@@ -1,5 +1,6 @@
 package com.example.shelve.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,13 +34,13 @@ public class Location implements Serializable {
     private String city;
 
     @OneToMany(mappedBy = "location")
+    @JsonIgnore
     private Set<Store> store;
 
     @OneToOne(mappedBy = "location")
     private Registration registration;
 
-    @ManyToOne
-    @JoinColumn(name = "brand_id")
+    @OneToOne(mappedBy = "location")
     private Brand brand;
 
     @Column(name = "status")

@@ -1,5 +1,6 @@
 package com.example.shelve.dto.response;
 
+import com.example.shelve.entities.Order;
 import com.example.shelve.entities.enums.EStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,7 @@ public class StoreResponse {
 
     private Set<ShelvesResponse> shelves;
 
-//    private Set<Order> orders;
+    private Set<OrderResponse> orders;
 
 //    private Account account;
 
