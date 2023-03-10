@@ -1,6 +1,7 @@
 package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.CampaignRequest;
+import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.entities.*;
 import com.example.shelve.entities.enums.EStatus;
@@ -10,20 +11,21 @@ import com.example.shelve.mapper.CampaignMapper;
 import com.example.shelve.repository.*;
 import com.example.shelve.services.CampaignService;
 import com.example.shelve.services.StorageService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
+    private static final int pageSize = 6;
 
     @Autowired
     private CampaignRepository campaignRepository;
@@ -37,6 +39,8 @@ public class CampaignServiceImpl implements CampaignService {
     private ShelvesTypeRepository shelvesTypeRepository;
     @Autowired
     private StorageService storageService;
+    @Autowired
+    private BrandRepository brandRepository;
 
 
     @Autowired
@@ -63,6 +67,10 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public CampaignResponse createNewCampaign(CampaignRequest campaignRequest) {
         Campaign campaign = campaignMapper.toCampaign(campaignRequest);
+        Brand brand = brandRepository.findById(campaignRequest.getBrandId())
+                .orElseThrow(() -> new ResourceNotFoundException("Brand not found!"));
+
+        campaign.setBrand(brand);
         campaign.setCreatedDate(new Date(System.currentTimeMillis()));
 
         if (campaign.getStartDate().before(campaign.getCreatedDate()))
@@ -72,6 +80,8 @@ public class CampaignServiceImpl implements CampaignService {
             throw new BadRequestException("Expiration Date must be after Start Date");
 
         campaign.setEStatus(EStatus.PENDING);
+        campaign.setImgURL(storageService.uploadFile(campaignRequest.getImgMultipart()));
+
         Campaign campaignSaved = campaignRepository.save(campaign);
 
         List<Product> listProduct = new ArrayList<>();
@@ -93,7 +103,7 @@ public class CampaignServiceImpl implements CampaignService {
         });
 
 
-        List<ShelveType> listShelvesType = new ArrayList<>();
+        List<ShelvesType> listShelvesType = new ArrayList<>();
         //get list shelve type
         campaignRequest.getShelveTypes().forEach(i -> listShelvesType.add(
                 shelvesTypeRepository
@@ -104,18 +114,14 @@ public class CampaignServiceImpl implements CampaignService {
 
         //add to Campaign Shelve Type table
         listShelvesType.forEach(shelveType ->
-                camapignShelvesTypeRepository.save(new CampaignShelveType().builder()
+                camapignShelvesTypeRepository.save(new CampaignShelvesType().builder()
                         .campaign(campaignSaved)
                         .shelvesType(shelveType)
                         .status(true)
                         .build())
         );
 
-        campaign.setImgURL(storageService.uploadFile(campaignRequest.getImgMultipart()));
-
         CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaign);
-
-
         return campaignResponse;
     }
 
@@ -162,17 +168,43 @@ public class CampaignServiceImpl implements CampaignService {
         return campaignMapper.toCampaignResponse(campaignSaved);
     }
 
-    public CampaignResponse createNewCampaign(String campaignStr, MultipartFile file) {
-        String ImageLinkCloud = storageService.uploadFile(file);
-        Campaign savedCampaign = new Campaign();
-        try{
-            ObjectMapper objectMapper = new ObjectMapper();
-            savedCampaign = objectMapper.readValue(campaignStr, Campaign.class);
-        } catch (IOException e){
-            System.out.printf("Error", e.toString());
+    @Override
+    public APIResponse<List<CampaignResponse>> getAllCampaignsWithFilter(Long brandId, String keyword, int page, List<String> statusListFilter) {
+        Pageable pageable;
+        pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC , "createdDate");
+        Page<Campaign> result;
+
+
+        //This is stateList use to querrt
+        List<EStatus> stateList = new ArrayList<>();
+
+        //Checking to see whether the state form frontend match any state from the EStatus
+        EStatus[] eStatuses = EStatus.values();
+        for (EStatus status : eStatuses) {
+            if(statusListFilter.contains(status.getName())){
+                stateList.add(status);
+            }
         }
-        savedCampaign.setImgURL(ImageLinkCloud);
-        return campaignMapper.toCampaignResponse(campaignRepository.save(savedCampaign));
+
+        result = campaignRepository.findByKeywordWithFilter
+                (stateList, keyword.toLowerCase(), brandId ,pageable);
+        List<CampaignResponse> campaignResponses = new ArrayList<>();
+        result.toList().forEach((x -> campaignResponses.add(campaignMapper.toCampaignResponse(x))));
+        return new APIResponse<>(result.getTotalPages(), campaignResponses);
     }
+
+//    public CampaignResponse createNewCampaign(String campaignStr, MultipartFile file) {
+//        String imageLinkCloud = storageService.uploadFile(file);
+//        Campaign savedCampaign = new Campaign();
+//        try{
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            savedCampaign = objectMapper.readValue(campaignStr, Campaign.class);
+//            savedCampaign.setImgURL(imageLinkCloud);
+//        } catch (IOException e){
+//            System.out.printf("Error asda sdasdasdsa", e);
+//        }
+//        System.out.println("-------------------------------------------------------------------------------" + savedCampaign.getImgURL());
+//        return campaignMapper.toCampaignResponse(campaignRepository.save(savedCampaign));
+//    }
 
 }

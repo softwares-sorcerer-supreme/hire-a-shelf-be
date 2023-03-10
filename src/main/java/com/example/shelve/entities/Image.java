@@ -24,5 +24,5 @@ public class Image implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "shelves_id")
-    private Shelve shelve;
+    private Shelves shelves;
 }

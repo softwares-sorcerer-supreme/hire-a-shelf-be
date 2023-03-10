@@ -18,4 +18,5 @@ public class AuthenticationResponse {
     private AccountResponse account;
     private String message;
     private int status;
+    private String role;
 }

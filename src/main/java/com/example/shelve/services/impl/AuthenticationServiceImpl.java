@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -63,18 +65,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         accountRepository.save(user);
 
         //authen
-        authenticationManager.authenticate(
+        Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         accountRequest.getUserName(),
                         accountRequest.getPassword()
                 ));
 
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
         var userDetail = new CustomeUserDetail(user);
+
 
         var jwtToken = jwtService.generateToken(userDetail);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .account(accountMapper.toAccountResponse(user))
+                .role(userDetail.getAuthorities().toString())
                 .message("Successfully!")
                 .expiredDate(jwtService.extractExpiredDate(jwtToken))
                 .status(HttpStatus.OK.value())
@@ -117,6 +124,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new ResourceNotFoundException("User not found!");
         }
 
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        foundAccount.get().getUserName(),
+                        foundAccount.get().getPassword()
+                ));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
         //set firebase token
         foundAccount.get().setFireBaseToken(firebaseToken);
         accountRepository.save(foundAccount.get());
@@ -127,6 +143,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .account(accountMapper.toAccountResponse(foundAccount.get()))
+                .role(userDetail.getAuthorities().toString())
                 .expiredDate(jwtService.extractExpiredDate(jwtToken))
                 .message("Successfully!")
                 .status(HttpStatus.OK.value())

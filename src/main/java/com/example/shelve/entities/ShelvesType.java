@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "shelve_type")
+@Table(name = "shelves_type")
 public class ShelvesType implements Serializable {
 
     @Id
@@ -32,8 +32,8 @@ public class ShelvesType implements Serializable {
 
     @OneToMany(mappedBy = "shelvesType")
     @JsonIgnore
-    private Set<Shelve> shelves;
+    private Set<Shelves> shelves;
 
     @OneToMany(mappedBy = "shelvesType")
-    private Set<CampaignShelveType> campaignShelveTypes;
+    private Set<CampaignShelvesType> campaignShelvesTypes;
 }

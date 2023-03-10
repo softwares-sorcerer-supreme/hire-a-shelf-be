@@ -24,7 +24,7 @@ public class CampaignRequest {
     private Date expirationDate;
     private int duration;
     private MultipartFile imgMultipart;
-    private Brand brand;
+    private Long brandId;
     private EStatus EStatus;
     private List<Long> products;
     private List<Long> shelveTypes;

@@ -33,9 +33,9 @@ public class Location implements Serializable {
     @Column(name = "city")
     private String city;
 
-    @OneToMany(mappedBy = "location")
+    @OneToOne(mappedBy = "location")
     @JsonIgnore
-    private Set<Store> store;
+    private Store store;
 
     @OneToOne(mappedBy = "location")
     private Registration registration;

@@ -27,7 +27,7 @@ public class Campaign implements Serializable {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
     @Column(name = "created_date")
@@ -60,7 +60,7 @@ public class Campaign implements Serializable {
     private Set<CampaignProduct> campaignProducts;
 
     @OneToMany(mappedBy = "campaign")
-    private Set<CampaignShelveType> campaignShelveTypes;
+    private Set<CampaignShelvesType> campaignShelvesTypes;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

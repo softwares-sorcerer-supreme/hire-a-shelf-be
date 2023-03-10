@@ -1,6 +1,5 @@
 package com.example.shelve.entities;
 
-import com.example.shelve.entities.enums.EStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -46,7 +45,7 @@ public class Store implements Serializable {
     private Set<Contract> contracts;
 
     @OneToMany(mappedBy = "store")
-    private Set<Shelve> shelves;
+    private Set<Shelves> shelves;
 
     @OneToMany(mappedBy = "store")
     private Set<Order> orders;
@@ -55,7 +54,7 @@ public class Store implements Serializable {
     @JsonIgnore
     private Account account;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "location_id")
     private Location location;
 

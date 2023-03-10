@@ -1,6 +1,6 @@
 package com.example.shelve.dto.response;
 
-import com.example.shelve.entities.Shelve;
+import com.example.shelve.entities.Shelves;
 
 import java.util.Set;
 
@@ -14,6 +14,6 @@ public class ShelvesTypeResponse {
 
     private boolean status;
 
-    private Set<Shelve> shelves;
+    private Set<Shelves> shelves;
 
 }

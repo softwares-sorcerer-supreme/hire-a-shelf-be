@@ -3,7 +3,6 @@ package com.example.shelve.dto.response;
 import com.example.shelve.entities.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.Set;
 
 @Builder
@@ -23,7 +22,7 @@ public class ShelvesResponse {
 
     private StoreResponse store;
 
-    private ShelveType shelveType;
+    private ShelvesType shelvesType;
 
     private Set<ImageResponse> images;
 

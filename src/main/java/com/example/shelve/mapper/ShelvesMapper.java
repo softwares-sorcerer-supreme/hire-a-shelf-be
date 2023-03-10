@@ -5,8 +5,7 @@ import com.example.shelve.dto.response.ImageResponse;
 import com.example.shelve.dto.response.ProductResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
 import com.example.shelve.entities.Product;
-import com.example.shelve.entities.Shelve;
-import com.example.shelve.entities.ShelvesProducts;
+import com.example.shelve.entities.Shelves;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class ShelveMapper {
+public class ShelvesMapper {
 
     @Autowired
     private ImageMapper imageMapper;
@@ -27,14 +26,14 @@ public class ShelveMapper {
     @Autowired
     private StoreMapper storeMapper;
 
-    public ShelvesResponse toShelveResponse(Shelve shelve) {
+    public ShelvesResponse toShelveResponse(Shelves shelves) {
         Set<ImageResponse> imageResponseSet = new HashSet<>();
-        shelve.getImages().forEach(image ->
+        shelves.getImages().forEach(image ->
                 imageResponseSet.add(
                         imageMapper.toImageResponse(image)));
 
         Set<ProductResponse> productResponseSet = new HashSet<>();
-        shelve.getShelvesProducts().forEach(shelveProduct -> {
+        shelves.getShelvesProducts().forEach(shelveProduct -> {
             if (shelveProduct.isStatus()) {
                 Product product = productRepository.findById(shelveProduct.getId())
                         .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
@@ -44,19 +43,19 @@ public class ShelveMapper {
         });
 
         return ShelvesResponse.builder()
-                .id(shelve.getId())
-                .name(shelve.getName())
-                .description(shelve.getDescription())
-                .status(shelve.isStatus())
-                .store(storeMapper.toStoreResponse(shelve.getStore()))
-                .shelveType(shelve.getShelvesType())
+                .id(shelves.getId())
+                .name(shelves.getName())
+                .description(shelves.getDescription())
+                .status(shelves.isStatus())
+                .store(storeMapper.toStoreResponse(shelves.getStore()))
+                .shelvesType(shelves.getShelvesType())
                 .images(imageResponseSet)
                 .products(productResponseSet)
                 .build();
     }
 
-    public Shelve toShelve(ShelvesRequest shelvesRequest) {
-        return Shelve.builder()
+    public Shelves toShelve(ShelvesRequest shelvesRequest) {
+        return com.example.shelve.entities.Shelves.builder()
                 .name(shelvesRequest.getName())
                 .description(shelvesRequest.getDescription())
                 .status(shelvesRequest.isStatus())

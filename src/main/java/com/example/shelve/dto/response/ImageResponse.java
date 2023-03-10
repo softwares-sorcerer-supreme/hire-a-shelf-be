@@ -1,7 +1,5 @@
 package com.example.shelve.dto.response;
 
-import com.example.shelve.entities.Product;
-import com.example.shelve.entities.Shelve;
 import lombok.*;
 
 @Builder
