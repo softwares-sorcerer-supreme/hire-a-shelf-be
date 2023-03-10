@@ -21,4 +21,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             @Param("brandId") long brandId,
             Pageable pageable
     );
+
+    List<Product> findProductsByBrandIdAndStatus(long brandId, boolean status);
 }

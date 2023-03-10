@@ -35,6 +35,10 @@ public class ProductController {
                                                                  @RequestParam(required = false) List<Long> categoriesId) {
         return productService.getAllProductWithFilter(brandId, keyword, page, categoriesId);
     }
+    @GetMapping("/brand/{brandId}")
+    public List<ProductResponse> getAllBrandsAvailableProductWithoutFilter(@PathVariable long brandId) {
+        return productService.getAllBrandsAvailableProductWithoutFilter(brandId);
+    }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProductResponse> createProduct(@ModelAttribute @Valid ProductRequest productRequest) {

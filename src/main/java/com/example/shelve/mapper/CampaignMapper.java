@@ -2,25 +2,34 @@ package com.example.shelve.mapper;
 
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.CampaignResponse;
+import com.example.shelve.dto.response.ProductResponse;
 import com.example.shelve.entities.Campaign;
+import com.example.shelve.entities.CampaignProduct;
+import com.example.shelve.entities.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class CampaignMapper {
-
+    @Autowired
+    private ProductMapper productMapper;
     @Autowired
     private BrandMapper brandMapper;
 
     public CampaignResponse toCampaignResponse(Campaign campaign) {
-        CampaignResponse campaignResponse = CampaignResponse.builder()
+        List<Product> productList = campaign.getCampaignProducts().stream().map((CampaignProduct::getProduct)).collect(Collectors.toList());
+        Set<ProductResponse> productResponseList = new HashSet<>();
+        productList.forEach((x -> productResponseList.add(productMapper.toProductResponse(x))));
+        return CampaignResponse.builder()
                 .id(campaign.getId())
                 .content(campaign.getContent())
                 .duration(campaign.getDuration())
                 .createdDate(campaign.getCreatedDate())
                 .startDate(campaign.getStartDate())
+                .products(productResponseList)
                 .duration(campaign.getDuration())
                 .expirationDate(campaign.getExpirationDate())
                 .imgURL(campaign.getImgURL())
@@ -28,12 +37,11 @@ public class CampaignMapper {
                 .brand(brandMapper.toBrandResponse(campaign.getBrand()))
                 .status(campaign.getEStatus().getName())
                 .build();
-
-        return campaignResponse;
     }
 
     public Campaign toCampaign(CampaignRequest campaignRequest) {
-        Campaign campaign = Campaign.builder()
+
+        return Campaign.builder()
                 .title(campaignRequest.getTitle())
                 .content(campaignRequest.getContent())
                 .startDate(campaignRequest.getStartDate())
@@ -41,7 +49,5 @@ public class CampaignMapper {
                 .duration(campaignRequest.getDuration())
                 .EStatus(campaignRequest.getEStatus())
                 .build();
-
-        return campaign;
     }
 }

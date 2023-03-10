@@ -22,9 +22,10 @@ import java.util.Map;
 @Service
 public class MailServiceImpl implements MailService {
 
-    public final static class SEND_MAIL_SUBJECT{
+    public final static class SEND_MAIL_SUBJECT {
         public final static String CLIENT_REGISTER = "XÁC NHẬN TẠO MỚI THÔNG TIN NGƯỜI DÙNG";
     }
+
     @Autowired
     JavaMailSender mailSender;
 
@@ -33,9 +34,10 @@ public class MailServiceImpl implements MailService {
 
     @Value("${spring.mail.username}")
     private String email;
+
     @Override
-    public void sendMail(DataMailRequest dataMailRequest) {
-        try{
+    public void sendMailApprovedAccount(DataMailRequest dataMailRequest) {
+        try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 
@@ -50,8 +52,27 @@ public class MailServiceImpl implements MailService {
             helper.setText(thymleafService.createContent("mail-sender-test.html", variables), true);
 
             mailSender.send(message);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void sendMailDeclinedAccount(String email) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+
+            helper.setSubject(SEND_MAIL_SUBJECT.CLIENT_REGISTER);
+            helper.setFrom(email);
+
+            Map<String, Object> variables = new HashMap<>();
+            helper.setText(thymleafService.createContent("mail-sender-announce.html", variables), true);
+
+            mailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+
         }
     }
 }
