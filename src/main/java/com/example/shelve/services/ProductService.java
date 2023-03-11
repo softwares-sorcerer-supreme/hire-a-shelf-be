@@ -14,4 +14,6 @@ public interface ProductService {
     APIResponse<List<ProductResponse>> getAllProductWithFilter(long brandId, String keyword, int page, List<Long> categoriesId);
 
     List<ProductResponse> getAllBrandsAvailableProductWithoutFilter(long brandId);
+
+    ProductResponse updateProduct(Long productId, ProductRequest productRequest);
 }
