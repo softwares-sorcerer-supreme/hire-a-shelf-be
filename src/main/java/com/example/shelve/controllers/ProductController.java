@@ -33,7 +33,7 @@ public class ProductController {
                                                                  @RequestParam(required = false, defaultValue = "0") long brandId,
                                                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                                  @RequestParam(required = false) List<Long> categoriesId) {
-        return productService.getAllProductWithFilter(brandId, keyword, page, categoriesId);
+        return productService.getAllProductWithFilter(brandId, page, keyword, categoriesId);
     }
     @GetMapping("/brand/{brandId}")
     public List<ProductResponse> getAllBrandsAvailableProductWithoutFilter(@PathVariable long brandId) {

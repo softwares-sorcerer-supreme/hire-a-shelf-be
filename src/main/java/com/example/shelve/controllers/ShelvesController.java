@@ -27,7 +27,7 @@ public class ShelvesController {
                                                                          @RequestParam(required = false, defaultValue = "0") long storeId,
                                                                          @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                                          @RequestParam(required = false, defaultValue = "none") String status) {
-        return shelvesService.getListShelvesWithFilter(storeId, keyword, page, status);
+        return shelvesService.getListShelvesWithFilter(storeId, page, keyword, status);
     }
 
     @GetMapping("/{id}")

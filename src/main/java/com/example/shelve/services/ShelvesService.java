@@ -16,7 +16,7 @@ public interface ShelvesService {
 
     ShelvesResponse updateShelve(Long id, ShelvesRequest shelvesRequest);
 
-    APIResponse<List<ShelvesResponse>> getListShelvesWithFilter(long storeId, String keyword, int page, String status);
+    APIResponse<List<ShelvesResponse>> getListShelvesWithFilter(long storeId, int page, String keyword,String status);
 
     List<ShelvesTypeResponse> getListShelvesTypes(String status);
 
