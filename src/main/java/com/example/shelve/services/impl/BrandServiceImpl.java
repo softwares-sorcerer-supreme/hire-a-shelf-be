@@ -73,6 +73,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    @CachePut(value = "brand", key = "#id")
     public BrandResponse deleteBrand(Long id) {
         Brand brand = brandRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Brand not found!"));

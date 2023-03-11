@@ -9,6 +9,8 @@ import com.example.shelve.mapper.CategoryMapper;
 import com.example.shelve.repository.CategoryRepository;
 import com.example.shelve.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable(value = "category")
     public List<CategoryResponse> getCategoriesByStatus(boolean status) {
         List<CategoryResponse> categoryResponses = new ArrayList<>();
         categoryRepository.findCategoriesByStatus(status).forEach(x -> categoryResponses.add(mapper.toCategoryResponse(x)));
@@ -44,6 +47,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @CacheEvict(value = "category", allEntries = true)
     public CategoryResponse createCategory(CategoryRequest categoryRequest) {
         Category savedCategory = new Category();
         savedCategory.setName(categoryRequest.getName());

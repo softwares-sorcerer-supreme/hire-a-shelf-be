@@ -24,6 +24,9 @@ public class LocationMapper {
     }
 
     public Location toLocation(LocationRequest locationRequest) {
+        if(locationRequest == null)
+            return new Location();
+
         return Location.builder()
                 .district(locationRequest.getDistrict())
                 .city(locationRequest.getCity())

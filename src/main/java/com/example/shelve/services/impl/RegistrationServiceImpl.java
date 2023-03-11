@@ -16,6 +16,8 @@ import com.example.shelve.services.MailService;
 import com.example.shelve.services.RegistrationService;
 import com.example.shelve.utils.GeneratePassword;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -91,6 +93,11 @@ public class RegistrationServiceImpl implements RegistrationService {
 
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "brand", allEntries = true),
+            @CacheEvict(value = "store", allEntries = true),
+            @CacheEvict(value = "account", allEntries = true)
+    })
     public SuccessResponse approve(EStatus status, Long id) {
         Registration registration = registrationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Registration not found!"));

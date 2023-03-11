@@ -8,6 +8,7 @@ import com.example.shelve.entities.Brand;
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Category;
 import com.example.shelve.entities.Product;
+import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.ProductMapper;
 import com.example.shelve.repository.BrandRepository;
@@ -17,6 +18,8 @@ import com.example.shelve.services.ProductService;
 import com.example.shelve.services.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,7 +54,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(value = "product", allEntries = true)
     public ProductResponse creteProduct(ProductRequest productRequest) {
+        log.error("add product ddi qua day");
+
         productRequest.setStatus(true);
         Category category = categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
@@ -71,7 +77,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public APIResponse<List<ProductResponse>> getAllProductWithFilter(long brandId, String keyword, int page, List<Long> categoriesId) {
+    @Cacheable(value = "product", key = "{#brandId, #page}")
+    public APIResponse<List<ProductResponse>> getAllProductWithFilter(long brandId, int page, String keyword, List<Long> categoriesId) {
+        log.error("Product ddi qua day");
+
         Pageable pageable;
         pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC, "name");
 
@@ -99,4 +108,31 @@ public class ProductServiceImpl implements ProductService {
         products.forEach((x -> productResponseList.add(productMapper.toProductResponse(x))));
         return productResponseList;
     }
+
+    @Override
+    @CachePut(value = "product", key = "#productId")
+    public ProductResponse updateProduct(Long productId, ProductRequest productRequest) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
+
+        Category category = categoryRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
+
+        if(product.getBrand().getId() != productRequest.getBrandId())
+            throw new BadRequestException("You do not have permission to edit this product");
+
+        product.setName(productRequest.getName());
+        product.setDescription(product.getDescription());
+        product.setStatus(product.isStatus());
+        product.setQuantity(product.getQuantity());
+        product.setPrice(product.getPrice());
+        product.setImgURL(storageService.uploadFile(productRequest.getImgMultipart()));
+        product.setCategory(category);
+
+        Product productSaved = productRepository.save(product);
+
+        return productMapper.toProductResponse(productSaved);
+    }
+
+
 }

@@ -20,6 +20,9 @@ import com.example.shelve.repository.StoreRepository;
 import com.example.shelve.services.ShelvesService;
 import com.example.shelve.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -54,6 +57,7 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
+    @CacheEvict(value = "shelves", allEntries = true)
     public ShelvesResponse createShelve(ShelvesRequest shelvesRequest) {
         Store store = storeRepository.findById(shelvesRequest.getStoreId()).get();
         ShelvesType shelvesType = shelvesTypeRepository.findById(shelvesRequest.getShelvesTypeId()).orElseThrow(() -> new ResourceNotFoundException("Shelve type not found!"));
@@ -68,6 +72,7 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
+    @CachePut(value = "shelves", key = "#id")
     public ShelvesResponse updateShelve(Long id, ShelvesRequest shelvesRequest) {
         Store store = storeRepository.findById(shelvesRequest.getStoreId()).get();
         ShelvesType shelvesType = shelvesTypeRepository.findById(shelvesRequest.getShelvesTypeId()).orElseThrow(() -> new ResourceNotFoundException("Shelve type not found!"));
@@ -86,7 +91,8 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
-    public APIResponse<List<ShelvesResponse>> getListShelvesWithFilter(long storeId, String keyword, int page, String status) {
+    @Cacheable(value = "shelves", key = "{#storeId, #page}")
+    public APIResponse<List<ShelvesResponse>> getListShelvesWithFilter(long storeId,  int page, String keyword, String status) {
         Pageable pageable;
         pageable = PageRequest.of(page, 6, Sort.Direction.DESC , "name");
         Page<Shelves> result;
@@ -105,6 +111,7 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
+    @Cacheable(value = "shelves_type")
     public List<ShelvesTypeResponse> getListShelvesTypes(String status) {
         List<ShelvesType> shelvesTypes;
         if (!status.equals("none")){
@@ -120,6 +127,7 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
+    @CacheEvict(value = "shelves_type")
     public ShelvesTypeResponse createShelveType(ShelvesTypeRequest shelvesTypeRequest) {
         ShelvesType shelvesType = ShelvesType.builder()
                 .name(shelvesTypeRequest.getName())
