@@ -20,7 +20,13 @@ public class CampaignMapper {
     private BrandMapper brandMapper;
 
     public CampaignResponse toCampaignResponse(Campaign campaign) {
-        List<Product> productList = campaign.getCampaignProducts().stream().map((CampaignProduct::getProduct)).collect(Collectors.toList());
+        System.out.println(campaign.getCampaignProducts());
+        List<Product> productList = new ArrayList<>();
+                campaign.getCampaignProducts().forEach(
+                campaignProduct ->
+                    productList.add(campaignProduct.getProduct())
+
+        );
         Set<ProductResponse> productResponseList = new HashSet<>();
         productList.forEach((x -> productResponseList.add(productMapper.toProductResponse(x))));
         return CampaignResponse.builder()
