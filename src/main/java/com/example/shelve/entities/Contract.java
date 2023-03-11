@@ -32,7 +32,7 @@ public class Contract implements Serializable {
     @Column(name = "approval_date")
     private Date approvalDate;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "varchar")
     private String description;
 
     @Column(name = "status")

@@ -25,10 +25,10 @@ public class Product implements Serializable {
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "varchar")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "varchar")
     private String description;
 
     @Column(name = "quantity")
@@ -37,7 +37,7 @@ public class Product implements Serializable {
     @Column(name = "price")
     private BigDecimal price;
 
-    @Column(name = "imgURL")
+    @Column(name = "imgURL", columnDefinition = "text")
     private String imgURL;
 
     @ManyToOne

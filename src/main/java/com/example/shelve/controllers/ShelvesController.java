@@ -1,9 +1,11 @@
 package com.example.shelve.controllers;
 
 import com.example.shelve.dto.request.ShelvesRequest;
+import com.example.shelve.dto.request.ShelvesTypeRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
 import com.example.shelve.dto.response.ShelvesTypeResponse;
+import com.example.shelve.entities.ShelvesType;
 import com.example.shelve.services.ShelvesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,6 +50,9 @@ public class ShelvesController {
         return shelvesService.getListShelvesTypes(status);
     }
 
-
+    @PostMapping("/type")
+    public ResponseEntity<ShelvesTypeResponse> crateShelveType(@RequestBody ShelvesTypeRequest shelvesTypeRequest) {
+        return new ResponseEntity<>(shelvesService.createShelveType(shelvesTypeRequest), HttpStatus.OK);
+    }
 
 }

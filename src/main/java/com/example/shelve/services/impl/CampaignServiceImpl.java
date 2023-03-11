@@ -34,7 +34,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private CampaignShelvesTypeRepository camapignShelvesTypeRepository;
+    private CampaignShelvesTypeRepository campaignShelvesTypeRepository;
     @Autowired
     private ShelvesTypeRepository shelvesTypeRepository;
     @Autowired
@@ -95,7 +95,7 @@ public class CampaignServiceImpl implements CampaignService {
 
         //add to CampaignProduct table
         listProduct.forEach(product -> {
-            campaignProductRepository.save(new CampaignProduct().builder()
+            campaignProductRepository.save(CampaignProduct.builder()
                     .status(true)
                     .product(product)
                     .campaign(campaignSaved)
@@ -114,15 +114,14 @@ public class CampaignServiceImpl implements CampaignService {
 
         //add to Campaign Shelve Type table
         listShelvesType.forEach(shelveType ->
-                camapignShelvesTypeRepository.save(new CampaignShelvesType().builder()
+                campaignShelvesTypeRepository.save(CampaignShelvesType.builder()
                         .campaign(campaignSaved)
                         .shelvesType(shelveType)
                         .status(true)
                         .build())
         );
 
-        CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaign);
-        return campaignResponse;
+        return campaignMapper.toCampaignResponse(campaign);
     }
 
     @Override
@@ -152,7 +151,47 @@ public class CampaignServiceImpl implements CampaignService {
         campaign.setDuration(campaignRequest.getDuration());
         campaign.setImgURL(storageService.uploadFile(campaignRequest.getImgMultipart()));
 
+        campaignProductRepository.deleteAll(campaignProductRepository.findCampaignProductByCampaign_Id(campaign.getId()));
+        campaignShelvesTypeRepository.deleteAll(campaignShelvesTypeRepository.findByCampaign_Id(campaign.getId()));
+
         Campaign campaignSaved = campaignRepository.save(campaign);
+
+
+        List<Product> listProduct = new ArrayList<>();
+        //get list object product and check
+        campaignRequest.getProducts().forEach(i -> listProduct.add(
+                productRepository
+                        .findById(i)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException("Product ID: " + i + " not existed!"))
+        ));
+
+        //add to CampaignProduct table
+        listProduct.forEach(product -> campaignProductRepository.save(CampaignProduct.builder()
+                .status(true)
+                .product(product)
+                .campaign(campaignSaved)
+                .build()));
+
+
+        List<ShelvesType> listShelvesType = new ArrayList<>();
+        //get list shelve type
+        campaignRequest.getShelveTypes().forEach(i -> listShelvesType.add(
+                shelvesTypeRepository
+                        .findById(i)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException("Shelve Type ID: " + i + " not existed!"))
+        ));
+
+        //add to Campaign Shelve Type table
+        listShelvesType.forEach(shelveType ->
+                campaignShelvesTypeRepository.save(CampaignShelvesType.builder()
+                        .campaign(campaignSaved)
+                        .shelvesType(shelveType)
+                        .status(true)
+                        .build())
+        );
+
 
         return campaignMapper.toCampaignResponse(campaignSaved);
     }
