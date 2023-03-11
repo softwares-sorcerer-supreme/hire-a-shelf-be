@@ -45,4 +45,10 @@ public class ProductController {
         return new ResponseEntity<>(productService.creteProduct(productRequest), HttpStatus.OK);
     }
 
+    @PutMapping("/{productId}")
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long productId,
+                                                         @RequestBody @Valid ProductRequest productRequest) {
+        return new ResponseEntity<>(productService.updateProduct(productId, productRequest), HttpStatus.OK);
+    }
+
 }

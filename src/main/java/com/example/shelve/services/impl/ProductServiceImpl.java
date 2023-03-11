@@ -8,6 +8,7 @@ import com.example.shelve.entities.Brand;
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Category;
 import com.example.shelve.entities.Product;
+import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.ProductMapper;
 import com.example.shelve.repository.BrandRepository;
@@ -99,4 +100,30 @@ public class ProductServiceImpl implements ProductService {
         products.forEach((x -> productResponseList.add(productMapper.toProductResponse(x))));
         return productResponseList;
     }
+
+    @Override
+    public ProductResponse updateProduct(Long productId, ProductRequest productRequest) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
+
+        Category category = categoryRepository.findById(productRequest.getCategoryId())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
+
+        if(product.getBrand().getId() != productRequest.getBrandId())
+            throw new BadRequestException("You do not have permission to edit this product");
+
+        product.setName(productRequest.getName());
+        product.setDescription(product.getDescription());
+        product.setStatus(product.isStatus());
+        product.setQuantity(product.getQuantity());
+        product.setPrice(product.getPrice());
+        product.setImgURL(storageService.uploadFile(productRequest.getImgMultipart()));
+        product.setCategory(category);
+
+        Product productSaved = productRepository.save(product);
+
+        return productMapper.toProductResponse(productSaved);
+    }
+
+
 }
