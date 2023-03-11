@@ -18,19 +18,18 @@ import java.util.Set;
 public class ShelvesMapper {
 
     @Autowired
-    private ImageMapper imageMapper;
-    @Autowired
     private ProductRepository productRepository;
     @Autowired
     private ProductMapper productMapper;
     @Autowired
     private StoreMapper storeMapper;
+    @Autowired
+    private ShelvesTypeMapper shelvesTypeMapper;
+
 
     public ShelvesResponse toShelveResponse(Shelves shelves) {
         Set<ImageResponse> imageResponseSet = new HashSet<>();
-        shelves.getImages().forEach(image ->
-                imageResponseSet.add(
-                        imageMapper.toImageResponse(image)));
+
 
         Set<ProductResponse> productResponseSet = new HashSet<>();
         shelves.getShelvesProducts().forEach(shelveProduct -> {
@@ -48,7 +47,7 @@ public class ShelvesMapper {
                 .description(shelves.getDescription())
                 .status(shelves.isStatus())
                 .store(storeMapper.toStoreResponse(shelves.getStore()))
-                .shelvesType(shelves.getShelvesType())
+                .shelvesTypeResponse(shelvesTypeMapper.toShelvesTypeResponse(shelves.getShelvesType()))
                 .images(imageResponseSet)
                 .products(productResponseSet)
                 .build();

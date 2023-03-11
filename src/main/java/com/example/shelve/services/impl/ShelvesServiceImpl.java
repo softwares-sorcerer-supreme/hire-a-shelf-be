@@ -1,6 +1,7 @@
 package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.ShelvesRequest;
+import com.example.shelve.dto.request.ShelvesTypeRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
@@ -17,6 +18,7 @@ import com.example.shelve.repository.ShelvesRepository;
 import com.example.shelve.repository.ShelvesTypeRepository;
 import com.example.shelve.repository.StoreRepository;
 import com.example.shelve.services.ShelvesService;
+import com.example.shelve.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +42,8 @@ public class ShelvesServiceImpl implements ShelvesService {
     private ShelvesMapper shelvesMapper;
     @Autowired
     private StoreRepository storeRepository;
+    @Autowired
+    private StorageService storageService;
 
     @Override
     public ShelvesResponse getShelve(Long id) {
@@ -56,6 +60,7 @@ public class ShelvesServiceImpl implements ShelvesService {
 
         Shelves shelves = shelvesMapper.toShelve(shelvesRequest);
         shelves.setStore(store);
+        shelves.setImgURL(storageService.uploadFile(shelvesRequest.getImgMultipart()));
         shelves.setShelvesType(shelvesType);
         Shelves shelvesSaved = shelvesRepository.save(shelves);
 
@@ -101,7 +106,7 @@ public class ShelvesServiceImpl implements ShelvesService {
 
     @Override
     public List<ShelvesTypeResponse> getListShelvesTypes(String status) {
-        List<ShelvesType> shelvesTypes = new ArrayList<>();
+        List<ShelvesType> shelvesTypes;
         if (!status.equals("none")){
             boolean state = Boolean.parseBoolean(status);
             shelvesTypes = shelvesTypeRepository.findShelvesTypesByStatus(state);
@@ -112,5 +117,15 @@ public class ShelvesServiceImpl implements ShelvesService {
         shelvesTypes.forEach((x -> shelvesTypeResponses.add(shelvesTypeMapper.toShelvesTypeResponse(x))));
 
         return shelvesTypeResponses;
+    }
+
+    @Override
+    public ShelvesTypeResponse createShelveType(ShelvesTypeRequest shelvesTypeRequest) {
+        ShelvesType shelvesType = ShelvesType.builder()
+                .name(shelvesTypeRequest.getName())
+                .description(shelvesTypeRequest.getDescription())
+                .status(true)
+                .build();
+        return shelvesTypeMapper.toShelvesTypeResponse(shelvesTypeRepository.save(shelvesType));
     }
 }

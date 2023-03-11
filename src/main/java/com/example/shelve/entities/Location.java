@@ -24,7 +24,7 @@ public class Location implements Serializable {
     @Column(name = "district")
     private String district;
 
-    @Column(name = "address")
+    @Column(name = "address", columnDefinition = "varchar")
     private String address;
 
     @Column(name = "ward")

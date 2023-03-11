@@ -26,10 +26,10 @@ public class Registration {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "varchar")
     private String name;
 
-    @Column(name = "note")
+    @Column(name = "note", columnDefinition = "varchar")
     private String note;
 
     @Column(name = "create_date")

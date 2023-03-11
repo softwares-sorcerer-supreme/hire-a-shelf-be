@@ -22,7 +22,7 @@ public class ShelvesResponse {
 
     private StoreResponse store;
 
-    private ShelvesType shelvesType;
+    private ShelvesTypeResponse shelvesTypeResponse;
 
     private Set<ImageResponse> images;
 

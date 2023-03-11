@@ -24,10 +24,10 @@ public class Campaign implements Serializable {
     @Column
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", columnDefinition = "varchar")
     private String title;
 
-    @Column(name = "content", columnDefinition = "TEXT")
+    @Column(name = "content", columnDefinition = "varchar")
     private String content;
 
     @Column(name = "created_date")
@@ -42,7 +42,7 @@ public class Campaign implements Serializable {
     @Column(name = "duration")
     private int duration;
 
-    @Column(name = "imgURL")
+    @Column(name = "imgURL", columnDefinition = "varchar")
     private String imgURL;
 
     @ManyToOne

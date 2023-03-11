@@ -18,10 +18,10 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", columnDefinition = "varchar")
     private String title;
 
-    @Column(name = "body")
+    @Column(name = "body", columnDefinition = "varchar")
     private String body;
 
     @ManyToOne
