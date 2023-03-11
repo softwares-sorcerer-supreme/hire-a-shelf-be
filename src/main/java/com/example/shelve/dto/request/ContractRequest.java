@@ -17,10 +17,7 @@ import java.sql.Date;
 @NoArgsConstructor
 public class ContractRequest {
 
-    private Date cancelDate;
     private String description;
-    private Date approvalDate;
-    private EStatus eStatus;
     private Long campaignId;
     private Long storeId;
 

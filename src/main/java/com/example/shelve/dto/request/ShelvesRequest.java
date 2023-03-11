@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Builder
 @AllArgsConstructor
@@ -16,6 +17,9 @@ public class ShelvesRequest {
     private boolean status;
     private Long storeId;
     private Long shelvesTypeId;
+
+    private MultipartFile imgMultipart;
+
 //    private Set<Long> shelvesProducts;
 //    private Set<Image> images;
 }

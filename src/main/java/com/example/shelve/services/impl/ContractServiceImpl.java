@@ -2,10 +2,12 @@ package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.request.ContractRequest;
+import com.example.shelve.dto.request.PushNotificationRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ContractResponse;
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Contract;
+import com.example.shelve.entities.Notification;
 import com.example.shelve.entities.Store;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.BadRequestException;
@@ -13,6 +15,7 @@ import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.ContractMapper;
 import com.example.shelve.repository.CampaignRepository;
 import com.example.shelve.repository.ContractRepository;
+import com.example.shelve.repository.NotificationRepository;
 import com.example.shelve.repository.StoreRepository;
 import com.example.shelve.services.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 @Service
 public class ContractServiceImpl implements ContractService {
-
+    @Autowired
+    private NotificationRepository notificationRepository;
+    @Autowired
+    private FirebaseMessagingServiceImpl firebaseMessagingService;
     @Autowired
     private ContractRepository contractRepository;
     @Autowired
@@ -72,6 +78,15 @@ public class ContractServiceImpl implements ContractService {
                 .build();
 
         Contract contractSaved = contractRepository.save(contract);
+        firebaseMessagingService.sendNotificationToToken(PushNotificationRequest.builder()
+                .token(campaign.getBrand().getAccount().getFireBaseToken())
+                .message("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn")
+                .title(campaign.getTitle()).build());
+        notificationRepository.save(Notification.builder()
+                .title(campaign.getTitle())
+                .body("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn")
+                .account(campaign.getBrand().getAccount())
+                .build());
 
         return contractMapper.toContractResponse(contractSaved);
     }

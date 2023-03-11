@@ -12,8 +12,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CampaignProductResponse {
-
-    private Campaign campaigns;
-
-    private Product products;
+    private CampaignResponse campaignResponse;
+    private ProductResponse productResponse;
 }

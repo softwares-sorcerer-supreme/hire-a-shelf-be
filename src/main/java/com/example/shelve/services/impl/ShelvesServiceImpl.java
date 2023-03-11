@@ -18,6 +18,7 @@ import com.example.shelve.repository.ShelvesRepository;
 import com.example.shelve.repository.ShelvesTypeRepository;
 import com.example.shelve.repository.StoreRepository;
 import com.example.shelve.services.ShelvesService;
+import com.example.shelve.services.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,6 +42,8 @@ public class ShelvesServiceImpl implements ShelvesService {
     private ShelvesMapper shelvesMapper;
     @Autowired
     private StoreRepository storeRepository;
+    @Autowired
+    private StorageService storageService;
 
     @Override
     public ShelvesResponse getShelve(Long id) {
@@ -57,6 +60,7 @@ public class ShelvesServiceImpl implements ShelvesService {
 
         Shelves shelves = shelvesMapper.toShelve(shelvesRequest);
         shelves.setStore(store);
+        shelves.setImgURL(storageService.uploadFile(shelvesRequest.getImgMultipart()));
         shelves.setShelvesType(shelvesType);
         Shelves shelvesSaved = shelvesRepository.save(shelves);
 

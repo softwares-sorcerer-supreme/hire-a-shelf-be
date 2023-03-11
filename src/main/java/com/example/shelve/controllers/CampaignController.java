@@ -58,10 +58,10 @@ public class CampaignController {
 
 
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<CampaignResponse> updateCamapaign(@RequestBody CampaignRequest campaign,
-//                                                            @PathVariable Long id) {
-//        return new ResponseEntity<>(campaignService.updateCampaign(id, campaign), HttpStatus.OK);
-//    }
+    @PutMapping("/u/{id}")
+    public ResponseEntity<CampaignResponse> updateCampaign(@RequestBody CampaignRequest campaign,
+                                                            @PathVariable Long id) {
+        return new ResponseEntity<>(campaignService.updateCampaign(id, campaign), HttpStatus.OK);
+    }
 
 }

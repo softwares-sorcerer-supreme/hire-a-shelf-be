@@ -14,16 +14,11 @@ import java.sql.Date;
 public class ContractResponse {
 
     private Long id;
-
     private Date createDate;
-
     private Date cancelDate;
     private Date approvalDate;
     private String description;
-
     private String status;
-
-    private Campaign campaign;
-
-    private Store store;
+    private CampaignResponse campaignResponse;
+    private StoreResponse storeResponse;
 }
