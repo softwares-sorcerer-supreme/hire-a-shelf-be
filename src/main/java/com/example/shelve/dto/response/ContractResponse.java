@@ -23,7 +23,7 @@ public class ContractResponse {
 
     private String status;
 
-    private Campaign campaign;
+    private CampaignResponse campaign;
 
-    private Store store;
+    private StoreResponse store;
 }

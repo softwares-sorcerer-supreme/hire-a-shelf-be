@@ -29,7 +29,6 @@ public class Brand implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "location_id")
-    @JsonIgnore
     private Location location;
 
     @Column(name = "phone")

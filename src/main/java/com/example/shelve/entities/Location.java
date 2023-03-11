@@ -41,7 +41,6 @@ public class Location implements Serializable {
     private Registration registration;
 
     @OneToOne(mappedBy = "location")
-    @JsonIgnore
     private Brand brand;
 
     @Column(name = "status")

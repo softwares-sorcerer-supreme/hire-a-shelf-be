@@ -7,11 +7,19 @@ import com.example.shelve.entities.Account;
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Contract;
 import lombok.Builder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Builder
 @Component
 public class ContractMapper {
+
+    @Autowired
+    CampaignMapper campaignMapper;
+
+    @Autowired
+    StoreMapper storeMapper;
+
 
     public ContractResponse toContractResponse (Contract contract){
         ContractResponse contractResponse = ContractResponse.builder()
@@ -21,8 +29,8 @@ public class ContractMapper {
                 .description(contract.getDescription())
                 .status(contract.getEStatus().getName())
                 .approvalDate(contract.getApprovalDate())
-                .campaign(contract.getCampaign())
-                .store(contract.getStore())
+                .campaign(campaignMapper.toCampaignResponse(contract.getCampaign()))
+                .store(storeMapper.toStoreResponse(contract.getStore()))
                 .build();
 
         return contractResponse;
