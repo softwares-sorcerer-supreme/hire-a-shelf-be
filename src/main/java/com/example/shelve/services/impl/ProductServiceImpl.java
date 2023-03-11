@@ -18,6 +18,7 @@ import com.example.shelve.services.ProductService;
 import com.example.shelve.services.StorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -72,6 +73,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "product")
     public APIResponse<List<ProductResponse>> getAllProductWithFilter(long brandId, String keyword, int page, List<Long> categoriesId) {
         Pageable pageable;
         pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC, "name");
@@ -102,6 +104,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CachePut(value = "product", key = "#productId")
     public ProductResponse updateProduct(Long productId, ProductRequest productRequest) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
