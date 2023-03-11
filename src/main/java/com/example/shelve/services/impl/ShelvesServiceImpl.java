@@ -1,6 +1,7 @@
 package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.ShelvesRequest;
+import com.example.shelve.dto.request.ShelvesTypeRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
@@ -101,7 +102,7 @@ public class ShelvesServiceImpl implements ShelvesService {
 
     @Override
     public List<ShelvesTypeResponse> getListShelvesTypes(String status) {
-        List<ShelvesType> shelvesTypes = new ArrayList<>();
+        List<ShelvesType> shelvesTypes;
         if (!status.equals("none")){
             boolean state = Boolean.parseBoolean(status);
             shelvesTypes = shelvesTypeRepository.findShelvesTypesByStatus(state);
@@ -112,5 +113,15 @@ public class ShelvesServiceImpl implements ShelvesService {
         shelvesTypes.forEach((x -> shelvesTypeResponses.add(shelvesTypeMapper.toShelvesTypeResponse(x))));
 
         return shelvesTypeResponses;
+    }
+
+    @Override
+    public ShelvesTypeResponse createShelveType(ShelvesTypeRequest shelvesTypeRequest) {
+        ShelvesType shelvesType = ShelvesType.builder()
+                .name(shelvesTypeRequest.getName())
+                .description(shelvesTypeRequest.getDescription())
+                .status(true)
+                .build();
+        return shelvesTypeMapper.toShelvesTypeResponse(shelvesTypeRepository.save(shelvesType));
     }
 }

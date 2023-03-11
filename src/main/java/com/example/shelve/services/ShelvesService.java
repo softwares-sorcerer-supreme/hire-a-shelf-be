@@ -1,6 +1,7 @@
 package com.example.shelve.services;
 
 import com.example.shelve.dto.request.ShelvesRequest;
+import com.example.shelve.dto.request.ShelvesTypeRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
 import com.example.shelve.dto.response.ShelvesTypeResponse;
@@ -18,4 +19,6 @@ public interface ShelvesService {
     APIResponse<List<ShelvesResponse>> getListShelvesWithFilter(long storeId, String keyword, int page, String status);
 
     List<ShelvesTypeResponse> getListShelvesTypes(String status);
+
+    ShelvesTypeResponse createShelveType(ShelvesTypeRequest shelvesTypeRequest);
 }

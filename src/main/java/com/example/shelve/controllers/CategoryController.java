@@ -1,7 +1,10 @@
 package com.example.shelve.controllers;
 
+import com.example.shelve.dto.request.CategoryRequest;
+import com.example.shelve.dto.request.ShelvesTypeRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.CategoryResponse;
+import com.example.shelve.dto.response.ShelvesTypeResponse;
 import com.example.shelve.services.CampaignService;
 import com.example.shelve.services.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +32,10 @@ public class CategoryController {
     @GetMapping("/{id}")
     public ResponseEntity<CategoryResponse> getCategory(@PathVariable Long id) {
         return new ResponseEntity<>(categoryService.getCategory(id), HttpStatus.OK);
+    }
+
+    @PostMapping()
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
+        return new ResponseEntity<>(categoryService.createCategory(categoryRequest), HttpStatus.OK);
     }
 }

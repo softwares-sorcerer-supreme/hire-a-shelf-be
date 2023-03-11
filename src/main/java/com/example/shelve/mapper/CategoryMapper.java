@@ -11,13 +11,11 @@ import org.springframework.stereotype.Component;
 @Builder
 public class CategoryMapper {
     public CategoryResponse toCategoryResponse (Category category){
-        CategoryResponse categoryResponse = CategoryResponse.builder()
+        return CategoryResponse.builder()
                 .id(category.getId())
                 .description(category.getDescription())
                 .name(category.getName())
                 .status(category.isStatus())
                 .build();
-
-        return categoryResponse;
     }
 }
