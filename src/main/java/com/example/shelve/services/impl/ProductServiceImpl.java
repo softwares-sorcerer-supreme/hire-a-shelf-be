@@ -56,6 +56,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @CacheEvict(value = "product", allEntries = true)
     public ProductResponse creteProduct(ProductRequest productRequest) {
+        log.error("add product ddi qua day");
+
         productRequest.setStatus(true);
         Category category = categoryRepository.findById(productRequest.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
@@ -75,8 +77,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable(value = "product")
-    public APIResponse<List<ProductResponse>> getAllProductWithFilter(long brandId, String keyword, int page, List<Long> categoriesId) {
+    @Cacheable(value = "product", key = "{#brandId, #page}")
+    public APIResponse<List<ProductResponse>> getAllProductWithFilter(long brandId, int page, String keyword, List<Long> categoriesId) {
+        log.error("Product ddi qua day");
+
         Pageable pageable;
         pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC, "name");
 

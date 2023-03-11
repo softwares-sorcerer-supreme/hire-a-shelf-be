@@ -91,8 +91,8 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
-    @Cacheable(value = "shelves")
-    public APIResponse<List<ShelvesResponse>> getListShelvesWithFilter(long storeId, String keyword, int page, String status) {
+    @Cacheable(value = "shelves", key = "{#storeId, #page}")
+    public APIResponse<List<ShelvesResponse>> getListShelvesWithFilter(long storeId,  int page, String keyword, String status) {
         Pageable pageable;
         pageable = PageRequest.of(page, 6, Sort.Direction.DESC , "name");
         Page<Shelves> result;
