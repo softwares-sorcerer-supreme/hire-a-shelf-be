@@ -79,7 +79,7 @@ public class ContractServiceImpl implements ContractService {
 
         Contract contractSaved = contractRepository.save(contract);
         firebaseMessagingService.sendNotificationToToken(PushNotificationRequest.builder()
-                .token(campaign.getBrand().getAccount().getFireBaseToken())
+                .token("campaign.getBrand().getAccount().getFireBaseToken()")
                 .message("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn")
                 .title(campaign.getTitle()).build());
         notificationRepository.save(Notification.builder()

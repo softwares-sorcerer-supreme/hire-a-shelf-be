@@ -28,18 +28,18 @@ public class ShelvesMapper {
 
 
     public ShelvesResponse toShelveResponse(Shelves shelves) {
-        Set<ImageResponse> imageResponseSet = new HashSet<>();
-
-
         Set<ProductResponse> productResponseSet = new HashSet<>();
-        shelves.getShelvesProducts().forEach(shelveProduct -> {
-            if (shelveProduct.isStatus()) {
-                Product product = productRepository.findById(shelveProduct.getId())
-                        .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
+        if (shelves.getShelvesProducts() != null){
+            shelves.getShelvesProducts().forEach(shelveProduct -> {
+                if (shelveProduct.isStatus()) {
+                    Product product = productRepository.findById(shelveProduct.getId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
 
-                productResponseSet.add(productMapper.toProductResponse(product));
-            }
-        });
+                    productResponseSet.add(productMapper.toProductResponse(product));
+                }
+            });
+        }
+
 
         return ShelvesResponse.builder()
                 .id(shelves.getId())
@@ -48,7 +48,7 @@ public class ShelvesMapper {
                 .status(shelves.isStatus())
                 .store(storeMapper.toStoreResponse(shelves.getStore()))
                 .shelvesTypeResponse(shelvesTypeMapper.toShelvesTypeResponse(shelves.getShelvesType()))
-                .images(imageResponseSet)
+                .imgURL(shelves.getImgURL())
                 .products(productResponseSet)
                 .build();
     }

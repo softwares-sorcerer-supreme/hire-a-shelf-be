@@ -41,8 +41,6 @@ public class CampaignServiceImpl implements CampaignService {
     private StorageService storageService;
     @Autowired
     private BrandRepository brandRepository;
-
-
     @Autowired
     private CampaignMapper campaignMapper;
 
@@ -57,11 +55,9 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     public CampaignResponse getCampaign(Long id) {
-        CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaignRepository
+        return campaignMapper.toCampaignResponse(campaignRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!")));
-
-        return campaignResponse;
     }
 
     @Override
@@ -76,8 +72,8 @@ public class CampaignServiceImpl implements CampaignService {
         if (campaign.getStartDate().before(campaign.getCreatedDate()))
             throw new BadRequestException("Start Date must be after Today!");
 
-        if (campaign.getExpirationDate().before(campaign.getStartDate()))
-            throw new BadRequestException("Expiration Date must be after Start Date");
+//        if (campaign.getExpirationDate().before(campaign.getStartDate()))
+//            throw new BadRequestException("Expiration Date must be after Start Date");
 
         campaign.setEStatus(EStatus.PENDING);
         campaign.setImgURL(storageService.uploadFile(campaignRequest.getImgMultipart()));
@@ -213,7 +209,6 @@ public class CampaignServiceImpl implements CampaignService {
         pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC , "createdDate");
         Page<Campaign> result;
 
-
         //This is stateList use to querrt
         List<EStatus> stateList = new ArrayList<>();
 
@@ -231,19 +226,5 @@ public class CampaignServiceImpl implements CampaignService {
         result.toList().forEach((x -> campaignResponses.add(campaignMapper.toCampaignResponse(x))));
         return new APIResponse<>(result.getTotalPages(), campaignResponses);
     }
-
-//    public CampaignResponse createNewCampaign(String campaignStr, MultipartFile file) {
-//        String imageLinkCloud = storageService.uploadFile(file);
-//        Campaign savedCampaign = new Campaign();
-//        try{
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            savedCampaign = objectMapper.readValue(campaignStr, Campaign.class);
-//            savedCampaign.setImgURL(imageLinkCloud);
-//        } catch (IOException e){
-//            System.out.printf("Error asda sdasdasdsa", e);
-//        }
-//        System.out.println("-------------------------------------------------------------------------------" + savedCampaign.getImgURL());
-//        return campaignMapper.toCampaignResponse(campaignRepository.save(savedCampaign));
-//    }
 
 }
