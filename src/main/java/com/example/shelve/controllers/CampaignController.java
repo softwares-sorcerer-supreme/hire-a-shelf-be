@@ -33,10 +33,19 @@ public class CampaignController {
 
     @GetMapping
     public APIResponse<List<CampaignResponse>> getAllCampaignsWithFilter(@RequestParam(required = false, defaultValue = "") String keyword,
-                                                                  @RequestParam(required = false, defaultValue = "0") long brandId,
-                                                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-                                                                  @RequestParam(required = false, defaultValue = "") List<String> states) {
+                                                                         @RequestParam(required = false, defaultValue = "0") long brandId,
+                                                                         @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                                                         @RequestParam(required = false, defaultValue = "") List<String> states) {
         return campaignService.getAllCampaignsWithFilter(brandId, keyword, page, states);
+    }
+
+    @GetMapping("/home")
+    public APIResponse<List<CampaignResponse>> getAllCampaignsWithFilterForHomePage(@RequestParam(required = false, defaultValue = "") String keyword,
+                                                                                    @RequestParam(required = false, defaultValue = "0") long storeId,
+                                                                                    @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                                                                    @RequestParam(required = false, defaultValue = "") List<String> states,
+                                                                                    @RequestParam(required = false, defaultValue = "") String filterBy) {
+        return campaignService.getListCampaignsWithFilterForHomePage(storeId, keyword, page, states, filterBy);
     }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -44,6 +53,7 @@ public class CampaignController {
                                                               @Valid CampaignRequest campaign) {
         return new ResponseEntity<>(campaignService.createNewCampaign(campaign), HttpStatus.OK);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<CampaignResponse> approveCampaign(@RequestParam EStatus status,
                                                             @PathVariable Long id
@@ -56,11 +66,9 @@ public class CampaignController {
         return new ResponseEntity<>(campaignService.disableCampaign(id), HttpStatus.OK);
     }
 
-
-
     @PutMapping("/u/{id}")
     public ResponseEntity<CampaignResponse> updateCampaign(@RequestBody CampaignRequest campaign,
-                                                            @PathVariable Long id) {
+                                                           @PathVariable Long id) {
         return new ResponseEntity<>(campaignService.updateCampaign(id, campaign), HttpStatus.OK);
     }
 

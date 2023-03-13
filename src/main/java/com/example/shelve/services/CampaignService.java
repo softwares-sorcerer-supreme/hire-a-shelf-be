@@ -24,4 +24,6 @@ public interface CampaignService {
     CampaignResponse disableCampaign(Long id);
 
     APIResponse<List<CampaignResponse>> getAllCampaignsWithFilter(Long brandId, String keyword, int page, List<String> statusList);
+
+    APIResponse<List<CampaignResponse>> getListCampaignsWithFilterForHomePage(Long storeId, String keyword, int page, List<String> states, String suggestBy);
 }

@@ -22,11 +22,15 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CampaignServiceImpl implements CampaignService {
     private static final int pageSize = 6;
-
+    @Autowired
+    StoreRepository storeRepository;
+    @Autowired
+    private StoreCategoryRepository storeCategoryRepository;
     @Autowired
     private CampaignRepository campaignRepository;
     @Autowired
@@ -43,7 +47,6 @@ public class CampaignServiceImpl implements CampaignService {
     private BrandRepository brandRepository;
     @Autowired
     private CampaignMapper campaignMapper;
-
 
     @Override
     @Cacheable(value = "campaign")
@@ -205,10 +208,29 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     public APIResponse<List<CampaignResponse>> getAllCampaignsWithFilter(Long brandId, String keyword, int page, List<String> statusListFilter) {
-        Pageable pageable;
-        pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC , "createdDate");
-        Page<Campaign> result;
 
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC , "createdDate");
+        //This is stateList use to querry
+        List<EStatus> stateList = new ArrayList<>();
+
+        //Checking to see whether the state form frontend match any state from the EStatus
+        EStatus[] eStatuses = EStatus.values();
+        for (EStatus status : eStatuses) {
+            if(statusListFilter.contains(status.getName())){
+                stateList.add(status);
+            }
+        }
+
+        Page<Campaign> result = campaignRepository.findByKeywordWithFilter
+                (stateList, keyword.toLowerCase(), brandId ,pageable);
+        List<CampaignResponse> campaignResponses = new ArrayList<>();
+        result.toList().forEach((x -> campaignResponses.add(campaignMapper.toCampaignResponse(x))));
+        return new APIResponse<>(result.getTotalPages(), campaignResponses);
+    }
+
+    @Override
+    public APIResponse<List<CampaignResponse>> getListCampaignsWithFilterForHomePage(Long storeId, String keyword, int page, List<String> statusListFilter, String suggestBy) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC , "createdDate");
         //This is stateList use to querrt
         List<EStatus> stateList = new ArrayList<>();
 
@@ -220,11 +242,29 @@ public class CampaignServiceImpl implements CampaignService {
             }
         }
 
-        result = campaignRepository.findByKeywordWithFilter
-                (stateList, keyword.toLowerCase(), brandId ,pageable);
+        Optional<Store> store = storeRepository.findById(storeId);
+
+        if (store.isEmpty()){
+            throw new BadRequestException("Store is not exist!");
+        }
+
+        List<String> categoriesName = new ArrayList<>();
+        if(suggestBy.equals("category")){
+
+            List<StoreCategory> storeCategories =
+                    storeCategoryRepository.findAllByStoreId(storeId);
+            storeCategories.forEach((storeCategory -> {
+                categoriesName.add(storeCategory.getCategory().getName());
+            } ));
+        }
+
+        Page<Campaign> result = campaignRepository.findByKeywordWithFilterForHomePage
+                (stateList, keyword.toLowerCase(), categoriesName, store.get().getLocation().getCity(), pageable);
+
         List<CampaignResponse> campaignResponses = new ArrayList<>();
         result.toList().forEach((x -> campaignResponses.add(campaignMapper.toCampaignResponse(x))));
         return new APIResponse<>(result.getTotalPages(), campaignResponses);
+
     }
 
 }
