@@ -5,6 +5,7 @@ import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.services.CampaignService;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -57,7 +58,7 @@ public class CampaignController {
     @PutMapping("/{id}")
     public ResponseEntity<CampaignResponse> approveCampaign(@RequestParam EStatus status,
                                                             @PathVariable Long id
-    ) {
+    ) throws FirebaseMessagingException {
         return new ResponseEntity<>(campaignService.approveCampaign(id, status), HttpStatus.OK);
     }
 

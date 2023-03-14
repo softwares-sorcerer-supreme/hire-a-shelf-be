@@ -4,6 +4,7 @@ import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.entities.enums.EStatus;
+import com.google.firebase.messaging.FirebaseMessagingException;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface CampaignService {
 
     CampaignResponse createNewCampaign(CampaignRequest campaignRequest);
 
-    CampaignResponse approveCampaign(Long id, EStatus status);
+    CampaignResponse approveCampaign(Long id, EStatus status) throws FirebaseMessagingException;
 
     CampaignResponse updateCampaign(Long id, CampaignRequest campaign);
 

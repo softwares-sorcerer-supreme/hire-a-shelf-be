@@ -12,6 +12,6 @@ public interface FirebaseMessagingService {
 
     NotificationResponse getNotificationByAccountId(Long id);
 
-    void sendNotification(String title, String body, List<String> tokens) throws FirebaseMessagingException;
+    void sendNotifications(String title, String body, List<String> tokens) throws FirebaseMessagingException;
 
 }

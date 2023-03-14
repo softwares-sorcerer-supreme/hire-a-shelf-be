@@ -29,7 +29,7 @@ public class FirebaseMessagingController {
     @PostMapping("/send")
     public ResponseEntity<?> sendNotification(@RequestBody PushNotificationToMultipleDevicesRequest notificationRequest) {
         try {
-            firebaseMessagingService.sendNotification(notificationRequest.getTitle(), notificationRequest.getBody(), notificationRequest.getTokens());
+            firebaseMessagingService.sendNotifications(notificationRequest.getTitle(), notificationRequest.getBody(), notificationRequest.getTokens());
             return ResponseEntity.ok().body("Message has been sent to multiple devices");
         } catch (FirebaseMessagingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to send notification: " + e.getMessage());

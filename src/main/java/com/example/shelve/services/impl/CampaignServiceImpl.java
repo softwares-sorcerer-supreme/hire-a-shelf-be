@@ -10,7 +10,10 @@ import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CampaignMapper;
 import com.example.shelve.repository.*;
 import com.example.shelve.services.CampaignService;
+import com.example.shelve.services.FirebaseMessagingService;
 import com.example.shelve.services.StorageService;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -20,12 +23,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
+@Slf4j
 public class CampaignServiceImpl implements CampaignService {
+
     private static final int pageSize = 6;
     @Autowired
     StoreRepository storeRepository;
@@ -47,7 +50,12 @@ public class CampaignServiceImpl implements CampaignService {
     private BrandRepository brandRepository;
     @Autowired
     private CampaignMapper campaignMapper;
-
+    @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
+    @Autowired
+    private FirebaseTokenRepository firebaseTokenRepository;
+    @Autowired
+    private AccountRepository accountRepository;
     @Override
     @Cacheable(value = "campaign")
     public List<CampaignResponse> getAllCampaign() {
@@ -124,15 +132,35 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public CampaignResponse approveCampaign(Long id, EStatus status) {
+    public CampaignResponse approveCampaign(Long id, EStatus status) throws FirebaseMessagingException {
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!"));
-
         campaign.setEStatus(status);
+
         Campaign campaignSaved = campaignRepository.save(campaign);
+        Set<FirebaseNotiToken> brandFirebaseNotiTokens
+                = campaignSaved.getBrand().getAccount().getFireBaseNotiTokens();
 
+        Set<FirebaseNotiToken> storeFirebaseTokens = firebaseTokenRepository.findAllByStatusAndAccountStoreLocationCity(true, campaign.getCity().toString());
+
+        List<String> brandStringFCMs = new ArrayList<>();
+        brandFirebaseNotiTokens.forEach(firebaseNotiToken -> {
+            brandStringFCMs.add(firebaseNotiToken.getToken());
+        });
+
+        List<String> storeStringFCMs = new ArrayList<>();
+        storeStringFCMs.add("asdsad");
+
+        storeFirebaseTokens.forEach(storeFirebaseToken -> {
+            storeStringFCMs.add(storeFirebaseToken.getToken());
+        });
+
+        firebaseMessagingService.sendNotifications("Campaign has been approved", "Your campaign with title " +
+                campaignSaved.getTitle() + " has been approved", brandStringFCMs);
+
+        firebaseMessagingService.sendNotifications("New campaign in your location!", "A new campaign in your location with title " +
+                campaignSaved.getTitle() + " has been posted! Check it out now!", storeStringFCMs);
         return campaignMapper.toCampaignResponse(campaignSaved);
-
         }
 
     @Override

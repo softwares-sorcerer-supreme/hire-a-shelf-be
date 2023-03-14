@@ -42,7 +42,7 @@ public class FirebaseMessagingServiceImpl implements FirebaseMessagingService {
     }
 
     @Override
-    public void sendNotification(String title, String body, List<String> tokens) throws FirebaseMessagingException {
+    public void sendNotifications(String title, String body, List<String> tokens) throws FirebaseMessagingException {
         MulticastMessage message = MulticastMessage.builder()
                 .setNotification(Notification.builder()
                         .setTitle(title)
