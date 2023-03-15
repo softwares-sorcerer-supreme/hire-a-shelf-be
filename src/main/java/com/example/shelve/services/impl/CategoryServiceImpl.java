@@ -4,6 +4,7 @@ import com.example.shelve.dto.request.CategoryRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.CategoryResponse;
 import com.example.shelve.entities.Category;
+import com.example.shelve.entities.Product;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CategoryMapper;
 import com.example.shelve.repository.CategoryRepository;
@@ -54,5 +55,18 @@ public class CategoryServiceImpl implements CategoryService {
         savedCategory.setDescription(categoryRequest.getDescription());
         savedCategory.setStatus(true);
         return mapper.toCategoryResponse(categoryRepository.save(savedCategory));
+    }
+
+    @Override
+    public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
+
+        category.setName(categoryRequest.getName());
+        category.setDescription(categoryRequest.getDescription());
+
+        Category categorySaved = categoryRepository.save(category);
+
+        return mapper.toCategoryResponse(categorySaved);
     }
 }

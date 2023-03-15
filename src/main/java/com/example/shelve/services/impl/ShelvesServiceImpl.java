@@ -6,10 +6,7 @@ import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
 import com.example.shelve.dto.response.ShelvesTypeResponse;
-import com.example.shelve.entities.Campaign;
-import com.example.shelve.entities.Shelves;
-import com.example.shelve.entities.ShelvesType;
-import com.example.shelve.entities.Store;
+import com.example.shelve.entities.*;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.ShelvesMapper;
@@ -135,5 +132,19 @@ public class ShelvesServiceImpl implements ShelvesService {
                 .status(true)
                 .build();
         return shelvesTypeMapper.toShelvesTypeResponse(shelvesTypeRepository.save(shelvesType));
+    }
+
+    @Override
+    public ShelvesTypeResponse updateShelveType(Long id, ShelvesTypeRequest shelvesTypeRequest) {
+
+        ShelvesType shelvesType = shelvesTypeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Shelf type not found!"));
+
+        shelvesType.setName(shelvesTypeRequest.getName());
+        shelvesType.setDescription(shelvesTypeRequest.getDescription());
+
+        ShelvesType shelvesTypeSaved = shelvesTypeRepository.save(shelvesType);
+
+        return shelvesTypeMapper.toShelvesTypeResponse(shelvesTypeSaved);
     }
 }

@@ -1,9 +1,11 @@
 package com.example.shelve.controllers;
 
 import com.example.shelve.dto.request.CategoryRequest;
+import com.example.shelve.dto.request.ProductRequest;
 import com.example.shelve.dto.request.ShelvesTypeRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.CategoryResponse;
+import com.example.shelve.dto.response.ProductResponse;
 import com.example.shelve.dto.response.ShelvesTypeResponse;
 import com.example.shelve.services.CampaignService;
 import com.example.shelve.services.CategoryService;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 @RestController
 @RequestMapping("/api/category")
@@ -37,5 +40,12 @@ public class CategoryController {
     @PostMapping()
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
         return new ResponseEntity<>(categoryService.createCategory(categoryRequest), HttpStatus.OK);
+    }
+
+    //admin
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long categoryId,
+                                                         @RequestBody @Valid CategoryRequest categoryRequest) {
+        return new ResponseEntity<>(categoryService.updateCategory(categoryId, categoryRequest), HttpStatus.OK);
     }
 }

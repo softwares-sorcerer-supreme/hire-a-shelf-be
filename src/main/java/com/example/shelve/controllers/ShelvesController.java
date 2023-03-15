@@ -55,4 +55,10 @@ public class ShelvesController {
         return new ResponseEntity<>(shelvesService.createShelveType(shelvesTypeRequest), HttpStatus.OK);
     }
 
+    @PutMapping("/type/{id}")
+    public ResponseEntity<ShelvesTypeResponse> updateShelveType(@PathVariable Long id,
+                                                                @RequestBody ShelvesTypeRequest shelvesTypeRequest) {
+        return new ResponseEntity<>(shelvesService.updateShelveType(id, shelvesTypeRequest), HttpStatus.OK);
+    }
+
 }
