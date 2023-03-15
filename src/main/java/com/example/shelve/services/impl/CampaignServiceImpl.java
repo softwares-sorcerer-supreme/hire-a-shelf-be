@@ -10,7 +10,11 @@ import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CampaignMapper;
 import com.example.shelve.repository.*;
 import com.example.shelve.services.CampaignService;
+import com.example.shelve.services.FirebaseMessagingService;
+import com.example.shelve.services.NotificationService;
 import com.example.shelve.services.StorageService;
+import com.google.firebase.messaging.FirebaseMessagingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -20,13 +24,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
+@Slf4j
 public class CampaignServiceImpl implements CampaignService {
-    private static final int pageSize = 6;
 
+    private static final int pageSize = 6;
+    @Autowired
+    StoreRepository storeRepository;
+    @Autowired
+    private StoreCategoryRepository storeCategoryRepository;
     @Autowired
     private CampaignRepository campaignRepository;
     @Autowired
@@ -41,11 +49,14 @@ public class CampaignServiceImpl implements CampaignService {
     private StorageService storageService;
     @Autowired
     private BrandRepository brandRepository;
-
-
     @Autowired
     private CampaignMapper campaignMapper;
-
+    @Autowired
+    private FirebaseMessagingService firebaseMessagingService;
+    @Autowired
+    private FirebaseTokenRepository firebaseTokenRepository;
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     @Cacheable(value = "campaign")
@@ -57,11 +68,9 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     public CampaignResponse getCampaign(Long id) {
-        CampaignResponse campaignResponse = campaignMapper.toCampaignResponse(campaignRepository
+        return campaignMapper.toCampaignResponse(campaignRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!")));
-
-        return campaignResponse;
     }
 
     @Override
@@ -76,8 +85,8 @@ public class CampaignServiceImpl implements CampaignService {
         if (campaign.getStartDate().before(campaign.getCreatedDate()))
             throw new BadRequestException("Start Date must be after Today!");
 
-        if (campaign.getExpirationDate().before(campaign.getStartDate()))
-            throw new BadRequestException("Expiration Date must be after Start Date");
+//        if (campaign.getExpirationDate().before(campaign.getStartDate()))
+//            throw new BadRequestException("Expiration Date must be after Start Date");
 
         campaign.setEStatus(EStatus.PENDING);
         campaign.setImgURL(storageService.uploadFile(campaignRequest.getImgMultipart()));
@@ -125,23 +134,61 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public CampaignResponse approveCampaign(Long id, EStatus status) {
+    public CampaignResponse approveCampaign(Long id, EStatus status) throws FirebaseMessagingException {
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!"));
-
         campaign.setEStatus(status);
+        //Chage the status and save the campaign into database
         Campaign campaignSaved = campaignRepository.save(campaign);
+        //Get list token of brand.
+        Set<FirebaseNotiToken> brandFirebaseNotiTokens
+                = campaignSaved.getBrand().getAccount().getFireBaseNotiTokens();
+
+        //Find all the store token that still logged in and has the city same as the campaign city.
+        Set<FirebaseNotiToken> storeFirebaseTokens = firebaseTokenRepository.findAllByStatusAndAccountStoreLocationCity(true, campaign.getCity().toString());
+
+        //Get list token from list firebaseNotiToken
+        List<String> brandStringFCMs = new ArrayList<>();
+        brandFirebaseNotiTokens.forEach(firebaseNotiToken -> {
+            brandStringFCMs.add(firebaseNotiToken.getToken() != null ? firebaseNotiToken.getToken() : "");
+        });
+
+        List<String> storeStringFCMs = new ArrayList<>();
+        storeFirebaseTokens.forEach(storeFirebaseToken -> {
+            storeStringFCMs.add(storeFirebaseToken.getToken() != null ? storeFirebaseToken.getToken() : "");
+        });
+
+        //Send notification to multiple brand devices
+        firebaseMessagingService.sendNotifications("Campaign has been approved", "Your campaign with title " +
+                campaignSaved.getTitle() + " has been approved", brandStringFCMs);
+        //Save notification to database
+        notificationService.addNotificationByBrand("Campaign has been approved!", "Your campaign with title " +
+                campaignSaved.getTitle() + " has been approved", campaignSaved.getBrand().getId());
+
+
+        //Send notification to multiple store devices
+        firebaseMessagingService.sendNotifications("New campaign in your location!", "A new campaign in your location with title " +
+                campaignSaved.getTitle() + " has been posted! Check it out now!", storeStringFCMs);
+
+        Set<Long> processedAccountIds = new HashSet<>();
+        //Save notification to database
+        storeFirebaseTokens.forEach(firebaseNotiToken -> {
+            if (!processedAccountIds.contains(firebaseNotiToken.getAccount().getId())){
+                notificationService.addANotification("New campaign in your location!", "A new campaign in your location with title " +
+                        campaignSaved.getTitle() + " has been posted! Check it out now!", firebaseNotiToken.getAccount().getId());
+                processedAccountIds.add(firebaseNotiToken.getAccount().getId());
+            }
+        });
 
         return campaignMapper.toCampaignResponse(campaignSaved);
-
-        }
+    }
 
     @Override
     public CampaignResponse updateCampaign(Long id, CampaignRequest campaignRequest) {
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!"));
 
-        if(campaign.getEStatus() != EStatus.PENDING)
+        if (campaign.getEStatus() != EStatus.PENDING)
             throw new BadRequestException("Can't update campaign after approve!");
 
         campaign.setTitle(campaignRequest.getTitle());
@@ -209,41 +256,63 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     public APIResponse<List<CampaignResponse>> getAllCampaignsWithFilter(Long brandId, String keyword, int page, List<String> statusListFilter) {
-        Pageable pageable;
-        pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC , "createdDate");
-        Page<Campaign> result;
 
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC, "createdDate");
+        //This is stateList use to querry
+        List<EStatus> stateList = new ArrayList<>();
 
+        //Checking to see whether the state form frontend match any state from the EStatus
+        EStatus[] eStatuses = EStatus.values();
+        for (EStatus status : eStatuses) {
+            if (statusListFilter.contains(status.getName())) {
+                stateList.add(status);
+            }
+        }
+
+        Page<Campaign> result = campaignRepository.findByKeywordWithFilter
+                (stateList, keyword.toLowerCase(), brandId, pageable);
+        List<CampaignResponse> campaignResponses = new ArrayList<>();
+        result.toList().forEach((x -> campaignResponses.add(campaignMapper.toCampaignResponse(x))));
+        return new APIResponse<>(result.getTotalPages(), campaignResponses);
+    }
+
+    @Override
+    public APIResponse<List<CampaignResponse>> getListCampaignsWithFilterForHomePage(Long storeId, String keyword, int page, List<String> statusListFilter, String suggestBy) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC, "createdDate");
         //This is stateList use to querrt
         List<EStatus> stateList = new ArrayList<>();
 
         //Checking to see whether the state form frontend match any state from the EStatus
         EStatus[] eStatuses = EStatus.values();
         for (EStatus status : eStatuses) {
-            if(statusListFilter.contains(status.getName())){
+            if (statusListFilter.contains(status.getName())) {
                 stateList.add(status);
             }
         }
 
-        result = campaignRepository.findByKeywordWithFilter
-                (stateList, keyword.toLowerCase(), brandId ,pageable);
+        Optional<Store> store = storeRepository.findById(storeId);
+
+        if (store.isEmpty()) {
+            throw new BadRequestException("Store is not exist!");
+        }
+
+        List<String> categoriesName = new ArrayList<>();
+        if (suggestBy.equals("category")) {
+
+            List<StoreCategory> storeCategories =
+                    storeCategoryRepository.findAllByStoreId(storeId);
+            storeCategories.forEach((storeCategory -> {
+                categoriesName.add(storeCategory.getCategory().getName());
+            }));
+        }
+
+        Page<Campaign> result = campaignRepository.findByKeywordWithFilterForHomePage
+                (stateList, keyword.toLowerCase(), categoriesName, store.get().getLocation().getCity(), pageable);
+
         List<CampaignResponse> campaignResponses = new ArrayList<>();
         result.toList().forEach((x -> campaignResponses.add(campaignMapper.toCampaignResponse(x))));
         return new APIResponse<>(result.getTotalPages(), campaignResponses);
-    }
 
-//    public CampaignResponse createNewCampaign(String campaignStr, MultipartFile file) {
-//        String imageLinkCloud = storageService.uploadFile(file);
-//        Campaign savedCampaign = new Campaign();
-//        try{
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            savedCampaign = objectMapper.readValue(campaignStr, Campaign.class);
-//            savedCampaign.setImgURL(imageLinkCloud);
-//        } catch (IOException e){
-//            System.out.printf("Error asda sdasdasdsa", e);
-//        }
-//        System.out.println("-------------------------------------------------------------------------------" + savedCampaign.getImgURL());
-//        return campaignMapper.toCampaignResponse(campaignRepository.save(savedCampaign));
-//    }
+    }
 
 }

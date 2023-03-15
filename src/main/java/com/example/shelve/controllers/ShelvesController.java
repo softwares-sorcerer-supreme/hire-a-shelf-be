@@ -9,6 +9,7 @@ import com.example.shelve.entities.ShelvesType;
 import com.example.shelve.services.ShelvesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +36,8 @@ public class ShelvesController {
         return new ResponseEntity<>(shelvesService.getShelve(id), HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<ShelvesResponse> createShelve(@RequestBody ShelvesRequest shelvesRequest) {
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ShelvesResponse> createShelve(@ModelAttribute ShelvesRequest shelvesRequest) {
         return new ResponseEntity<>(shelvesService.createShelve(shelvesRequest), HttpStatus.OK);
     }
 

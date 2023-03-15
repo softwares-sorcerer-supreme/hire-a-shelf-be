@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -35,9 +33,8 @@ public class Account {
     @Column(name = "status")
     private boolean status;
 
-
-    @Column(name = "fire_base_token")
-    private String fireBaseToken;
+    @OneToMany(mappedBy = "account")
+    private Set<FirebaseNotiToken> fireBaseNotiTokens;
 
     @OneToOne
     @JoinColumn(name = "admin_id")

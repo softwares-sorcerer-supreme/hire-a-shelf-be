@@ -25,7 +25,7 @@ public class CampaignResponse {
     private Date expirationDate;
 
     private int duration;
-
+    private String city;
     private String imgURL;
 
     private BrandResponse brand;

@@ -88,7 +88,7 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
-    @Cacheable(value = "shelves", key = "{#storeId, #page}")
+    @Cacheable(value = "shelves", key = "{#storeId, #page, #keyword, #storeId, #status}")
     public APIResponse<List<ShelvesResponse>> getListShelvesWithFilter(long storeId,  int page, String keyword, String status) {
         Pageable pageable;
         pageable = PageRequest.of(page, 6, Sort.Direction.DESC , "name");
@@ -115,6 +115,7 @@ public class ShelvesServiceImpl implements ShelvesService {
             boolean state = Boolean.parseBoolean(status);
             shelvesTypes = shelvesTypeRepository.findShelvesTypesByStatus(state);
         }else {
+            System.out.println("Statusdjalhsdkjasdha");
             shelvesTypes = shelvesTypeRepository.findAll();
         }
         List<ShelvesTypeResponse> shelvesTypeResponses = new ArrayList<>();
@@ -124,7 +125,7 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
-    @CacheEvict(value = "shelves_type")
+    @CacheEvict(value = "shelves_type", allEntries = true)
     public ShelvesTypeResponse createShelveType(ShelvesTypeRequest shelvesTypeRequest) {
         ShelvesType shelvesType = ShelvesType.builder()
                 .name(shelvesTypeRequest.getName())

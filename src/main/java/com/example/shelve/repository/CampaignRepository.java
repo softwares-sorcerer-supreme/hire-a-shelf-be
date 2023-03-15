@@ -1,6 +1,8 @@
 package com.example.shelve.repository;
 
 import com.example.shelve.entities.Campaign;
+import com.example.shelve.entities.CampaignProduct;
+import com.example.shelve.entities.Category;
 import com.example.shelve.entities.enums.EStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +25,16 @@ public interface CampaignRepository extends JpaRepository<Campaign, Long> {
             @Param("brandId") long brandId,
             Pageable pageable
     );
-}
+
+    @Query(value = "SELECT DISTINCT c FROM Campaign c JOIN c.campaignProducts cp JOIN cp.product p JOIN p.category cate " +
+            "WHERE LOWER(c.title) LIKE %:keyword% " +
+            " AND (c.EStatus IN (:states) OR :states IS NULL)" +
+            " AND (c.city = :city) " +
+            " AND (cate.name IN :categoriesName)")
+    Page<Campaign> findByKeywordWithFilterForHomePage(
+            @Param("states") List<EStatus> states,
+            @Param("keyword") String keyword,
+            @Param("categoriesName") List<String> categoriesName,
+            @Param("city") String city,
+            Pageable pageable
+    );}

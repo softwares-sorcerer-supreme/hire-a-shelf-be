@@ -15,7 +15,7 @@ public class AdminMapper {
             return null;
         AdminResponse adminResponse = AdminResponse.builder()
                 .id(admin.getId())
-                .address(admin.getAddress())
+                .address(admin.getName())
                 .phone(admin.getPhone())
                 .build();
         return adminResponse;

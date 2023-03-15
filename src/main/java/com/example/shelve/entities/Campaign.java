@@ -45,6 +45,9 @@ public class Campaign implements Serializable {
     @Column(name = "imgURL", columnDefinition = "varchar")
     private String imgURL;
 
+    @Column(name = "city", columnDefinition = "varchar")
+    private String city;
+
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
