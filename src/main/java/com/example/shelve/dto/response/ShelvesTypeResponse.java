@@ -1,9 +1,15 @@
 package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.Shelves;
+import lombok.*;
 
 import java.util.Set;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ShelvesTypeResponse {
 
     private long id;

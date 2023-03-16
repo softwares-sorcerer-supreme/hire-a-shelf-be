@@ -1,6 +1,6 @@
 package com.example.shelve.services.impl;
 
-import ch.qos.logback.core.status.Status;
+import com.example.shelve.dto.request.DataMailRequest;
 import com.example.shelve.dto.request.RegistrationRequest;
 import com.example.shelve.dto.response.RegistrationResponse;
 import com.example.shelve.dto.response.SuccessResponse;
@@ -12,9 +12,12 @@ import com.example.shelve.exception.UserExistedException;
 import com.example.shelve.mapper.LocationMapper;
 import com.example.shelve.mapper.RegistrationMapper;
 import com.example.shelve.repository.*;
+import com.example.shelve.services.MailService;
 import com.example.shelve.services.RegistrationService;
 import com.example.shelve.utils.GeneratePassword;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,7 +29,8 @@ import static com.example.shelve.entities.enums.EStatus.PENDING;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService {
-
+    @Autowired
+    private MailService mailService;
     @Autowired
     private RegistrationRepository registrationRepository;
     @Autowired
@@ -45,23 +49,28 @@ public class RegistrationServiceImpl implements RegistrationService {
     private StoreRepository storeRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private AdminRepository adminRepository;
 
     @Override
     public SuccessResponse register(RegistrationRequest registrationRequest) {
         //Check email duplicate
-        Optional<Registration> accountEmail = registrationRepository.findByEmail(registrationRequest.getEmail());
-        if (accountEmail.isPresent())
+
+        //In registration
+        Optional<Registration> regisEmail = registrationRepository.findByEmail(registrationRequest.getEmail());
+        if (regisEmail.isPresent())
             throw new UserExistedException("This email has been registered");
 
         //Save new location
-        Location location = locationRepository.save(locationMapper.toLocation(registrationRequest.getLocation()));
-
+        Location location = locationMapper.toLocation(registrationRequest.getLocation());
+        location.setStatus(true);
+        Location locationSaved = locationRepository.save(location);
 
         //Mapping
         Registration registration = registrationMapper.toRegistration(registrationRequest);
 
         //Map location to registration
-        registration.setLocation(location);
+        registration.setLocation(locationSaved);
         registration.setEStatus(PENDING);
 
         registrationRepository.save(registration);
@@ -84,29 +93,55 @@ public class RegistrationServiceImpl implements RegistrationService {
         return registrationMapper.toRegistrationResponse(registration);
     }
 
+    @Override
+    public RegistrationResponse regisAdminAccount(String secretKey) {
+        if(secretKey.equals("ThisIsSecretKey")){
+            Admin admin = new Admin();
+            admin.setName("Admin");
+            admin.setPhone("0123456789");
+
+            Account account = Account.builder()
+                    .admin(adminRepository.save(admin))
+                    .password("$2a$12$2WCgG4OczjT0Hs2VGEHeZeHBbdLmYlu07zNRw5zWmoYfpXcfY7Fxe")
+                    .userName("admin")
+                    .status(true)
+                    .email("admin@admin.com")
+                    .build();
+            accountRepository.save(account);
+        }
+        return null;
+    }
+
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "brand", allEntries = true),
+            @CacheEvict(value = "store", allEntries = true),
+            @CacheEvict(value = "account", allEntries = true)
+    })
     public SuccessResponse approve(EStatus status, Long id) {
         Registration registration = registrationRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Registration not found!"));
 
-        if(registration.getEStatus() != PENDING)
+        if (registration.getEStatus() != PENDING)
             throw new BadRequestException("This registration has been " + registration.getEStatus());
 
         switch (status) {
             case APPROVED:
-                pushNotification(true);
-                handleStatusApproved(registration);
+                if (registration.isRegisterByGoogle())
+                    handleStatusApprovedByGoogleRegistration(registration);
+                else
+                    handleStatusApproved(registration);
                 break;
 
             case DECLINED:
-                //push notification to notice
-                pushNotification(false);
+                mailService.sendMailDeclinedAccount(registration.getEmail());
                 break;
 
             default:
                 throw new BadRequestException("Error status");
         }
+
 
         registration.setEStatus(status);
         registrationRepository.save(registration);
@@ -120,55 +155,72 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     private void handleStatusApproved(Registration registration) {
         String username = registration.getEmail().substring(0, registration.getEmail().indexOf('@'));
-
+        String password = generatePassword.generatePassword();
         Account account = Account.builder()
                 .email(registration.getEmail())
                 .userName(username)
-                .password(passwordEncoder.encode(generatePassword.generatePassword()))
+                .password(passwordEncoder.encode(password))
                 .status(true)
                 .build();
 
+        accountRepository.save(initTypeAccount(registration, account));
+        DataMailRequest dataMailRequest = DataMailRequest.builder()
+                .email(registration.getEmail())
+                .password(password)
+                .userName(username)
+                .build();
+        mailService.sendMailApprovedAccount(dataMailRequest);
+    }
+
+    private void handleStatusApprovedByGoogleRegistration(Registration registration) {
+        Account account = Account.builder()
+                .email(registration.getEmail())
+                .userName(registration.getEmail())
+                .password(passwordEncoder.encode("123456"))
+                .status(true)
+                .build();
+
+        accountRepository.save(initTypeAccount(registration, account));
+
+        DataMailRequest dataMailRequest = DataMailRequest.builder()
+                .email(registration.getEmail())
+                .userName("This field is empty because you login with google account!")
+                .password("This field is empty because you login with google account!")
+                .build();
+        mailService.sendMailApprovedAccount(dataMailRequest);
+    }
+
+
+    private Account initTypeAccount(Registration registration, Account account) {
         switch (registration.getTypeAccount()) {
             case "Brand":
+
                 Brand brand = brandRepository.save(Brand.builder()
                         .name(registration.getName())
                         .phone(registration.getPhone())
-                        .locations(Collections.singleton(registration.getLocation()))
                         .name(registration.getName())
                         .participateDate(new Date(System.currentTimeMillis()))
                         .status(true)
+                        .location(locationRepository.save(registration.getLocation()))
                         .build());
 
                 account.setBrand(brand);
                 break;
 
             case "Store":
-                Store store = Store.builder()
+                Store store = storeRepository.save(Store.builder()
                         .name(registration.getName())
                         .phone(registration.getPhone())
-                        .location(registration.getLocation())
+                        .location(locationRepository.save(registration.getLocation()))
                         .name(registration.getName())
                         .participateDate(new Date(System.currentTimeMillis()))
                         .status(true)
-                        .build();
+                        .build());
 
                 account.setStore(store);
                 break;
         }
-        accountRepository.save(account);
+
+        return account;
     }
-
-
-    private void pushNotification(boolean isApproved) {
-        //notify to user's email
-        if (isApproved) {
-            //using firebase to send email the user's password
-
-
-        }
-
-
-    }
-
-
 }

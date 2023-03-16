@@ -1,5 +1,7 @@
 package com.example.shelve.entities;
 
+import com.example.shelve.entities.enums.EStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,17 +29,23 @@ public class Contract implements Serializable {
     @Column(name = "cancel_date")
     private Date cancelDate;
 
-    @Column(name = "description")
+    @Column(name = "approval_date")
+    private Date approvalDate;
+
+    @Column(name = "description", columnDefinition = "varchar")
     private String description;
 
     @Column(name = "status")
-    private boolean status;
+    @Enumerated(EnumType.STRING)
+    private EStatus EStatus;
 
     @ManyToOne
     @JoinColumn(name = "campaign_id")
+    @JsonIgnore
     private Campaign campaign;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
+    @JsonIgnore
     private Store store;
 }

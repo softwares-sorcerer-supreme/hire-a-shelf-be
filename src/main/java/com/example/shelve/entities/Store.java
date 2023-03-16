@@ -1,6 +1,5 @@
 package com.example.shelve.entities;
 
-import com.example.shelve.entities.enums.EStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -24,16 +23,16 @@ public class Store implements Serializable {
     @Column
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "varchar")
     private String name;
 
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "logo")
+    @Column(name = "logo", columnDefinition = "text")
     private String logo;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "varchar")
     private String description;
 
     @Column(name = "participate_date")
@@ -55,14 +54,9 @@ public class Store implements Serializable {
     @JsonIgnore
     private Account account;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "location_id")
     private Location location;
-
-    @ManyToOne
-    @JoinColumn(name = "retailer_id")
-    private Retailer retailer;
-
     @OneToMany(mappedBy = "store")
     private Set<StoreCategory> storeCategories;
 

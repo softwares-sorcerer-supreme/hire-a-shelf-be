@@ -14,6 +14,7 @@ public class LocationResponse {
 
     private long id;
     private String district;
+    private String ward;
     private String address;
     private String city;
 //    private Set<Store> store;

@@ -24,22 +24,23 @@ public class Brand implements Serializable {
     @Column
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "varchar")
     private String name;
 
-    @OneToMany(mappedBy = "brand")
-    private Set<Location> locations;
+    @OneToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "logo")
+    @Column(name = "logo", columnDefinition = "varchar")
     private String logo;
 
     @Column(name = "participate_date")
     private Date participateDate;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "varchar")
     private String description;
 
     @OneToMany(mappedBy = "brand")

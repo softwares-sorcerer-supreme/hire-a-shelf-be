@@ -1,9 +1,16 @@
 package com.example.shelve.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "store_category")
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class StoreCategory {
 
     @Id

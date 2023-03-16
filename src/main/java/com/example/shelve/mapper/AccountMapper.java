@@ -22,6 +22,7 @@ public class AccountMapper {
                 .username(account.getUserName())
                 .email(account.getEmail())
                 .status(account.isStatus())
+                .email(account.getEmail())
                 .admin(adminMapper.toAdminResponse(account.getAdmin()))
                 .store(storeMapper.toStoreResponse(account.getStore()))
                 .brand(brandMapper.toBrandResponse(account.getBrand()))

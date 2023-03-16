@@ -1,5 +1,6 @@
 package com.example.shelve.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -20,18 +21,19 @@ public class ShelvesType implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "varchar")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "varchar")
     private String description;
 
     @Column(name = "status")
     private boolean status;
 
     @OneToMany(mappedBy = "shelvesType")
+    @JsonIgnore
     private Set<Shelves> shelves;
 
     @OneToMany(mappedBy = "shelvesType")
-    private Set<CampaignShelveType> campaignShelveTypes;
+    private Set<CampaignShelvesType> campaignShelvesTypes;
 }

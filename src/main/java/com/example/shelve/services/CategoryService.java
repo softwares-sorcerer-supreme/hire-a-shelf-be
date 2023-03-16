@@ -1,5 +1,6 @@
 package com.example.shelve.services;
 
+import com.example.shelve.dto.request.CategoryRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.CategoryResponse;
 
@@ -11,4 +12,7 @@ public interface CategoryService {
 
     CategoryResponse getCategory(Long id);
 
+    List<CategoryResponse> getCategoriesByStatus(boolean status);
+
+    CategoryResponse createCategory(CategoryRequest categoryRequest);
 }

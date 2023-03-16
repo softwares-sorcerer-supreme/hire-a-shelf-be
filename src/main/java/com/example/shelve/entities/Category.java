@@ -23,10 +23,10 @@ public class Category implements Serializable {
     @Column(name = "status")
     private boolean status;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "varchar")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "varchar")
     private String description;
 
     @OneToMany(mappedBy = "category")

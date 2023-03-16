@@ -10,12 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderDetailResponse {
-
     private long id;
-
-    private String sales;
-
-    private Product products;
-
-    private Order order;
+    private int sale;
+    private ProductResponse product;
 }

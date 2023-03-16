@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 public class LocationMapper {
 
     public LocationResponse toLocationResponse (Location location){
+        if(location == null)
+            return null;
+
         LocationResponse locationResponse = LocationResponse.builder()
                 .id(location.getId())
                 .address(location.getAddress())
@@ -21,6 +24,9 @@ public class LocationMapper {
     }
 
     public Location toLocation(LocationRequest locationRequest) {
+        if(locationRequest == null)
+            return new Location();
+
         return Location.builder()
                 .district(locationRequest.getDistrict())
                 .city(locationRequest.getCity())

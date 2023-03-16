@@ -38,5 +38,4 @@ public class AuthenticationController {
         return new ResponseEntity<>(authenticationService.authenticationGoogleResponse(idToken, firebaseToken), HttpStatus.OK);
     }
 
-
 }

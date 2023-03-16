@@ -15,7 +15,7 @@ public class RegistrationRequest {
     private String name;
     private String note;
     private String typeAccount;
-    private EStatus EStatus;
+    private boolean isRegisterByGoogle;
     private LocationRequest location;
 
 }

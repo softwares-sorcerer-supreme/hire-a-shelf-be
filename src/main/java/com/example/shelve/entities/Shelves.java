@@ -20,17 +20,21 @@ public class Shelves implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "varchar")
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "varchar")
     private String description;
 
     @Column(name = "status")
     private boolean status;
 
+    @Column(name = "image", columnDefinition = "TEXT")
+    private String imgURL;
+
     @ManyToOne
     @JoinColumn(name = "store_id")
+    @JsonIgnore
     private Store store;
 
     @ManyToOne
@@ -39,8 +43,5 @@ public class Shelves implements Serializable {
 
     @OneToMany(mappedBy = "shelves")
     private Set<ShelvesProducts> shelvesProducts;
-
-    @OneToMany(mappedBy = "shelves")
-    private Set<Image> images;
 
 }

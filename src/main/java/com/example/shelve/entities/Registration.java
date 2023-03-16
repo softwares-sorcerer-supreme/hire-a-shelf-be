@@ -26,10 +26,10 @@ public class Registration {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "name")
+    @Column(name = "name", columnDefinition = "varchar")
     private String name;
 
-    @Column(name = "note")
+    @Column(name = "note", columnDefinition = "varchar")
     private String note;
 
     @Column(name = "create_date")
@@ -41,6 +41,9 @@ public class Registration {
     @OneToOne
     @JoinColumn(name = "location_id")
     private Location location;
+
+    @Column(name = "is_register_by_google")
+    private boolean isRegisterByGoogle;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

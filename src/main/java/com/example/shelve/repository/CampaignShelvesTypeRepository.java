@@ -1,7 +1,11 @@
 package com.example.shelve.repository;
 
-import com.example.shelve.entities.CampaignShelveType;
+import com.example.shelve.entities.CampaignShelvesType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CampaignShelvesTypeRepository extends JpaRepository<CampaignShelveType, Long> {
+import java.util.List;
+
+public interface CampaignShelvesTypeRepository extends JpaRepository<CampaignShelvesType, Long> {
+    List<CampaignShelvesType> findByCampaign_Id(Long campaignId);
+
 }

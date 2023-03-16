@@ -16,6 +16,7 @@ public class StoreMapper {
             return null;
 
         return StoreResponse.builder()
+                .id(store.getId())
                 .name(store.getName())
                 .phone(store.getPhone())
                 .logo(store.getLogo())

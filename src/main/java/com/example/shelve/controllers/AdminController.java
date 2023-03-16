@@ -26,6 +26,6 @@ public class AdminController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AdminResponse> getAdmin(@PathVariable  Long id){
-        return new ResponseEntity<>(adminService.getAdmin(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(adminService.getAdmin(id), HttpStatus.OK);
     }
 }

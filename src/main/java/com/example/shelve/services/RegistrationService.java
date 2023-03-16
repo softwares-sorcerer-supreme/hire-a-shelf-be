@@ -15,4 +15,6 @@ public interface RegistrationService {
     SuccessResponse approve(EStatus status, Long id);
 
     RegistrationResponse getRegistrationById(Long id);
+
+    RegistrationResponse regisAdminAccount(String secretKey);
 }

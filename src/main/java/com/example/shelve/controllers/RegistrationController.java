@@ -26,8 +26,9 @@ public class RegistrationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<RegistrationResponse> getRegistrationById(@PathVariable Long id) {
-        return new ResponseEntity<>(registrationService.getRegistrationById(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(registrationService.getRegistrationById(id), HttpStatus.OK);
     }
+
 
     @PostMapping
     public ResponseEntity<SuccessResponse> registration(@RequestBody RegistrationRequest registration) {
@@ -37,7 +38,12 @@ public class RegistrationController {
     @PutMapping("/{id}")
     public ResponseEntity<SuccessResponse> approvalRegistration(@RequestParam(name = "status") EStatus status,
                                                                      @PathVariable Long id) {
-        return new ResponseEntity<>(registrationService.approve(status, id), HttpStatus.FOUND);
+        return new ResponseEntity<>(registrationService.approve(status, id), HttpStatus.OK);
+    }
+
+    @PostMapping("/admin/{secretKey}")
+    public ResponseEntity<RegistrationResponse> regisAdminAccount(@PathVariable String secretKey) {
+        return new ResponseEntity<>(registrationService.regisAdminAccount(secretKey), HttpStatus.OK);
     }
 
 }

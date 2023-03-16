@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Builder
 @Table(name = "campaign_shelve_type")
-public class CampaignShelveType {
+public class CampaignShelvesType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

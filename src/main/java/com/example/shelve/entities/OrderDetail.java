@@ -1,8 +1,15 @@
 package com.example.shelve.entities;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "order_detail")
 public class OrderDetail implements Serializable {
@@ -12,8 +19,8 @@ public class OrderDetail implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(name = "sales")
-    private String sales;
+    @Column(name = "sale")
+    private int sale;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

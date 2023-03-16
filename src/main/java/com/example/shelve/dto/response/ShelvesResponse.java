@@ -1,9 +1,15 @@
 package com.example.shelve.dto.response;
 
 import com.example.shelve.entities.*;
+import lombok.*;
 
 import java.util.Set;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class ShelvesResponse {
 
     private long id;
@@ -14,13 +20,13 @@ public class ShelvesResponse {
 
     private boolean status;
 
-    private Store store;
+    private StoreResponse store;
 
-    private ShelvesType shelvesType;
+    private ShelvesTypeResponse shelvesTypeResponse;
 
-    private Set<Image> images;
+    private Set<ImageResponse> images;
 
-    private Set<Campaign>  campaigns;
+    private String imgURL;
 
-    private Set<Product> products;
+    private Set<ProductResponse> products;
 }

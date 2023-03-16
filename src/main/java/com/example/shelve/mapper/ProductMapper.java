@@ -5,6 +5,8 @@ import com.example.shelve.dto.response.ProductResponse;
 import com.example.shelve.entities.Product;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
 @Component
 public class ProductMapper {
 
@@ -15,9 +17,6 @@ public class ProductMapper {
                 .description(productRequest.getDescription())
                 .quantity(productRequest.getQuantity())
                 .price(productRequest.getPrice())
-                .imgURL(productRequest.getImgURL())
-                .category(productRequest.getCategory())
-                .brand(productRequest.getBrand())
                 .build();
     }
 

@@ -24,10 +24,10 @@ public class Campaign implements Serializable {
     @Column
     private Long id;
 
-    @Column(name = "title")
+    @Column(name = "title", columnDefinition = "varchar")
     private String title;
 
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "varchar")
     private String content;
 
     @Column(name = "created_date")
@@ -42,8 +42,11 @@ public class Campaign implements Serializable {
     @Column(name = "duration")
     private int duration;
 
-    @Column(name = "imgURL")
+    @Column(name = "imgURL", columnDefinition = "varchar")
     private String imgURL;
+
+    @Column(name = "city", columnDefinition = "varchar")
+    private String city;
 
     @ManyToOne
     @JoinColumn(name = "brand_id")
@@ -60,7 +63,7 @@ public class Campaign implements Serializable {
     private Set<CampaignProduct> campaignProducts;
 
     @OneToMany(mappedBy = "campaign")
-    private Set<CampaignShelveType> campaignShelveTypes;
+    private Set<CampaignShelvesType> campaignShelvesTypes;
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)

@@ -1,5 +1,6 @@
 package com.example.shelve.dto.response;
 
+import com.example.shelve.entities.Location;
 import com.example.shelve.entities.enums.EStatus;
 import lombok.*;
 
@@ -15,7 +16,7 @@ public class BrandResponse implements Serializable {
     private Long id;
     private String name;
 
-    private Set<LocationResponse> location;
+    private LocationResponse location;
 
     private String phone;
     

@@ -23,6 +23,7 @@ public class RegistrationMapper {
                 .typeAccount(registrationRequest.getTypeAccount())
                 .createDate(new Date(System.currentTimeMillis()))
                 .location(locationMapper.toLocation(registrationRequest.getLocation()))
+                .isRegisterByGoogle(registrationRequest.isRegisterByGoogle())
                 .build();
     }
 
@@ -36,6 +37,7 @@ public class RegistrationMapper {
                 .typeAccount(registration.getTypeAccount())
                 .status(registration.getEStatus().getName())
                 .name(registration.getName())
+                .locationResponse(locationMapper.toLocationResponse(registration.getLocation()))
                 .build();
     }
 
