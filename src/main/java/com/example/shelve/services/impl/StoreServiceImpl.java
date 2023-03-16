@@ -1,5 +1,6 @@
 package com.example.shelve.services.impl;
 
+import com.example.shelve.dto.request.StoreCategoryRequest;
 import com.example.shelve.dto.response.StoreCategoryResponse;
 import com.example.shelve.dto.response.StoreResponse;
 import com.example.shelve.entities.Category;
@@ -42,13 +43,13 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<StoreCategoryResponse> addFavouriteCategory(List<Long> categoriesId, Long storeId) {
+    public List<StoreCategoryResponse> addFavouriteCategory(StoreCategoryRequest storeCategoryRequest) {
         List<StoreCategoryResponse> storeCategoryResponses = new ArrayList<>();
-        Optional<Store> storeFound = storeRepository.findById(storeId);
+        Optional<Store> storeFound = storeRepository.findById(storeCategoryRequest.getStoreId());
         if (storeFound.isEmpty()){
-            throw new NotFoundException("Store with id " + storeId + " could not be found!");
+            throw new NotFoundException("Store with id " + storeCategoryRequest.getStoreId() + " could not be found!");
         }
-        categoriesId.forEach(categoryId -> {
+        storeCategoryRequest.getCategoriesId().forEach(categoryId -> {
             Optional<Category> category = categoryRepository.findById(categoryId);
             if(category.isEmpty()){
                 throw new NotFoundException("Category with id " + categoryId + " could not be found!");

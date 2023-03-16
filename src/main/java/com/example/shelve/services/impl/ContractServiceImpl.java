@@ -3,6 +3,7 @@ package com.example.shelve.services.impl;
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.request.ContractRequest;
 import com.example.shelve.dto.request.PushNotificationRequest;
+import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ContractResponse;
 import com.example.shelve.entities.Campaign;
@@ -19,6 +20,10 @@ import com.example.shelve.repository.NotificationRepository;
 import com.example.shelve.repository.StoreRepository;
 import com.example.shelve.services.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -128,6 +133,28 @@ public class ContractServiceImpl implements ContractService {
         Contract contractSaved = contractRepository.save(contract);
 
         return contractMapper.toContractResponse(contractSaved);
+    }
+
+    @Override
+    public APIResponse<List<ContractResponse>> getAllStoreContract(long storeId, int page, List<String> states) {
+        Pageable pageable = PageRequest.of(page, 6, Sort.Direction.DESC, "createDate");
+
+        List<EStatus> stateList = new ArrayList<>();
+        //Checking to see whether the state form frontend match any state from the EStatus
+        EStatus[] eStatuses = EStatus.values();
+        for (EStatus status : eStatuses) {
+            if (states.contains(status.getName())) {
+                stateList.add(status);
+            }
+        }
+
+        Page<Contract> result = contractRepository.findAllByStoreIdAndEStatusIn(storeId, stateList, pageable);
+        List<ContractResponse> contractResponses = new ArrayList<>();
+        result.forEach(contract -> {
+            contractResponses.add(contractMapper.toContractResponse(contract));
+        });
+
+        return new APIResponse<>(result.getTotalPages(), contractResponses);
     }
 
 

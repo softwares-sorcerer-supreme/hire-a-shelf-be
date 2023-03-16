@@ -1,5 +1,6 @@
 package com.example.shelve.controllers;
 
+import com.example.shelve.dto.request.StoreCategoryRequest;
 import com.example.shelve.dto.response.StoreCategoryResponse;
 import com.example.shelve.dto.response.StoreResponse;
 import com.example.shelve.services.StoreService;
@@ -22,8 +23,8 @@ public class StoreController {
         return new ResponseEntity<>(storeService.getStore(id), HttpStatus.OK);
     }
     @PostMapping("/category")
-    public ResponseEntity<List<StoreCategoryResponse>> addFavouriteCategory(@RequestParam List<Long> categoriesId, @RequestParam Long storeId) {
-        return new ResponseEntity<>(storeService.addFavouriteCategory(categoriesId, storeId), HttpStatus.OK);
+    public ResponseEntity<List<StoreCategoryResponse>> addFavouriteCategory(@RequestBody StoreCategoryRequest storeCategoryRequest) {
+        return new ResponseEntity<>(storeService.addFavouriteCategory(storeCategoryRequest), HttpStatus.OK);
     }
 
 }
