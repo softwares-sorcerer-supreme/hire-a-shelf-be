@@ -5,12 +5,14 @@ import com.example.shelve.config.JwtService;
 import com.example.shelve.dto.request.AccountRequest;
 import com.example.shelve.dto.response.AuthenticationResponse;
 import com.example.shelve.entities.Account;
+import com.example.shelve.entities.FirebaseNotiToken;
 import com.example.shelve.entities.Registration;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.AccountMapper;
 import com.example.shelve.repository.AccountRepository;
+import com.example.shelve.repository.FirebaseTokenRepository;
 import com.example.shelve.repository.RegistrationRepository;
 import com.example.shelve.services.AuthenticationService;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -48,9 +50,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private RegistrationRepository registrationRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private FirebaseTokenRepository firebaseTokenRepository;
 
     public AuthenticationResponse authenticationResponse(AccountRequest accountRequest) {
         var user = accountRepository.findByUserName(accountRequest.getUserName())
@@ -60,9 +63,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new ResourceNotFoundException("Username or password is invalid!");
         }
 
-        //set firebase token
-        user.setFireBaseToken(accountRequest.getFirebaseToken());
-        accountRepository.save(user);
+        //set firebase token to database
+        Account savedAccount = accountRepository.save(user);
+        saveFirebaseTokenToDatabase(savedAccount, accountRequest.getFirebaseToken());
 
         //authen
         Authentication authentication = authenticationManager.authenticate(
@@ -138,11 +141,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
         //set firebase token
-        foundAccount.get().setFireBaseToken(firebaseToken);
-        accountRepository.save(foundAccount.get());
+        Account savedAccount = accountRepository.save(foundAccount.get());
+        saveFirebaseTokenToDatabase(savedAccount, firebaseToken);
 
         var userDetail = new CustomeUserDetail(foundAccount.get());
-
         var jwtToken = jwtService.generateToken(userDetail);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -152,6 +154,23 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .message("Successfully!")
                 .status(HttpStatus.OK.value())
                 .build();
+    }
+
+    public void saveFirebaseTokenToDatabase(Account savedAccount, String firebaseToken){
+        FirebaseNotiToken notiToken = firebaseTokenRepository.findByTokenAndAccountId(firebaseToken, savedAccount.getId());
+        if(notiToken == null){
+            FirebaseNotiToken firebaseNotiToken = FirebaseNotiToken.builder()
+                    .token(firebaseToken)
+                    .account(savedAccount)
+                    .status(true)
+                    .build();
+            firebaseTokenRepository.save(firebaseNotiToken);
+        }else{
+            if(!notiToken.isStatus()){
+                notiToken.setStatus(true);
+                firebaseTokenRepository.save(notiToken);
+            }
+        }
     }
 }
 

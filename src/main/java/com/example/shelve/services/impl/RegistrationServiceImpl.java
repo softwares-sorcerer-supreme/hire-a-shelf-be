@@ -49,6 +49,8 @@ public class RegistrationServiceImpl implements RegistrationService {
     private StoreRepository storeRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private AdminRepository adminRepository;
 
     @Override
     public SuccessResponse register(RegistrationRequest registrationRequest) {
@@ -89,6 +91,25 @@ public class RegistrationServiceImpl implements RegistrationService {
                 .orElseThrow(() -> new ResourceNotFoundException("Registration not found!"));
 
         return registrationMapper.toRegistrationResponse(registration);
+    }
+
+    @Override
+    public RegistrationResponse regisAdminAccount(String secretKey) {
+        if(secretKey.equals("ThisIsSecretKey")){
+            Admin admin = new Admin();
+            admin.setName("Admin");
+            admin.setPhone("0123456789");
+
+            Account account = Account.builder()
+                    .admin(adminRepository.save(admin))
+                    .password("$2a$12$2WCgG4OczjT0Hs2VGEHeZeHBbdLmYlu07zNRw5zWmoYfpXcfY7Fxe")
+                    .userName("admin")
+                    .status(true)
+                    .email("admin@admin.com")
+                    .build();
+            accountRepository.save(account);
+        }
+        return null;
     }
 
 

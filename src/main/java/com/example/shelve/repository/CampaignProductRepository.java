@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CampaignProductRepository extends JpaRepository<CampaignProduct, Long> {
 
-    public List<CampaignProduct> findCampaignProductByCampaign_Id(Long id);
+    List<CampaignProduct> findCampaignProductByCampaign_Id(Long id);
 
 }

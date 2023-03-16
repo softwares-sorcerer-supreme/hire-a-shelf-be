@@ -22,6 +22,7 @@ public class CampaignRequest {
     private Date createdDate;
     private Date startDate;
     private Date expirationDate;
+    private String city;
     private int duration;
     private MultipartFile imgMultipart;
     private Long brandId;

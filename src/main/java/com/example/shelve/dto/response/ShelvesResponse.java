@@ -26,5 +26,7 @@ public class ShelvesResponse {
 
     private Set<ImageResponse> images;
 
+    private String imgURL;
+
     private Set<ProductResponse> products;
 }

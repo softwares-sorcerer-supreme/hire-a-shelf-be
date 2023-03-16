@@ -17,7 +17,6 @@ public class ShelvesRequest {
     private boolean status;
     private Long storeId;
     private Long shelvesTypeId;
-
     private MultipartFile imgMultipart;
 
 //    private Set<Long> shelvesProducts;

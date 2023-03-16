@@ -29,6 +29,7 @@ public class RegistrationController {
         return new ResponseEntity<>(registrationService.getRegistrationById(id), HttpStatus.OK);
     }
 
+
     @PostMapping
     public ResponseEntity<SuccessResponse> registration(@RequestBody RegistrationRequest registration) {
         return new ResponseEntity<>(registrationService.register(registration), HttpStatus.OK);
@@ -38,6 +39,11 @@ public class RegistrationController {
     public ResponseEntity<SuccessResponse> approvalRegistration(@RequestParam(name = "status") EStatus status,
                                                                      @PathVariable Long id) {
         return new ResponseEntity<>(registrationService.approve(status, id), HttpStatus.OK);
+    }
+
+    @PostMapping("/admin/{secretKey}")
+    public ResponseEntity<RegistrationResponse> regisAdminAccount(@PathVariable String secretKey) {
+        return new ResponseEntity<>(registrationService.regisAdminAccount(secretKey), HttpStatus.OK);
     }
 
 }
