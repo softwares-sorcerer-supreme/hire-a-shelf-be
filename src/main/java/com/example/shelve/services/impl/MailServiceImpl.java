@@ -75,4 +75,19 @@ public class MailServiceImpl implements MailService {
 
         }
     }
+
+    public void sendMailResetPassword(String email, String password){
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+            helper.setSubject(SEND_MAIL_SUBJECT.CLIENT_REGISTER);
+            helper.setFrom(email);
+            Map<String, Object> variables = new HashMap<>();
+            variables.put("password", password);
+            helper.setText(thymleafService.createContent("mail-sender-reset-password.html", variables), true);
+            mailSender.send(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
