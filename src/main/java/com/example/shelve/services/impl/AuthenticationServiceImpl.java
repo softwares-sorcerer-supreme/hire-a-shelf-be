@@ -3,6 +3,7 @@ package com.example.shelve.services.impl;
 import com.example.shelve.config.CustomeUserDetail;
 import com.example.shelve.config.JwtService;
 import com.example.shelve.dto.request.AccountRequest;
+import com.example.shelve.dto.request.LogoutRequest;
 import com.example.shelve.dto.response.AuthenticationResponse;
 import com.example.shelve.entities.Account;
 import com.example.shelve.entities.FirebaseNotiToken;
@@ -154,6 +155,17 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .message("Successfully!")
                 .status(HttpStatus.OK.value())
                 .build();
+    }
+
+    @Override
+    public AuthenticationResponse logout(LogoutRequest logoutRequest) {
+        FirebaseNotiToken firebaseNotiToken = firebaseTokenRepository.findByTokenAndAccountId(logoutRequest.getFirebaseToken(), logoutRequest.getAccountId());
+        if (firebaseNotiToken!=null){
+            firebaseNotiToken.setStatus(false);
+            firebaseTokenRepository.save(firebaseNotiToken);
+            return null;
+        }
+        return null;
     }
 
     public void saveFirebaseTokenToDatabase(Account savedAccount, String firebaseToken){
