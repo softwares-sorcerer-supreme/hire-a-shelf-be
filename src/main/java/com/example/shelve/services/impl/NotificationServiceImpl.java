@@ -44,6 +44,7 @@ public class NotificationServiceImpl implements NotificationService {
             Notification notification = Notification.builder()
                     .account(accountOptional.get())
                     .title(title)
+                    .type(eNotificationType)
                     .body(body)
                     .build();
             return mapper.toNotificationResponse(notificationRepository.save(notification)) ;
