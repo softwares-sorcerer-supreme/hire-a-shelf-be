@@ -4,6 +4,7 @@ import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.entities.*;
+import com.example.shelve.entities.enums.ENotificationType;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
@@ -135,6 +136,11 @@ public class CampaignServiceImpl implements CampaignService {
 
     @Override
     public CampaignResponse approveCampaign(Long id, EStatus status) throws FirebaseMessagingException {
+        String statusMessage = "declined";
+        if (status.equals(EStatus.APPROVED)){
+            statusMessage = "approved";
+        }
+
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Campaign not found!"));
         campaign.setEStatus(status);
@@ -159,26 +165,29 @@ public class CampaignServiceImpl implements CampaignService {
         });
 
         //Send notification to multiple brand devices
-        firebaseMessagingService.sendNotifications("Campaign has been approved", "Your campaign with title " +
-                campaignSaved.getTitle() + " has been approved", brandStringFCMs);
+        firebaseMessagingService.sendNotifications("Campaign has been " + statusMessage, "Your campaign with title " +
+                campaignSaved.getTitle() + " has been " + statusMessage, brandStringFCMs);
         //Save notification to database
-        notificationService.addNotificationByBrand("Campaign has been approved!", "Your campaign with title " +
-                campaignSaved.getTitle() + " has been approved", campaignSaved.getBrand().getId());
+        notificationService.addNotificationByBrand("Campaign has been " + statusMessage, "Your campaign with title " +
+                campaignSaved.getTitle() + " has been " + statusMessage, campaignSaved.getBrand().getId(),
+                status.equals(EStatus.APPROVED) ? ENotificationType.APPROVED : ENotificationType.DECLINED);
 
 
-        //Send notification to multiple store devices
-        firebaseMessagingService.sendNotifications("New campaign in your location!", "A new campaign in your location with title " +
-                campaignSaved.getTitle() + " has been posted! Check it out now!", storeStringFCMs);
+        if (status.equals(EStatus.APPROVED)){
+            //Send notification to multiple store devices
+            firebaseMessagingService.sendNotifications("New campaign in your location!", "A new campaign in your location with title " +
+                    campaignSaved.getTitle() + " has been posted! Check it out now!", storeStringFCMs);
 
-        Set<Long> processedAccountIds = new HashSet<>();
-        //Save notification to database
-        storeFirebaseTokens.forEach(firebaseNotiToken -> {
-            if (!processedAccountIds.contains(firebaseNotiToken.getAccount().getId())){
-                notificationService.addANotification("New campaign in your location!", "A new campaign in your location with title " +
-                        campaignSaved.getTitle() + " has been posted! Check it out now!", firebaseNotiToken.getAccount().getId());
-                processedAccountIds.add(firebaseNotiToken.getAccount().getId());
-            }
-        });
+            Set<Long> processedAccountIds = new HashSet<>();
+            //Save notification to database
+            storeFirebaseTokens.forEach(firebaseNotiToken -> {
+                if (!processedAccountIds.contains(firebaseNotiToken.getAccount().getId())){
+                    notificationService.addANotification("New campaign in your location!", "A new campaign in your location with title " +
+                            campaignSaved.getTitle() + " has been posted! Check it out now!", firebaseNotiToken.getAccount().getId(), ENotificationType.ANNOUNCE);
+                    processedAccountIds.add(firebaseNotiToken.getAccount().getId());
+                }
+            });
+        }
 
         return campaignMapper.toCampaignResponse(campaignSaved);
     }
