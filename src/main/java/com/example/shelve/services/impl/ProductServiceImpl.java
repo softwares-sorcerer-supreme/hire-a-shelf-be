@@ -77,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable(value = "product", key = "{#brandId, #page}")
+    @Cacheable(value = "product", key = "{#brandId, #page, #keyword}")
     public APIResponse<List<ProductResponse>> getAllProductWithFilter(long brandId, int page, String keyword, List<Long> categoriesId) {
         log.error("Product ddi qua day");
 
