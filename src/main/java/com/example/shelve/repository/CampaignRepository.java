@@ -29,8 +29,8 @@ public interface CampaignRepository extends JpaRepository<Campaign, Long> {
     @Query(value = "SELECT DISTINCT c FROM Campaign c JOIN c.campaignProducts cp JOIN cp.product p JOIN p.category cate " +
             "WHERE LOWER(c.title) LIKE %:keyword% " +
             " AND (c.EStatus IN (:states) OR :states IS NULL)" +
-            " AND (c.city = :city) " +
-            " AND (cate.name IN :categoriesName)")
+            " AND (:city = '' OR c.city = :city) " +
+            " AND (COALESCE(:categoriesName, NULL) IS NULL OR cate.name IN :categoriesName)")
     Page<Campaign> findByKeywordWithFilterForHomePage(
             @Param("states") List<EStatus> states,
             @Param("keyword") String keyword,

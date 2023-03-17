@@ -26,5 +26,5 @@ public interface CampaignService {
 
     APIResponse<List<CampaignResponse>> getAllCampaignsWithFilter(Long brandId, String keyword, int page, List<String> statusList);
 
-    APIResponse<List<CampaignResponse>> getListCampaignsWithFilterForHomePage(Long storeId, String keyword, int page, List<String> states, String suggestBy);
+    APIResponse<List<CampaignResponse>> getListCampaignsWithFilterForHomePage(Long storeId, String keyword, int page, List<String> states, String suggestByCategory, String filterByLocation);
 }
