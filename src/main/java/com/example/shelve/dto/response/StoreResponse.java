@@ -15,30 +15,15 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 public class StoreResponse {
-
     private Long id;
-
     private String name;
-
     private String phone;
-
     private String logo;
-
     private String description;
-
     private Date participateDate;
-
     private boolean status;
-
-    private Set<ContractResponse> contracts;
-
     private Set<ShelvesResponse> shelves;
-
     private Set<OrderResponse> orders;
-
-//    private Account account;
-
     private LocationResponse location;
 
-//    private Retailer retailer;
 }

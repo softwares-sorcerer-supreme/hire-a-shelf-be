@@ -2,6 +2,7 @@ package com.example.shelve.controllers;
 
 import com.example.shelve.dto.request.CampaignRequest;
 import com.example.shelve.dto.request.ContractRequest;
+import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ContractResponse;
 import com.example.shelve.entities.enums.EStatus;
@@ -20,6 +21,13 @@ public class ContractController {
 
     @Autowired
     private ContractService contractService;
+
+    @GetMapping("/store")
+    public APIResponse<List<ContractResponse>> getAllStoreContract(@RequestParam long storeId,
+                                                                   @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                                                                   @RequestParam(required = false, defaultValue = "") List<String> states) {
+        return contractService.getAllStoreContract(storeId, page, states);
+    }
 
     @GetMapping
     public ResponseEntity<List<ContractResponse>> getAllContract() {
