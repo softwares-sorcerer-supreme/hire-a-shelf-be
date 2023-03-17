@@ -33,7 +33,7 @@ public class MailServiceImpl implements MailService {
     private ThymleafService thymleafService;
 
     @Value("${spring.mail.username}")
-    private String email;
+    private String rootEmail;
 
     @Override
     public void sendMailApprovedAccount(DataMailRequest dataMailRequest) {
@@ -43,7 +43,7 @@ public class MailServiceImpl implements MailService {
 
 
             helper.setSubject(SEND_MAIL_SUBJECT.CLIENT_REGISTER);
-            helper.setFrom(email);
+            helper.setFrom(rootEmail);
 
             helper.setTo(dataMailRequest.getEmail());
             Map<String, Object> variables = new HashMap<>();
@@ -64,8 +64,9 @@ public class MailServiceImpl implements MailService {
 
 
             helper.setSubject(SEND_MAIL_SUBJECT.CLIENT_REGISTER);
-            helper.setFrom(email);
+            helper.setFrom(rootEmail);
 
+            helper.setTo(email);
             Map<String, Object> variables = new HashMap<>();
             helper.setText(thymleafService.createContent("mail-sender-announce.html", variables), true);
 
@@ -80,11 +81,16 @@ public class MailServiceImpl implements MailService {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
+
+
             helper.setSubject(SEND_MAIL_SUBJECT.CLIENT_REGISTER);
-            helper.setFrom(email);
+            helper.setFrom(rootEmail);
+
+            helper.setTo(email);
             Map<String, Object> variables = new HashMap<>();
             variables.put("password", password);
             helper.setText(thymleafService.createContent("mail-sender-reset-password.html", variables), true);
+
             mailSender.send(message);
         } catch (Exception e) {
             e.printStackTrace();

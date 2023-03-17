@@ -10,6 +10,7 @@ import com.example.shelve.repository.AccountRepository;
 import com.example.shelve.services.AccountService;
 import com.example.shelve.services.MailService;
 import com.example.shelve.utils.GeneratePassword;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AccountServiceImpl implements AccountService {
     @Autowired
     private MailService mailService;
@@ -69,10 +71,11 @@ public class AccountServiceImpl implements AccountService {
     public String forgetPassword(ChangePasswordRequest changePasswordRequest) {
         Optional<Account> accountOptional = accountRepository.findByUserName(changePasswordRequest.getUsername());
         if (accountOptional.isEmpty()){
-            throw new NotFoundException("Information not match!");
+            throw new ResourceNotFoundException("Information not match!");
         }else if (!accountOptional.get().getEmail().equals(changePasswordRequest.getEmail())){
-            throw new NotFoundException("Information not match!");
+            throw new ResourceNotFoundException("Information not match!");
         }else{
+            log.error(accountOptional.get().getEmail());
             String newPassword = generatePassword.generatePassword();
             mailService.sendMailResetPassword(accountOptional.get().getEmail(), newPassword);
             accountOptional.get().setPassword(passwordEncoder.encode(newPassword));
