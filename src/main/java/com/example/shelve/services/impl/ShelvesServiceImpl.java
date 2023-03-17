@@ -115,7 +115,6 @@ public class ShelvesServiceImpl implements ShelvesService {
             boolean state = Boolean.parseBoolean(status);
             shelvesTypes = shelvesTypeRepository.findShelvesTypesByStatus(state);
         }else {
-            System.out.println("Statusdjalhsdkjasdha");
             shelvesTypes = shelvesTypeRepository.findAll();
         }
         List<ShelvesTypeResponse> shelvesTypeResponses = new ArrayList<>();
