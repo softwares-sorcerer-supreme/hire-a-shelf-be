@@ -63,6 +63,7 @@ public class AccountServiceImpl implements AccountService {
             throw new  BadRequestException("Old password is incorrect!");
         }else{
             accountOptional.get().setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+            accountRepository.save(accountOptional.get());
         }
         return "Success";
     }
