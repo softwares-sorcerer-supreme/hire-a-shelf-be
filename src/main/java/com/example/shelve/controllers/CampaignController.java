@@ -45,8 +45,9 @@ public class CampaignController {
                                                                                     @RequestParam(required = false, defaultValue = "0") long storeId,
                                                                                     @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                                                                     @RequestParam(required = false, defaultValue = "") List<String> states,
-                                                                                    @RequestParam(required = false, defaultValue = "") String filterBy) {
-        return campaignService.getListCampaignsWithFilterForHomePage(storeId, keyword, page, states, filterBy);
+                                                                                    @RequestParam(required = false, defaultValue = "") String filterByCategory,
+                                                                                    @RequestParam(required = false, defaultValue = "") String filterByLocation) {
+        return campaignService.getListCampaignsWithFilterForHomePage(storeId, keyword, page, states, filterByCategory, filterByLocation);
     }
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})

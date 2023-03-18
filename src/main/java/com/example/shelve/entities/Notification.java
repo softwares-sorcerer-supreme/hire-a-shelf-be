@@ -1,5 +1,6 @@
 package com.example.shelve.entities;
 
+import com.example.shelve.entities.enums.ENotificationType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,7 +23,12 @@ public class Notification {
     private String title;
 
     @Column(name = "body", columnDefinition = "varchar")
+
     private String body;
+
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private ENotificationType type;
 
     @ManyToOne
     @JoinColumn(name = "account_id")

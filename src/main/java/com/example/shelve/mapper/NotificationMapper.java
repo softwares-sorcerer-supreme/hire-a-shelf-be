@@ -17,6 +17,7 @@ public class NotificationMapper {
                 .body(notification.getBody())
                 .title(notification.getTitle())
                 .accountResponse(accountMapper.toAccountResponse(notification.getAccount()))
+                .type(notification.getType() == null ? "" : notification.getType().getName())
                 .build();
     }
 }

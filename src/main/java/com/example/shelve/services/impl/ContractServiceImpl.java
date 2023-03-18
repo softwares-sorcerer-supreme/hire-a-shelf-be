@@ -10,6 +10,7 @@ import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.Contract;
 import com.example.shelve.entities.Notification;
 import com.example.shelve.entities.Store;
+import com.example.shelve.entities.enums.ENotificationType;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
@@ -19,6 +20,7 @@ import com.example.shelve.repository.ContractRepository;
 import com.example.shelve.repository.NotificationRepository;
 import com.example.shelve.repository.StoreRepository;
 import com.example.shelve.services.ContractService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +32,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 @Service
+@Slf4j
 public class ContractServiceImpl implements ContractService {
     @Autowired
     private NotificationRepository notificationRepository;
@@ -62,6 +65,10 @@ public class ContractServiceImpl implements ContractService {
 
     @Override
     public ContractResponse createContract(ContractRequest contractRequest) {
+
+        if (contractRepository.findByStoreIdAndCampaignId(contractRequest.getStoreId(), contractRequest.getCampaignId()).isPresent()){
+            throw new BadRequestException("You have already applied for this campaign!");
+        }
         Campaign campaign = campaignRepository.findById(
                 contractRequest
                         .getCampaignId())
@@ -72,7 +79,6 @@ public class ContractServiceImpl implements ContractService {
                 contractRequest
                         .getStoreId())
                 .orElseThrow(() -> new ResourceNotFoundException("Store not found!"));
-
 
         Contract contract = Contract.builder()
                 .description(contractRequest.getDescription())
@@ -91,6 +97,7 @@ public class ContractServiceImpl implements ContractService {
                 .title(campaign.getTitle())
                 .body("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn")
                 .account(campaign.getBrand().getAccount())
+                 .type(ENotificationType.ANNOUNCE)
                 .build());
 
         return contractMapper.toContractResponse(contractSaved);

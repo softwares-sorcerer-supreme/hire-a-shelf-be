@@ -54,12 +54,14 @@ public class StoreServiceImpl implements StoreService {
             if(category.isEmpty()){
                 throw new NotFoundException("Category with id " + categoryId + " could not be found!");
             }else{
-                StoreCategory storeCategory = StoreCategory.builder()
-                        .category(category.get())
-                        .store(storeFound.get())
-                        .build();
-                storeCategoryResponses.add
-                        (storeCategoryMapper.toStoreCategoryResponse(storeCategoryRepository.save(storeCategory)));
+                if (storeCategoryRepository.findByStoreIdAndCategoryId(storeCategoryRequest.getStoreId(), categoryId).isEmpty()){
+                    StoreCategory storeCategory = StoreCategory.builder()
+                            .category(category.get())
+                            .store(storeFound.get())
+                            .build();
+                    storeCategoryResponses.add
+                            (storeCategoryMapper.toStoreCategoryResponse(storeCategoryRepository.save(storeCategory)));
+                }
             }
         });
 

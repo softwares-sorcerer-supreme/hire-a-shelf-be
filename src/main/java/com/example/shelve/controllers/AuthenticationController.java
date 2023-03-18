@@ -1,6 +1,7 @@
 package com.example.shelve.controllers;
 
 import com.example.shelve.dto.request.AccountRequest;
+import com.example.shelve.dto.request.LogoutRequest;
 import com.example.shelve.dto.response.AuthenticationResponse;
 import com.example.shelve.entities.Registration;
 import com.example.shelve.services.AuthenticationService;
@@ -38,4 +39,8 @@ public class AuthenticationController {
         return new ResponseEntity<>(authenticationService.authenticationGoogleResponse(idToken, firebaseToken), HttpStatus.OK);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<AuthenticationResponse> logout(@RequestBody LogoutRequest logoutRequest){
+        return new ResponseEntity<>(authenticationService.logout(logoutRequest), HttpStatus.OK);
+    }
 }

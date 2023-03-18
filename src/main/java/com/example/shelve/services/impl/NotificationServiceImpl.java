@@ -4,6 +4,7 @@ import com.example.shelve.dto.response.CampaignProductResponse;
 import com.example.shelve.dto.response.NotificationResponse;
 import com.example.shelve.entities.Account;
 import com.example.shelve.entities.Notification;
+import com.example.shelve.entities.enums.ENotificationType;
 import com.example.shelve.mapper.NotificationMapper;
 import com.example.shelve.repository.AccountRepository;
 import com.example.shelve.repository.NotificationRepository;
@@ -35,7 +36,7 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationResponses;
     }
 
-    public NotificationResponse addANotification(String title, String body, Long accountId){
+    public NotificationResponse addANotification(String title, String body, Long accountId, ENotificationType eNotificationType){
         Optional<Account> accountOptional = accountRepository.findById(accountId);
         if (accountOptional.isEmpty()){
             throw new NotFoundException("Account not found!");
@@ -43,13 +44,14 @@ public class NotificationServiceImpl implements NotificationService {
             Notification notification = Notification.builder()
                     .account(accountOptional.get())
                     .title(title)
+                    .type(eNotificationType)
                     .body(body)
                     .build();
             return mapper.toNotificationResponse(notificationRepository.save(notification)) ;
         }
     }
 
-    public NotificationResponse addNotificationByStore(String title, String body, Long storeId){
+    public NotificationResponse addNotificationByStore(String title, String body, Long storeId, ENotificationType eNotificationType){
         Optional<Account> accountOptional = accountRepository.findByStoreId(storeId);
         if (accountOptional.isEmpty()){
             throw new NotFoundException("Account not found!");
@@ -58,12 +60,13 @@ public class NotificationServiceImpl implements NotificationService {
                     .account(accountOptional.get())
                     .title(title)
                     .body(body)
+                    .type(eNotificationType)
                     .build();
             return mapper.toNotificationResponse(notificationRepository.save(notification)) ;
         }
     }
 
-    public NotificationResponse addNotificationByBrand(String title, String body, Long brandId){
+    public NotificationResponse addNotificationByBrand(String title, String body, Long brandId, ENotificationType eNotificationType){
         Optional<Account> accountOptional = accountRepository.findByBrandId(brandId);
         if (accountOptional.isEmpty()){
             throw new NotFoundException("Account not found!");
@@ -72,6 +75,7 @@ public class NotificationServiceImpl implements NotificationService {
                     .account(accountOptional.get())
                     .title(title)
                     .body(body)
+                    .type(eNotificationType)
                     .build();
             return mapper.toNotificationResponse(notificationRepository.save(notification)) ;
 
