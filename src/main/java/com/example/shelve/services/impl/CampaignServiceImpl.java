@@ -286,7 +286,7 @@ public class CampaignServiceImpl implements CampaignService {
     }
 
     @Override
-    public APIResponse<List<CampaignResponse>> getListCampaignsWithFilterForHomePage(Long storeId, String keyword, int page, List<String> statusListFilter, String suggestBy) {
+    public APIResponse<List<CampaignResponse>> getListCampaignsWithFilterForHomePage(Long storeId, String keyword, int page, List<String> statusListFilter, String filterByCategory, String filterByLocation) {
         Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC, "createdDate");
         //This is stateList use to querrt
         List<EStatus> stateList = new ArrayList<>();
@@ -306,7 +306,7 @@ public class CampaignServiceImpl implements CampaignService {
         }
 
         List<String> categoriesName = new ArrayList<>();
-        if (suggestBy.equals("category")) {
+        if (filterByCategory.equals("true")) {
 
             List<StoreCategory> storeCategories =
                     storeCategoryRepository.findAllByStoreId(storeId);
@@ -316,7 +316,7 @@ public class CampaignServiceImpl implements CampaignService {
         }
 
         Page<Campaign> result = campaignRepository.findByKeywordWithFilterForHomePage
-                (stateList, keyword.toLowerCase(), categoriesName, store.get().getLocation().getCity(), pageable);
+                (stateList, keyword.toLowerCase(), categoriesName, filterByLocation.equals("true") ? store.get().getLocation().getCity() : "", pageable);
 
         List<CampaignResponse> campaignResponses = new ArrayList<>();
         result.toList().forEach((x -> campaignResponses.add(campaignMapper.toCampaignResponse(x))));

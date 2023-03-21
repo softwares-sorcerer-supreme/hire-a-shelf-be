@@ -12,8 +12,8 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT p FROM Product p join p.category" +
-            " WHERE p.category IN :categories" +
-            " AND (LOWER(p.name) LIKE %:keyword%)" +
+            " WHERE LOWER(p.name) LIKE %:keyword% " +
+            " AND (p.category IN :categories)" +
             " AND (:brandId = 0L OR p.brand.id = :brandId)")
     Page<Product> findByKeywordWithFilter(
             @Param("categories") List<Category> categories,

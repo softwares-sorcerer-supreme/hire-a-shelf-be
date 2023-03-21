@@ -26,12 +26,12 @@ public class CampaignMapper {
     public CampaignResponse toCampaignResponse(Campaign campaign) {
         Set<ProductResponse> productResponseSet = new HashSet<>();
         List<StoreResponse> appliers = new ArrayList<>();
-        if (!campaign.getCampaignProducts().isEmpty()) {
+        if (campaign.getCampaignProducts() != null) {
             campaign.getCampaignProducts().forEach(campaignProduct ->
                     productResponseSet.add(productMapper.toProductResponse(campaignProduct.getProduct()))
             );
         }
-        if (!campaign.getContracts().isEmpty()) {
+        if (campaign.getContracts() != null) {
             campaign.getContracts().forEach(contract ->
                     appliers.add(storeMapper.toStoreResponse(contract.getStore()))
             );
