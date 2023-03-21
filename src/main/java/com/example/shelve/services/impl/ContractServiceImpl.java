@@ -154,8 +154,13 @@ public class ContractServiceImpl implements ContractService {
                 stateList.add(status);
             }
         }
-
-        Page<Contract> result = contractRepository.findAllByStoreIdAndEStatusIn(storeId, stateList, pageable);
+        Page<Contract> result;
+        log.error(String.valueOf(stateList.size()));
+        if (stateList.isEmpty()){
+            result = contractRepository.findAllByStoreId(storeId, pageable);
+        }else{
+            result = contractRepository.findAllByStoreIdAndEStatusIn(storeId, stateList, pageable);
+        }
         List<ContractResponse> contractResponses = new ArrayList<>();
         result.forEach(contract -> {
             contractResponses.add(contractMapper.toContractResponse(contract));
