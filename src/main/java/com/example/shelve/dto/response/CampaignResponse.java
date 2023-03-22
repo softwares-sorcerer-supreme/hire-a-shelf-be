@@ -26,5 +26,6 @@ public class CampaignResponse {
     private List<StoreResponse> appliers;
     private Set<OrderResponse> orderResponseSet;
     private Set<ProductResponse> productResponseSet;
+    private Set<ShelvesTypeResponse> shelvesTypeResponses;
     private String suitable;
 }
