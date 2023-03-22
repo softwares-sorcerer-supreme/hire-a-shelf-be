@@ -1,10 +1,7 @@
 package com.example.shelve.mapper;
 
 import com.example.shelve.dto.request.CampaignRequest;
-import com.example.shelve.dto.response.CampaignResponse;
-import com.example.shelve.dto.response.ContractResponse;
-import com.example.shelve.dto.response.ProductResponse;
-import com.example.shelve.dto.response.StoreResponse;
+import com.example.shelve.dto.response.*;
 import com.example.shelve.entities.Campaign;
 import com.example.shelve.entities.CampaignProduct;
 import com.example.shelve.entities.Product;
@@ -22,6 +19,8 @@ public class CampaignMapper {
     private StoreMapper storeMapper;
     @Autowired
     private BrandMapper brandMapper;
+    @Autowired
+    private ShelvesTypeMapper shelvesTypeMapper;
 
     public CampaignResponse toCampaignResponse(Campaign campaign) {
         Set<ProductResponse> productResponseSet = new HashSet<>();
@@ -37,6 +36,12 @@ public class CampaignMapper {
             );
         }
 
+        Set<ShelvesTypeResponse> shelvesTypeResponses = new HashSet<>();
+        if(!campaign.getCampaignShelvesTypes().isEmpty()){
+            campaign.getCampaignShelvesTypes().forEach(campaignShelvesType -> {
+                shelvesTypeResponses.add(shelvesTypeMapper.toShelvesTypeResponse(campaignShelvesType.getShelvesType()));
+            });
+        }
 
         return CampaignResponse.builder()
                 .id(campaign.getId())
@@ -51,6 +56,7 @@ public class CampaignMapper {
                 .imgURL(campaign.getImgURL())
                 .title(campaign.getTitle())
                 .city(campaign.getCity())
+                .shelvesTypeResponses(shelvesTypeResponses)
                 .brand(brandMapper.toBrandResponse(campaign.getBrand()))
                 .status(campaign.getEStatus().getName())
                 .build();

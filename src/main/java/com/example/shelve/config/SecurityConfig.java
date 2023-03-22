@@ -4,6 +4,7 @@ import com.example.shelve.services.impl.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -30,16 +31,18 @@ import java.util.stream.Stream;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private static final String STORE_ROLE = "ROLE_STORE";
+    private static final String BRAND_ROLE = "ROLE_BRAND";
+    private static final String ADMIN_ROLE = "ROLE_ADMIN";
     @Autowired
     private UserDetailsService userDetailService;
-
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -57,11 +60,30 @@ public class SecurityConfig {
                                     "/webjars/**",
                                     "/api/auth/**",
                                     "/api/auth/google/**",
-                                    "/api/**")
+                                    "/api/account/password/forget")
                             .permitAll()
-                            .antMatchers("/api/brand").hasAuthority("ROLE_ADMIN")
-                            .antMatchers("/test2").hasAuthority("ROLE_BRAND")
-                            .anyRequest().authenticated();
+                            .antMatchers(HttpMethod.POST, "/api/register").permitAll()
+                            //Admin
+                            .antMatchers(HttpMethod.GET,"/api/register").hasAuthority(ADMIN_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/campaign").hasAnyAuthority(ADMIN_ROLE, BRAND_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/category").hasAuthority(ADMIN_ROLE)
+                            .antMatchers(HttpMethod.POST,"/api/shelve/type").hasAuthority(ADMIN_ROLE)
+
+                            //Store
+                            .antMatchers(HttpMethod.GET,"/api/shelve").hasAuthority(STORE_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/category/status/**").hasAnyAuthority(STORE_ROLE, BRAND_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/campaign/home").hasAuthority(STORE_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/contract/store").hasAuthority(STORE_ROLE)
+                            .antMatchers(HttpMethod.POST,"/api/shelve").hasAuthority(STORE_ROLE)
+                            //Brand
+                            .antMatchers(HttpMethod.POST,"/api/campaign").hasAuthority(BRAND_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/product/brand").hasAuthority(BRAND_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/product").hasAuthority(BRAND_ROLE)
+                            .antMatchers(HttpMethod.POST,"/api/product").hasAuthority(BRAND_ROLE)
+                            //Authenticated
+                            .antMatchers(HttpMethod.GET, "/api/shelve/types").authenticated()
+                            //DenyAll
+                            .anyRequest().denyAll();
         })
                 .headers(headers ->
                         headers
