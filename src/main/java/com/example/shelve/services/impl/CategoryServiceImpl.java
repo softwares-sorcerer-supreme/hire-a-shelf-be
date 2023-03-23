@@ -55,4 +55,11 @@ public class CategoryServiceImpl implements CategoryService {
         savedCategory.setStatus(true);
         return mapper.toCategoryResponse(categoryRepository.save(savedCategory));
     }
+
+    @Override
+    public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
+//        Category
+
+        return null;
+    }
 }

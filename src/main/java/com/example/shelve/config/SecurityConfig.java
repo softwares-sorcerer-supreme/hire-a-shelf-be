@@ -80,6 +80,8 @@ public class SecurityConfig {
                             .antMatchers(HttpMethod.GET,"/api/campaign/home").hasAuthority(STORE_ROLE)
                             .antMatchers(HttpMethod.GET,"/api/contract/store").hasAuthority(STORE_ROLE)
                             .antMatchers(HttpMethod.POST,"/api/shelve").hasAuthority(STORE_ROLE)
+                            .antMatchers(HttpMethod.POST, "/api/store/category").hasAuthority(STORE_ROLE)
+                            .antMatchers(HttpMethod.POST, "/api/contract").hasAuthority(STORE_ROLE)
 
                             //Brand
                             .antMatchers(HttpMethod.POST,"/api/campaign").hasAuthority(BRAND_ROLE)
