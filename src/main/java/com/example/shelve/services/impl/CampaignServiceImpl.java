@@ -156,17 +156,24 @@ public class CampaignServiceImpl implements CampaignService {
         //Get list token from list firebaseNotiToken
         List<String> brandStringFCMs = new ArrayList<>();
         brandFirebaseNotiTokens.forEach(firebaseNotiToken -> {
-            brandStringFCMs.add(firebaseNotiToken.getToken() != null ? firebaseNotiToken.getToken() : "");
+            if (firebaseNotiToken.getToken() != null){
+                brandStringFCMs.add(firebaseNotiToken.getToken());
+            }
         });
 
         List<String> storeStringFCMs = new ArrayList<>();
         storeFirebaseTokens.forEach(storeFirebaseToken -> {
-            storeStringFCMs.add(storeFirebaseToken.getToken() != null ? storeFirebaseToken.getToken() : "");
+            if(storeFirebaseToken.getToken() != null){
+                storeStringFCMs.add(storeFirebaseToken.getToken());
+            }
         });
 
         //Send notification to multiple brand devices
-        firebaseMessagingService.sendNotifications("Campaign has been " + statusMessage, "Your campaign with title " +
-                campaignSaved.getTitle() + " has been " + statusMessage, brandStringFCMs);
+        if(!brandStringFCMs.isEmpty()){
+            firebaseMessagingService.sendNotifications("Campaign has been " + statusMessage, "Your campaign with title " +
+                    campaignSaved.getTitle() + " has been " + statusMessage, brandStringFCMs);
+        }
+
         //Save notification to database
         notificationService.addNotificationByBrand("Campaign has been " + statusMessage, "Your campaign with title " +
                 campaignSaved.getTitle() + " has been " + statusMessage, campaignSaved.getBrand().getId(),
@@ -175,8 +182,10 @@ public class CampaignServiceImpl implements CampaignService {
 
         if (status.equals(EStatus.APPROVED)){
             //Send notification to multiple store devices
-            firebaseMessagingService.sendNotifications("New campaign in your location!", "A new campaign in your location with title " +
-                    campaignSaved.getTitle() + " has been posted! Check it out now!", storeStringFCMs);
+            if(!storeStringFCMs.isEmpty()){
+                firebaseMessagingService.sendNotifications("New campaign in your location!", "A new campaign in your location with title " +
+                        campaignSaved.getTitle() + " has been posted! Check it out now!", storeStringFCMs);
+            }
 
             Set<Long> processedAccountIds = new HashSet<>();
             //Save notification to database

@@ -38,4 +38,5 @@ public class CategoryController {
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
         return new ResponseEntity<>(categoryService.createCategory(categoryRequest), HttpStatus.OK);
     }
+
 }
