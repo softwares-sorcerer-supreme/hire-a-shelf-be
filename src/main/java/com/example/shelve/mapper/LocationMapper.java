@@ -13,14 +13,13 @@ public class LocationMapper {
     public LocationResponse toLocationResponse (Location location){
         if(location == null)
             return null;
-
-        LocationResponse locationResponse = LocationResponse.builder()
+        return LocationResponse.builder()
                 .id(location.getId())
                 .address(location.getAddress())
                 .city(location.getCity())
                 .district(location.getDistrict())
+                .ward(location.getWard())
                 .build();
-        return locationResponse;
     }
 
     public Location toLocation(LocationRequest locationRequest) {
@@ -33,8 +32,6 @@ public class LocationMapper {
                 .address(locationRequest.getAddress())
                 .status(locationRequest.isStatus())
                 .ward(locationRequest.getWard())
-//                .brand(locationRequest.getBrand())
                 .build();
     }
-
 }

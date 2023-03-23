@@ -37,7 +37,7 @@ public class CampaignMapper {
         }
 
         Set<ShelvesTypeResponse> shelvesTypeResponses = new HashSet<>();
-        if(!campaign.getCampaignShelvesTypes().isEmpty()){
+        if(campaign.getCampaignShelvesTypes() != null){
             campaign.getCampaignShelvesTypes().forEach(campaignShelvesType -> {
                 shelvesTypeResponses.add(shelvesTypeMapper.toShelvesTypeResponse(campaignShelvesType.getShelvesType()));
             });

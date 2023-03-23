@@ -1,6 +1,7 @@
 package com.example.shelve.config;
 
 import com.example.shelve.services.impl.UserDetailServiceImpl;
+import com.google.api.Http;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -63,25 +64,38 @@ public class SecurityConfig {
                                     "/api/account/password/forget")
                             .permitAll()
                             .antMatchers(HttpMethod.POST, "/api/register").permitAll()
+
                             //Admin
                             .antMatchers(HttpMethod.GET,"/api/register").hasAuthority(ADMIN_ROLE)
-                            .antMatchers(HttpMethod.GET,"/api/campaign").hasAnyAuthority(ADMIN_ROLE, BRAND_ROLE)
                             .antMatchers(HttpMethod.GET,"/api/category").hasAuthority(ADMIN_ROLE)
                             .antMatchers(HttpMethod.POST,"/api/shelve/type").hasAuthority(ADMIN_ROLE)
+                            .antMatchers(HttpMethod.PUT, "/api/campaign/**").hasAuthority(ADMIN_ROLE)
+                            .antMatchers(HttpMethod.PUT, "/api/register/**").hasAuthority(ADMIN_ROLE)
+                            .antMatchers(HttpMethod.PUT, "/api/category/**").hasAuthority(ADMIN_ROLE)
+                            .antMatchers(HttpMethod.POST, "/api/category").hasAuthority(ADMIN_ROLE)
+                            .antMatchers(HttpMethod.PUT, "/api/shelve/type/**").hasAuthority(ADMIN_ROLE)
 
                             //Store
                             .antMatchers(HttpMethod.GET,"/api/shelve").hasAuthority(STORE_ROLE)
-                            .antMatchers(HttpMethod.GET,"/api/category/status/**").hasAnyAuthority(STORE_ROLE, BRAND_ROLE)
                             .antMatchers(HttpMethod.GET,"/api/campaign/home").hasAuthority(STORE_ROLE)
                             .antMatchers(HttpMethod.GET,"/api/contract/store").hasAuthority(STORE_ROLE)
                             .antMatchers(HttpMethod.POST,"/api/shelve").hasAuthority(STORE_ROLE)
+
                             //Brand
                             .antMatchers(HttpMethod.POST,"/api/campaign").hasAuthority(BRAND_ROLE)
-                            .antMatchers(HttpMethod.GET,"/api/product/brand").hasAuthority(BRAND_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/product/brand/**").hasAuthority(BRAND_ROLE)
                             .antMatchers(HttpMethod.GET,"/api/product").hasAuthority(BRAND_ROLE)
                             .antMatchers(HttpMethod.POST,"/api/product").hasAuthority(BRAND_ROLE)
+                            .antMatchers(HttpMethod.DELETE, "/api/campaign/**").hasAuthority(BRAND_ROLE)
+
+                            //Multiple role
+                            .antMatchers(HttpMethod.GET,"/api/category/status/**").hasAnyAuthority(STORE_ROLE, BRAND_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/campaign/**").hasAnyAuthority(ADMIN_ROLE, BRAND_ROLE)
+
                             //Authenticated
-                            .antMatchers(HttpMethod.GET, "/api/shelve/types").authenticated()
+                            .antMatchers(HttpMethod.GET,"/api/notification/**").authenticated()
+                            .antMatchers(HttpMethod.GET, "/api/shelve/types/**").authenticated()
+                            .antMatchers(HttpMethod.POST,"/api/account/password/change").authenticated()
                             //DenyAll
                             .anyRequest().denyAll();
         })
