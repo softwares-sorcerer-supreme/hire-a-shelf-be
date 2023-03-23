@@ -135,16 +135,13 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
+    @CacheEvict(value = "shelves_type", allEntries = true)
     public ShelvesTypeResponse updateShelveType(Long id, ShelvesTypeRequest shelvesTypeRequest) {
-
         ShelvesType shelvesType = shelvesTypeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Shelf type not found!"));
 
         shelvesType.setName(shelvesTypeRequest.getName());
         shelvesType.setDescription(shelvesTypeRequest.getDescription());
-
-        ShelvesType shelvesTypeSaved = shelvesTypeRepository.save(shelvesType);
-
-        return shelvesTypeMapper.toShelvesTypeResponse(shelvesTypeSaved);
+        return shelvesTypeMapper.toShelvesTypeResponse(shelvesTypeRepository.save(shelvesType));
     }
 }

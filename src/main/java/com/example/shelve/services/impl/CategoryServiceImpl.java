@@ -30,10 +30,12 @@ public class CategoryServiceImpl implements CategoryService {
         List<CategoryResponse> categoryResponses = new ArrayList<>();
         categoryRepository.findAll().forEach(x -> categoryResponses.add(mapper.toCategoryResponse(x)));
         return categoryResponses;
+//        return null;
     }
 
     @Override
     public CategoryResponse getCategory(Long id) {
+//        return null;
         return mapper.toCategoryResponse(categoryRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found!")));

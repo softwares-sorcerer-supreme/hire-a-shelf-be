@@ -69,9 +69,10 @@ public class CampaignController {
     }
 
     @PutMapping("/u/{id}")
-    public ResponseEntity<CampaignResponse> updateCampaign(@RequestBody CampaignRequest campaign,
+    public ResponseEntity<CampaignResponse> updateCampaign(
+            @ModelAttribute CampaignRequest campaign,
                                                            @PathVariable Long id) {
         return new ResponseEntity<>(campaignService.updateCampaign(id, campaign), HttpStatus.OK);
+//        return null;
     }
-
 }
