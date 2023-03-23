@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface ContractRepository extends JpaRepository<Contract, Long> {
     Page<Contract> findAllByStoreIdAndEStatusIn(Long storeId, List<EStatus> eStatuses, Pageable pageable);
     Page<Contract> findAllByStoreId(Long storeId, Pageable pageable);
-
+    List<Contract> findAllByStoreId(Long storeId);
     Optional<Contract> findByStoreIdAndCampaignId(Long storeId, Long campaignId);
+
 }
