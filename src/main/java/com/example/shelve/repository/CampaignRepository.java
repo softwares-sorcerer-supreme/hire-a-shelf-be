@@ -39,4 +39,5 @@ public interface CampaignRepository extends JpaRepository<Campaign, Long> {
             @Param("city") String city,
             @Param("campaignIds") List<Long> campaignIds,
             Pageable pageable
-    );}
+    );
+}

@@ -73,5 +73,4 @@ public class CampaignController {
                                                            @PathVariable Long id) {
         return new ResponseEntity<>(campaignService.updateCampaign(id, campaign), HttpStatus.OK);
     }
-
 }

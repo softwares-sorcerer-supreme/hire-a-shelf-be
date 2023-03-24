@@ -89,8 +89,8 @@ public class CampaignServiceImpl implements CampaignService {
         if (campaign.getStartDate().before(campaign.getCreatedDate()))
             throw new BadRequestException("Start Date must be after Today!");
 
-//        if (campaign.getExpirationDate().before(campaign.getStartDate()))
-//            throw new BadRequestException("Expiration Date must be after Start Date");
+        if (campaign.getExpirationDate().before(campaign.getStartDate()))
+            throw new BadRequestException("Expiration Date must be after Start Date");
 
         campaign.setEStatus(EStatus.PENDING);
         campaign.setImgURL(storageService.uploadFile(campaignRequest.getImgMultipart()));
