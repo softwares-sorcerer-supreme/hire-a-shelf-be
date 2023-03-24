@@ -93,7 +93,7 @@ public class SecurityConfig {
                             .antMatchers(HttpMethod.PUT, "/api/campaign/u/{id}").hasAuthority(BRAND_ROLE)
 
                             //Multiple role
-                            .antMatchers(HttpMethod.GET,"/api/category/status/**").hasAnyAuthority(STORE_ROLE, BRAND_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/category/status/{status}").hasAnyAuthority(STORE_ROLE, BRAND_ROLE)
                             .antMatchers(HttpMethod.GET,"/api/campaign/{id}").hasAnyAuthority(ADMIN_ROLE, BRAND_ROLE)
 
                             //Authenticated
