@@ -310,6 +310,8 @@ public class CampaignServiceImpl implements CampaignService {
             }
         }
 
+        log.error("Estatus" + eStatuses.toString());
+
         Optional<Store> store = storeRepository.findById(storeId);
 
         if (store.isEmpty()) {
