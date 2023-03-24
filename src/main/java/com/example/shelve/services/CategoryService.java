@@ -15,4 +15,6 @@ public interface CategoryService {
     List<CategoryResponse> getCategoriesByStatus(boolean status);
 
     CategoryResponse createCategory(CategoryRequest categoryRequest);
+
+    CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest);
 }

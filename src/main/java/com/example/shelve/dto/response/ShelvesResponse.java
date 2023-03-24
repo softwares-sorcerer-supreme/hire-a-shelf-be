@@ -20,7 +20,7 @@ public class ShelvesResponse {
 
     private boolean status;
 
-    private StoreResponse store;
+//    private StoreResponse store;
 
     private ShelvesTypeResponse shelvesTypeResponse;
 

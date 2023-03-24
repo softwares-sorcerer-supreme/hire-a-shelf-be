@@ -30,11 +30,13 @@ public interface CampaignRepository extends JpaRepository<Campaign, Long> {
             "WHERE LOWER(c.title) LIKE %:keyword% " +
             " AND (c.EStatus IN (:states) OR :states IS NULL)" +
             " AND (:city = '' OR c.city = :city) " +
-            " AND (COALESCE(:categoriesName, NULL) IS NULL OR cate.name IN :categoriesName)")
+            " AND (COALESCE(:categoriesName, NULL) IS NULL OR cate.name IN :categoriesName)" +
+            " AND c.id NOT IN :campaignIds")
     Page<Campaign> findByKeywordWithFilterForHomePage(
             @Param("states") List<EStatus> states,
             @Param("keyword") String keyword,
             @Param("categoriesName") List<String> categoriesName,
             @Param("city") String city,
+            @Param("campaignIds") List<Long> campaignIds,
             Pageable pageable
     );}

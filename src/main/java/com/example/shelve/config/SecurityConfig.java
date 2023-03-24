@@ -64,12 +64,12 @@ public class SecurityConfig {
                                     "/api/account/password/forget")
                             .permitAll()
                             .antMatchers(HttpMethod.POST, "/api/register").permitAll()
-
+                            .antMatchers(HttpMethod.GET, "/api/campaign").permitAll()
                             //Admin
                             .antMatchers(HttpMethod.GET,"/api/register").hasAuthority(ADMIN_ROLE)
                             .antMatchers(HttpMethod.GET,"/api/category").hasAuthority(ADMIN_ROLE)
                             .antMatchers(HttpMethod.POST,"/api/shelve/type").hasAuthority(ADMIN_ROLE)
-                            .antMatchers(HttpMethod.PUT, "/api/campaign/**").hasAuthority(ADMIN_ROLE)
+                            .antMatchers(HttpMethod.PUT, "/api/campaign/{id}").hasAuthority(ADMIN_ROLE)
                             .antMatchers(HttpMethod.PUT, "/api/register/**").hasAuthority(ADMIN_ROLE)
                             .antMatchers(HttpMethod.PUT, "/api/category/**").hasAuthority(ADMIN_ROLE)
                             .antMatchers(HttpMethod.POST, "/api/category").hasAuthority(ADMIN_ROLE)
@@ -80,6 +80,8 @@ public class SecurityConfig {
                             .antMatchers(HttpMethod.GET,"/api/campaign/home").hasAuthority(STORE_ROLE)
                             .antMatchers(HttpMethod.GET,"/api/contract/store").hasAuthority(STORE_ROLE)
                             .antMatchers(HttpMethod.POST,"/api/shelve").hasAuthority(STORE_ROLE)
+                            .antMatchers(HttpMethod.POST, "/api/store/category").hasAuthority(STORE_ROLE)
+                            .antMatchers(HttpMethod.POST, "/api/contract").hasAuthority(STORE_ROLE)
 
                             //Brand
                             .antMatchers(HttpMethod.POST,"/api/campaign").hasAuthority(BRAND_ROLE)
@@ -87,15 +89,17 @@ public class SecurityConfig {
                             .antMatchers(HttpMethod.GET,"/api/product").hasAuthority(BRAND_ROLE)
                             .antMatchers(HttpMethod.POST,"/api/product").hasAuthority(BRAND_ROLE)
                             .antMatchers(HttpMethod.DELETE, "/api/campaign/**").hasAuthority(BRAND_ROLE)
+                            .antMatchers(HttpMethod.PUT, "/api/campaign/u/{id}").hasAuthority(BRAND_ROLE)
 
                             //Multiple role
                             .antMatchers(HttpMethod.GET,"/api/category/status/**").hasAnyAuthority(STORE_ROLE, BRAND_ROLE)
-                            .antMatchers(HttpMethod.GET,"/api/campaign/**").hasAnyAuthority(ADMIN_ROLE, BRAND_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/campaign/{id}").hasAnyAuthority(ADMIN_ROLE, BRAND_ROLE)
 
                             //Authenticated
                             .antMatchers(HttpMethod.GET,"/api/notification/**").authenticated()
                             .antMatchers(HttpMethod.GET, "/api/shelve/types/**").authenticated()
                             .antMatchers(HttpMethod.POST,"/api/account/password/change").authenticated()
+                            .antMatchers(HttpMethod.GET, "/api/account/{id}").authenticated()
                             //DenyAll
                             .anyRequest().denyAll();
         })
