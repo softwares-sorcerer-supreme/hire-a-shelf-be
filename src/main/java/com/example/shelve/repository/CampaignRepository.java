@@ -32,6 +32,8 @@ public interface CampaignRepository extends JpaRepository<Campaign, Long> {
             " AND (:city = '' OR c.city = :city) " +
             " AND (COALESCE(:categoriesName, NULL) IS NULL OR cate.name IN :categoriesName)" +
             " AND (COALESCE(:campaignIds, NULL) IS NULL OR c.id NOT IN :campaignIds)")
+
+
     Page<Campaign> findByKeywordWithFilterForHomePage(
             @Param("states") List<EStatus> states,
             @Param("keyword") String keyword,
