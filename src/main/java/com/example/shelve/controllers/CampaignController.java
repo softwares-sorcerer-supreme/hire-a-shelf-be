@@ -73,4 +73,9 @@ public class CampaignController {
                                                            @PathVariable Long id) {
         return new ResponseEntity<>(campaignService.updateCampaign(id, campaign), HttpStatus.OK);
     }
+
+    @GetMapping(value = "/total")
+    public ResponseEntity<List<CampaignResponse>> getAllTotalCampaign() {
+        return new ResponseEntity<>(campaignService.getAllTotalCampaign(), HttpStatus.OK);
+    }
 }

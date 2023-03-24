@@ -15,4 +15,5 @@ public interface BrandService {
     BrandResponse updateBrand(Long id, BrandRequest brandRequest);
 
     BrandResponse deleteBrand(Long id);
+
 }

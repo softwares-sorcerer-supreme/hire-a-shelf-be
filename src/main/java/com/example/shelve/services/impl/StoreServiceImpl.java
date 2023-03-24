@@ -1,6 +1,7 @@
 package com.example.shelve.services.impl;
 
 import com.example.shelve.dto.request.StoreCategoryRequest;
+import com.example.shelve.dto.response.BrandResponse;
 import com.example.shelve.dto.response.StoreCategoryResponse;
 import com.example.shelve.dto.response.StoreResponse;
 import com.example.shelve.entities.Category;
@@ -66,5 +67,12 @@ public class StoreServiceImpl implements StoreService {
         });
 
         return storeCategoryResponses;
+    }
+
+    @Override
+    public List<StoreResponse> getAllStore() {
+        List<StoreResponse> storeResponses = new ArrayList<>();
+        storeRepository.findAll().forEach(x -> storeResponses.add(storeMapper.toStoreResponse(x)));
+        return storeResponses;
     }
 }

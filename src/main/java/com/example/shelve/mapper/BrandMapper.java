@@ -25,8 +25,6 @@ public class BrandMapper {
         if (brand == null)
             return null;
 
-//        Set<LocationResponse> locationResponses = new HashSet<>();
-//        brand.getLocations().forEach(location -> locationResponses.add(locationMapper.toLocationResponse(location)));
 
         return BrandResponse.builder()
                 .id(brand.getId())
@@ -34,6 +32,7 @@ public class BrandMapper {
                 .description(brand.getDescription())
                 .logo(brand.getLogo())
                 .name(brand.getName())
+                .participateDate(brand.getParticipateDate())
                 .phone(brand.getPhone())
                 .status(brand.isStatus())
                 .build();

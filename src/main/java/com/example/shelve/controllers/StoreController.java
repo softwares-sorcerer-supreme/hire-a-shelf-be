@@ -27,4 +27,9 @@ public class StoreController {
         return new ResponseEntity<>(storeService.addFavouriteCategory(storeCategoryRequest), HttpStatus.OK);
     }
 
+    @GetMapping()
+    public ResponseEntity<List<StoreResponse>> getAllStore() {
+        return new ResponseEntity<>(storeService.getAllStore(), HttpStatus.OK);
+    }
+
 }

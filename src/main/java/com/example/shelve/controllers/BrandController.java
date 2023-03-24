@@ -22,7 +22,7 @@ public class BrandController {
     private BrandService brandService;
 
     @GetMapping
-    public ResponseEntity<List<BrandResponse>> getAllCampaign() {
+    public ResponseEntity<List<BrandResponse>> getAllBrand() {
         return new ResponseEntity<>(brandService.getAllBrand(), HttpStatus.OK);
     }
 
@@ -41,5 +41,4 @@ public class BrandController {
     public ResponseEntity<BrandResponse> deleteBrand(@PathVariable Long id) {
         return new ResponseEntity<>(brandService.deleteBrand(id), HttpStatus.OK);
     }
-
 }

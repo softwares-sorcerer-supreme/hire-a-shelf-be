@@ -62,13 +62,12 @@ public class CampaignServiceImpl implements CampaignService {
     @Autowired
     private ContractRepository contractRepository;
 
-    @Override
-    @Cacheable(value = "campaign")
-    public List<CampaignResponse> getAllCampaign() {
-        List<CampaignResponse> campaignResponses = new ArrayList<>();
-        campaignRepository.findAll().forEach(x -> campaignResponses.add(campaignMapper.toCampaignResponse(x)));
-        return campaignResponses;
-    }
+
+//    public List<CampaignResponse> getAllCampaign() {
+//        List<CampaignResponse> campaignResponses = new ArrayList<>();
+//        campaignRepository.findAll().forEach(x -> campaignResponses.add(campaignMapper.toCampaignResponse(x)));
+//        return campaignResponses;
+//    }
 
     @Override
     public CampaignResponse getCampaign(Long id) {
@@ -336,6 +335,14 @@ public class CampaignServiceImpl implements CampaignService {
         result.toList().forEach((x -> campaignResponses.add(campaignMapper.toCampaignResponse(x))));
         return new APIResponse<>(result.getTotalPages(), campaignResponses);
 
+    }
+
+    @Override
+    @Cacheable(value = "campaign")
+    public List<CampaignResponse> getAllTotalCampaign() {
+        List<CampaignResponse> campaignResponses = new ArrayList<>();
+        campaignRepository.findAll().forEach(x -> campaignResponses.add(campaignMapper.toCampaignResponse(x)));
+        return campaignResponses;
     }
 
 }
