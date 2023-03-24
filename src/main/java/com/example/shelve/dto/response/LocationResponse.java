@@ -17,5 +17,4 @@ public class LocationResponse {
     private String ward;
     private String address;
     private String city;
-//    private Set<Store> store;
 }

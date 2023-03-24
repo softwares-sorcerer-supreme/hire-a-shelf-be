@@ -68,9 +68,9 @@ public class CampaignController {
         return new ResponseEntity<>(campaignService.disableCampaign(id), HttpStatus.OK);
     }
 
-    @PutMapping("/u/{id}")
-    public ResponseEntity<CampaignResponse> updateCampaign(
-            @ModelAttribute CampaignRequest campaign,
+
+    @PutMapping(value = "/u/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CampaignResponse> updateCampaign(@ModelAttribute CampaignRequest campaign,
                                                            @PathVariable Long id) {
         return new ResponseEntity<>(campaignService.updateCampaign(id, campaign), HttpStatus.OK);
 //        return null;

@@ -21,8 +21,8 @@ public class ShelvesMapper {
     private ProductRepository productRepository;
     @Autowired
     private ProductMapper productMapper;
-    @Autowired
-    private StoreMapper storeMapper;
+//    @Autowired
+//    private StoreMapper storeMapper;
     @Autowired
     private ShelvesTypeMapper shelvesTypeMapper;
 
@@ -46,7 +46,7 @@ public class ShelvesMapper {
                 .name(shelves.getName())
                 .description(shelves.getDescription())
                 .status(shelves.isStatus())
-                .store(storeMapper.toStoreResponse(shelves.getStore()))
+//                .store(storeMapper.toStoreResponse(shelves.getStore()))
                 .shelvesTypeResponse(shelvesTypeMapper.toShelvesTypeResponse(shelves.getShelvesType()))
                 .imgURL(shelves.getImgURL())
                 .products(productResponseSet)

@@ -20,6 +20,6 @@ public class ShelvesTypeResponse {
 
     private boolean status;
 
-//    private Set<Shelves> shelves;
+    private Set<Shelves> shelves;
 
 }

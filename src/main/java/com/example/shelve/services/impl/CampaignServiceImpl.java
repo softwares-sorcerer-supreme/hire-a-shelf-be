@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -58,6 +59,8 @@ public class CampaignServiceImpl implements CampaignService {
     private FirebaseTokenRepository firebaseTokenRepository;
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private ContractRepository contractRepository;
 
     @Override
     @Cacheable(value = "campaign")
@@ -156,17 +159,24 @@ public class CampaignServiceImpl implements CampaignService {
         //Get list token from list firebaseNotiToken
         List<String> brandStringFCMs = new ArrayList<>();
         brandFirebaseNotiTokens.forEach(firebaseNotiToken -> {
-            brandStringFCMs.add(firebaseNotiToken.getToken() != null ? firebaseNotiToken.getToken() : "");
+            if (firebaseNotiToken.getToken() != null){
+                brandStringFCMs.add(firebaseNotiToken.getToken());
+            }
         });
 
         List<String> storeStringFCMs = new ArrayList<>();
         storeFirebaseTokens.forEach(storeFirebaseToken -> {
-            storeStringFCMs.add(storeFirebaseToken.getToken() != null ? storeFirebaseToken.getToken() : "");
+            if(storeFirebaseToken.getToken() != null){
+                storeStringFCMs.add(storeFirebaseToken.getToken());
+            }
         });
 
         //Send notification to multiple brand devices
-        firebaseMessagingService.sendNotifications("Campaign has been " + statusMessage, "Your campaign with title " +
-                campaignSaved.getTitle() + " has been " + statusMessage, brandStringFCMs);
+        if(!brandStringFCMs.isEmpty()){
+            firebaseMessagingService.sendNotifications("Campaign has been " + statusMessage, "Your campaign with title " +
+                    campaignSaved.getTitle() + " has been " + statusMessage, brandStringFCMs);
+        }
+
         //Save notification to database
         notificationService.addNotificationByBrand("Campaign has been " + statusMessage, "Your campaign with title " +
                 campaignSaved.getTitle() + " has been " + statusMessage, campaignSaved.getBrand().getId(),
@@ -175,8 +185,10 @@ public class CampaignServiceImpl implements CampaignService {
 
         if (status.equals(EStatus.APPROVED)){
             //Send notification to multiple store devices
-            firebaseMessagingService.sendNotifications("New campaign in your location!", "A new campaign in your location with title " +
-                    campaignSaved.getTitle() + " has been posted! Check it out now!", storeStringFCMs);
+            if(!storeStringFCMs.isEmpty()){
+                firebaseMessagingService.sendNotifications("New campaign in your location!", "A new campaign in your location with title " +
+                        campaignSaved.getTitle() + " has been posted! Check it out now!", storeStringFCMs);
+            }
 
             Set<Long> processedAccountIds = new HashSet<>();
             //Save notification to database
@@ -305,18 +317,20 @@ public class CampaignServiceImpl implements CampaignService {
             throw new BadRequestException("Store is not exist!");
         }
 
-        List<String> categoriesName = new ArrayList<>();
-        if (filterByCategory.equals("true")) {
+        List<String> categoriesName = filterByCategory.equals("true") ?
+                storeCategoryRepository.findAllByStoreId(storeId)
+                        .stream()
+                        .map(storeCategory -> storeCategory.getCategory().getName())
+                        .collect(Collectors.toList()) :
+                new ArrayList<>();
 
-            List<StoreCategory> storeCategories =
-                    storeCategoryRepository.findAllByStoreId(storeId);
-            storeCategories.forEach((storeCategory -> {
-                categoriesName.add(storeCategory.getCategory().getName());
-            }));
-        }
+        List<Long> appliedCampaignIds = contractRepository.findAllByStoreId(storeId)
+                .stream()
+                .map(contract -> contract.getCampaign().getId())
+                .collect(Collectors.toList());
 
         Page<Campaign> result = campaignRepository.findByKeywordWithFilterForHomePage
-                (stateList, keyword.toLowerCase(), categoriesName, filterByLocation.equals("true") ? store.get().getLocation().getCity() : "", pageable);
+                (stateList, keyword.toLowerCase(), categoriesName, filterByLocation.equals("true") ? store.get().getLocation().getCity() : "", appliedCampaignIds, pageable);
 
         List<CampaignResponse> campaignResponses = new ArrayList<>();
         result.toList().forEach((x -> campaignResponses.add(campaignMapper.toCampaignResponse(x))));

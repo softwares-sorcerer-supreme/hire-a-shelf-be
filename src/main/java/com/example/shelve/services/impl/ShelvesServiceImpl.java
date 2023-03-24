@@ -63,6 +63,7 @@ public class ShelvesServiceImpl implements ShelvesService {
         shelves.setStore(store);
         shelves.setImgURL(storageService.uploadFile(shelvesRequest.getImgMultipart()));
         shelves.setShelvesType(shelvesType);
+        shelves.setStatus(true);
         Shelves shelvesSaved = shelvesRepository.save(shelves);
 
         return shelvesMapper.toShelveResponse(shelvesSaved);
