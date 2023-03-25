@@ -56,4 +56,6 @@ public class ShelvesController {
         return new ResponseEntity<>(shelvesService.createShelveType(shelvesTypeRequest), HttpStatus.OK);
     }
 
+
+
 }

@@ -4,6 +4,7 @@ import com.example.shelve.dto.request.CategoryRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.CategoryResponse;
 import com.example.shelve.entities.Category;
+import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CategoryMapper;
 import com.example.shelve.repository.CategoryRepository;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -58,8 +61,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
-//        Category
-
-        return null;
+        Optional<Category> categoryFound = categoryRepository.findById(id);
+        if (categoryFound.isEmpty()){
+            throw new BadRequestException("Category is not found!");
+        }else{
+            categoryFound.get().setName(categoryRequest.getName());
+            categoryFound.get().setDescription(categoryRequest.getDescription());
+            Category categorySaved = categoryRepository.save(categoryFound.get());
+            return mapper.toCategoryResponse(categorySaved);
+        }
     }
 }
