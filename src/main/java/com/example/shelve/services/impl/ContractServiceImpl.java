@@ -6,10 +6,7 @@ import com.example.shelve.dto.request.PushNotificationRequest;
 import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ContractResponse;
-import com.example.shelve.entities.Campaign;
-import com.example.shelve.entities.Contract;
-import com.example.shelve.entities.Notification;
-import com.example.shelve.entities.Store;
+import com.example.shelve.entities.*;
 import com.example.shelve.entities.enums.ENotificationType;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.BadRequestException;
@@ -20,6 +17,7 @@ import com.example.shelve.repository.ContractRepository;
 import com.example.shelve.repository.NotificationRepository;
 import com.example.shelve.repository.StoreRepository;
 import com.example.shelve.services.ContractService;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +29,8 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 @Service
 @Slf4j
 public class ContractServiceImpl implements ContractService {
@@ -64,7 +64,7 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public ContractResponse createContract(ContractRequest contractRequest) {
+    public ContractResponse createContract(ContractRequest contractRequest) throws FirebaseMessagingException {
 
         if (contractRepository.findByStoreIdAndCampaignId(contractRequest.getStoreId(), contractRequest.getCampaignId()).isPresent()){
             throw new BadRequestException("You have already applied for this campaign!");
@@ -88,11 +88,18 @@ public class ContractServiceImpl implements ContractService {
                 .EStatus(EStatus.PENDING)
                 .build();
 
+
+        Set<FirebaseNotiToken> firebaseNotiTokenList = campaign.getBrand().getAccount().getFireBaseNotiTokens();
+        List<String> brandStringFCMs = new ArrayList<>();
+        firebaseNotiTokenList.forEach(firebaseNotiToken -> {
+            if (firebaseNotiToken.getToken() != null && firebaseNotiToken.isStatus()){
+                brandStringFCMs.add(firebaseNotiToken.getToken());
+            }
+        });
+
         Contract contractSaved = contractRepository.save(contract);
-        firebaseMessagingService.sendNotificationToToken(PushNotificationRequest.builder()
-                .token("campaign.getBrand().getAccount().getFireBaseToken()")
-                .message("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn")
-                .title(campaign.getTitle()).build());
+        firebaseMessagingService.sendNotifications("Someone Applied to your campaign", "Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn", brandStringFCMs);
+
         notificationRepository.save(Notification.builder()
                 .title(campaign.getTitle())
                 .body("Cửa hàng "+ store.getName() + " đã tham gia chiến dịch của bạn")
