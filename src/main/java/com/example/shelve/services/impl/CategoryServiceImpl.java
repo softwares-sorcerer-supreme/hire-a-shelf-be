@@ -4,11 +4,8 @@ import com.example.shelve.dto.request.CategoryRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.CategoryResponse;
 import com.example.shelve.entities.Category;
-<<<<<<< HEAD
 import com.example.shelve.entities.Product;
-=======
 import com.example.shelve.exception.BadRequestException;
->>>>>>> 83a5444f413d4a6bd9793a73860361fbd4d8329b
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CategoryMapper;
 import com.example.shelve.repository.CategoryRepository;
