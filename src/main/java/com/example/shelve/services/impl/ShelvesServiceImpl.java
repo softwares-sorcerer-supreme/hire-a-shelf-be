@@ -6,10 +6,7 @@ import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ShelvesResponse;
 import com.example.shelve.dto.response.ShelvesTypeResponse;
-import com.example.shelve.entities.Campaign;
-import com.example.shelve.entities.Shelves;
-import com.example.shelve.entities.ShelvesType;
-import com.example.shelve.entities.Store;
+import com.example.shelve.entities.*;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.ShelvesMapper;
@@ -112,7 +109,7 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
-    @Cacheable(value = "shelves_type")
+//    @Cacheable(value = "shelves_type")
     public List<ShelvesTypeResponse> getListShelvesTypes(String status) {
         List<ShelvesType> shelvesTypes;
         if (!status.equals("none")){
@@ -128,7 +125,7 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
-    @CacheEvict(value = "shelves_type", allEntries = true)
+//    @CacheEvict(value = "shelves_type", allEntries = true)
     public ShelvesTypeResponse createShelveType(ShelvesTypeRequest shelvesTypeRequest) {
         ShelvesType shelvesType = ShelvesType.builder()
                 .name(shelvesTypeRequest.getName())
@@ -136,5 +133,22 @@ public class ShelvesServiceImpl implements ShelvesService {
                 .status(true)
                 .build();
         return shelvesTypeMapper.toShelvesTypeResponse(shelvesTypeRepository.save(shelvesType));
+    }
+
+    @Override
+//    @CachePut(value = "shelves_type", key = "#id")
+//    @CacheEvict(value = "shelves_type", allEntries = true)
+    public ShelvesTypeResponse updateShelveType(Long id, ShelvesTypeRequest shelvesTypeRequest) {
+        ShelvesType shelvesType = shelvesTypeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Shelf type not found!"));
+
+        System.out.println(shelvesType.toString());
+
+        shelvesType.setName(shelvesTypeRequest.getName());
+        shelvesType.setDescription(shelvesTypeRequest.getDescription());
+
+        shelvesTypeRepository.save(shelvesType);
+        return shelvesTypeMapper.toShelvesTypeResponse(shelvesType);
+//        return shelvesTypeMapper.toShelvesTypeResponse(shelvesTypeRepository.save(shelvesType));
     }
 }

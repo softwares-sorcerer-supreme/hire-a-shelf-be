@@ -21,4 +21,6 @@ public interface ShelvesService {
     List<ShelvesTypeResponse> getListShelvesTypes(String status);
 
     ShelvesTypeResponse createShelveType(ShelvesTypeRequest shelvesTypeRequest);
+
+    ShelvesTypeResponse updateShelveType(Long id, ShelvesTypeRequest shelvesTypeRequest);
 }

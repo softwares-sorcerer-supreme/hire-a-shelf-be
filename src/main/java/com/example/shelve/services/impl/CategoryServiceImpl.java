@@ -4,6 +4,7 @@ import com.example.shelve.dto.request.CategoryRequest;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.CategoryResponse;
 import com.example.shelve.entities.Category;
+import com.example.shelve.entities.Product;
 import com.example.shelve.exception.BadRequestException;
 import com.example.shelve.exception.ResourceNotFoundException;
 import com.example.shelve.mapper.CategoryMapper;
@@ -32,10 +33,12 @@ public class CategoryServiceImpl implements CategoryService {
         List<CategoryResponse> categoryResponses = new ArrayList<>();
         categoryRepository.findAll().forEach(x -> categoryResponses.add(mapper.toCategoryResponse(x)));
         return categoryResponses;
+//        return null;
     }
 
     @Override
     public CategoryResponse getCategory(Long id) {
+//        return null;
         return mapper.toCategoryResponse(categoryRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found!")));
@@ -61,14 +64,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
-        Optional<Category> categoryFound = categoryRepository.findById(id);
-        if (categoryFound.isEmpty()){
-            throw new BadRequestException("Category is not found!");
-        }else{
-            categoryFound.get().setName(categoryRequest.getName());
-            categoryFound.get().setDescription(categoryRequest.getDescription());
-            Category categorySaved = categoryRepository.save(categoryFound.get());
-            return mapper.toCategoryResponse(categorySaved);
-        }
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
+
+        category.setName(categoryRequest.getName());
+        category.setDescription(categoryRequest.getDescription());
+
+        Category categorySaved = categoryRepository.save(category);
+
+        return mapper.toCategoryResponse(categorySaved);
     }
 }
