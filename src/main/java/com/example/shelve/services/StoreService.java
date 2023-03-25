@@ -10,4 +10,6 @@ public interface StoreService {
     StoreResponse getStore(Long id);
 
     List<StoreCategoryResponse> addFavouriteCategory(StoreCategoryRequest storeCategoryRequest);
+
+    List<StoreResponse> getAllStore();
 }

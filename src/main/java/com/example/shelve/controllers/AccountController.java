@@ -34,4 +34,5 @@ public class AccountController {
     public ResponseEntity<String> forgetPassword(@RequestBody ChangePasswordRequest changePasswordRequest){
         return new ResponseEntity<>(accountService.forgetPassword(changePasswordRequest), HttpStatus.OK);
     }
+
 }

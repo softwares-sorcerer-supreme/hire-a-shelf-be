@@ -6,6 +6,7 @@ import com.example.shelve.dto.response.APIResponse;
 import com.example.shelve.dto.response.CampaignResponse;
 import com.example.shelve.dto.response.ContractResponse;
 import com.example.shelve.entities.enums.EStatus;
+import com.google.firebase.messaging.FirebaseMessagingException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface ContractService {
 
     ContractResponse getContract(Long id);
 
-    ContractResponse createContract(ContractRequest contractRequest);
+    ContractResponse createContract(ContractRequest contractRequest) throws FirebaseMessagingException;
 
     ContractResponse approveContract(Long id, EStatus status);
 

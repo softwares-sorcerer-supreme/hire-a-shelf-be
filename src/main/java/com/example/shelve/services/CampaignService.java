@@ -10,8 +10,6 @@ import java.util.List;
 
 public interface CampaignService {
 
-    List<CampaignResponse> getAllCampaign();
-
     CampaignResponse getCampaign(Long id);
 
 //    CampaignResponse createNewCampaign(String campaignStr, MultipartFile file);
@@ -27,4 +25,6 @@ public interface CampaignService {
     APIResponse<List<CampaignResponse>> getAllCampaignsWithFilter(Long brandId, String keyword, int page, List<String> statusList);
 
     APIResponse<List<CampaignResponse>> getListCampaignsWithFilterForHomePage(Long storeId, String keyword, int page, List<String> states, String suggestByCategory, String filterByLocation);
+
+    List<CampaignResponse> getAllTotalCampaign();
 }

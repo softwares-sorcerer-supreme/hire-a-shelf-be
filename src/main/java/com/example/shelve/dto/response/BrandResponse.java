@@ -5,6 +5,7 @@ import com.example.shelve.entities.enums.EStatus;
 import lombok.*;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.Set;
 
 @Builder
@@ -21,6 +22,7 @@ public class BrandResponse implements Serializable {
     private String phone;
     
     private String logo;
+    private Date participateDate;
 
     private String description;
 

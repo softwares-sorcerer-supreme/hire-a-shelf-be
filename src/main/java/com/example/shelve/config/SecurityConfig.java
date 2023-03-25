@@ -74,7 +74,8 @@ public class SecurityConfig {
                             .antMatchers(HttpMethod.PUT, "/api/category/**").hasAuthority(ADMIN_ROLE)
                             .antMatchers(HttpMethod.POST, "/api/category").hasAuthority(ADMIN_ROLE)
                             .antMatchers(HttpMethod.PUT, "/api/shelve/type/**").hasAuthority(ADMIN_ROLE)
-
+                            .antMatchers(HttpMethod.GET, "/api/brand").hasAuthority(ADMIN_ROLE)
+                            .antMatchers(HttpMethod.GET, "/api/store").hasAuthority(ADMIN_ROLE)
                             //Store
                             .antMatchers(HttpMethod.GET,"/api/shelve").hasAuthority(STORE_ROLE)
                             .antMatchers(HttpMethod.GET,"/api/campaign/home").hasAuthority(STORE_ROLE)
@@ -92,7 +93,7 @@ public class SecurityConfig {
                             .antMatchers(HttpMethod.PUT, "/api/campaign/u/{id}").hasAuthority(BRAND_ROLE)
 
                             //Multiple role
-                            .antMatchers(HttpMethod.GET,"/api/category/status/**").hasAnyAuthority(STORE_ROLE, BRAND_ROLE)
+                            .antMatchers(HttpMethod.GET,"/api/category/status/{status}").hasAnyAuthority(STORE_ROLE, BRAND_ROLE)
                             .antMatchers(HttpMethod.GET,"/api/campaign/{id}").hasAnyAuthority(ADMIN_ROLE, BRAND_ROLE)
 
                             //Authenticated

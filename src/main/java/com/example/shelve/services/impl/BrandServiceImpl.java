@@ -39,7 +39,6 @@ public class BrandServiceImpl implements BrandService {
     public List<BrandResponse> getAllBrand() {
         log.error("Get brand", "get all brabd");
         List<BrandResponse> brandResponses = new ArrayList<>();
-
         brandRepository.findAll().forEach(x -> brandResponses.add(brandMapper.toBrandResponse(x)));
         return brandResponses;
     }
@@ -83,6 +82,5 @@ public class BrandServiceImpl implements BrandService {
 
         return brandMapper.toBrandResponse(brandSaved);
     }
-
 
 }
