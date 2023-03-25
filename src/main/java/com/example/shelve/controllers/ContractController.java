@@ -8,6 +8,7 @@ import com.example.shelve.dto.response.ContractResponse;
 import com.example.shelve.entities.enums.EStatus;
 import com.example.shelve.services.CampaignService;
 import com.example.shelve.services.ContractService;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +41,7 @@ public class ContractController {
     }
 
     @PostMapping
-    public ResponseEntity<ContractResponse> createContract(@RequestBody ContractRequest contractRequest) {
+    public ResponseEntity<ContractResponse> createContract(@RequestBody ContractRequest contractRequest) throws FirebaseMessagingException {
         return new ResponseEntity<>(contractService.createContract(contractRequest), HttpStatus.OK);
     }
 
