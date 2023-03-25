@@ -109,7 +109,7 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
-    @Cacheable(value = "shelves_type")
+//    @Cacheable(value = "shelves_type")
     public List<ShelvesTypeResponse> getListShelvesTypes(String status) {
         List<ShelvesType> shelvesTypes;
         if (!status.equals("none")){
@@ -125,7 +125,7 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
-    @CacheEvict(value = "shelves_type", allEntries = true)
+//    @CacheEvict(value = "shelves_type", allEntries = true)
     public ShelvesTypeResponse createShelveType(ShelvesTypeRequest shelvesTypeRequest) {
         ShelvesType shelvesType = ShelvesType.builder()
                 .name(shelvesTypeRequest.getName())
@@ -136,13 +136,19 @@ public class ShelvesServiceImpl implements ShelvesService {
     }
 
     @Override
-    @CacheEvict(value = "shelves_type", allEntries = true)
+//    @CachePut(value = "shelves_type", key = "#id")
+//    @CacheEvict(value = "shelves_type", allEntries = true)
     public ShelvesTypeResponse updateShelveType(Long id, ShelvesTypeRequest shelvesTypeRequest) {
         ShelvesType shelvesType = shelvesTypeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Shelf type not found!"));
 
+        System.out.println(shelvesType.toString());
+
         shelvesType.setName(shelvesTypeRequest.getName());
         shelvesType.setDescription(shelvesTypeRequest.getDescription());
-        return shelvesTypeMapper.toShelvesTypeResponse(shelvesTypeRepository.save(shelvesType));
+
+        shelvesTypeRepository.save(shelvesType);
+        return shelvesTypeMapper.toShelvesTypeResponse(shelvesType);
+//        return shelvesTypeMapper.toShelvesTypeResponse(shelvesTypeRepository.save(shelvesType));
     }
 }
